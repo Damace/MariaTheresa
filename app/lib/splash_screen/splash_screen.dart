@@ -29,7 +29,7 @@ class SplashScreen extends GetWidget<SplashController> {
                 alignment: Alignment.bottomCenter,
                 child: Text(
                   'Maria Theretha Ledochowsker',
-                  style: TextStyle(color: Colors.white, fontSize: 12.fSize),
+                  style: TextStyle(color: Colors.white, fontSize: 11.fSize),
                 ),
               ),
             ))
