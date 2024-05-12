@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables
+import 'package:app/core/utils/size_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,39 +26,77 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+      backgroundColor: Colors.white.withOpacity(0.5),
+      body: Stack(
         children: [
-          GFCarousel(
-            autoPlay: true,
-            hasPagination: true,
-            viewportFraction: 1.0,
-            aspectRatio: 2,
-            activeIndicator: Colors.white,
-            items: imageList.map(
-              (url) {
-                return Container(
-                  child: ClipRRect(
-                    child: CachedNetworkImage(
-                      imageUrl: url, fit: BoxFit.cover, width: 1000.0,
-                      // placeholder: (context, url) => CircularProgressIndicator(),
-                      // errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
-
-                    // child: Image.network(url, fit: BoxFit.cover, width: 1000.0),
-                  ),
-                );
-              },
-            ).toList(),
-            onPageChanged: (index) {
-              setState(() {
-                index;
-              });
-            },
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              GFCarousel(
+                autoPlay: true,
+                hasPagination: true,
+                viewportFraction: 1.0,
+                aspectRatio: 2,
+                activeIndicator: Colors.white,
+                items: imageList.map(
+                  (url) {
+                    return Container(
+                      child: ClipRRect(
+                        child: CachedNetworkImage(
+                          imageUrl: url,
+                          fit: BoxFit.cover,
+                          width: 1000.0,
+                        ),
+                      ),
+                    );
+                  },
+                ).toList(),
+                onPageChanged: (index) {
+                  setState(() {
+                    index;
+                  });
+                },
+              ),
+              contents(context)
+            ],
+          ),
+          Positioned(
+            height: 100.v,
+            width: 100.h,
+            top: 200.0.v,
+            left: null,
+            right: 200.h,
+            bottom: null,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.red,
+                border: Border.all(
+                    width: 1.0, color: Color.fromARGB(255, 150, 75, 75)),
+                borderRadius: BorderRadius.all(Radius.circular(100)),
+              ),
+              child: Center(
+                child: Text(
+                  "Tsh 100,000.00",
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 190, 62, 62),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14.fSize),
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  contents(BuildContext context) {
+    return Container(
+        color: const Color.fromARGB(255, 233, 227, 227),
+        height: 24.v,
+        child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start, children: [])));
   }
 }
