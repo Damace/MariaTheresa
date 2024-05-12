@@ -1,5 +1,5 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, prefer_const_literals_to_create_immutables
-import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -34,12 +34,18 @@ class _HomeScreen extends State<HomeScreen> {
             hasPagination: true,
             viewportFraction: 1.0,
             aspectRatio: 2,
+            activeIndicator: Colors.white,
             items: imageList.map(
               (url) {
                 return Container(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                    child: Image.network(url, fit: BoxFit.cover, width: 1000.0),
+                    child: CachedNetworkImage(
+                      imageUrl: url, fit: BoxFit.cover, width: 1000.0,
+                      // placeholder: (context, url) => CircularProgressIndicator(),
+                      // errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+
+                    // child: Image.network(url, fit: BoxFit.cover, width: 1000.0),
                   ),
                 );
               },
