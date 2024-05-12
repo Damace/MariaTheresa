@@ -1,11 +1,9 @@
-// ignore_for_file: prefer_const_constructors, unnecessary_import
+// ignore_for_file: prefer_const_constructors
 
+import 'package:app/core/utils/size_utils.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'controller/splash_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:getwidget/components/loader/gf_loader.dart';
-import 'package:getwidget/getwidget.dart';
-import 'package:getwidget/types/gf_loader_type.dart';
 
 class SplashScreen extends GetWidget<SplashController> {
   const SplashScreen({Key? key}) : super(key: key);
@@ -27,14 +25,14 @@ class SplashScreen extends GetWidget<SplashController> {
               elevation: 0.0,
             ),
             body: Expanded(
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: GFLoader(
-                size: GFSize.SMALL,
-                loaderstrokeWidth: 2,
-                type: GFLoaderType.ios)
-        ),
-      ))
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  'Maria Theretha Ledochowsker',
+                  style: TextStyle(color: Colors.white, fontSize: 12.fSize),
+                ),
+              ),
+            ))
       ],
     );
   }
