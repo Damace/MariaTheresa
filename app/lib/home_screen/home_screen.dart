@@ -26,7 +26,7 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white.withOpacity(0.5),
+      backgroundColor: Colors.white.withOpacity(0.8),
       body: Stack(
         children: [
           Column(
@@ -45,7 +45,7 @@ class _HomeScreen extends State<HomeScreen> {
                         child: CachedNetworkImage(
                           imageUrl: url,
                           fit: BoxFit.cover,
-                          width: 1000.0,
+                          width: double.infinity,
                         ),
                       ),
                     );
@@ -57,22 +57,23 @@ class _HomeScreen extends State<HomeScreen> {
                   });
                 },
               ),
+              SizedBox(
+                height: 75.v,
+              ),
               contents(context)
             ],
           ),
           Positioned(
-            height: 100.v,
-            width: 100.h,
-            top: 200.0.v,
+            top: 150.h,
             left: null,
-            right: 200.h,
+            right: 10.h,
             bottom: null,
             child: Container(
+              height: 100.v,
+              width: 350.h,
               decoration: BoxDecoration(
-                color: Colors.red,
-                border: Border.all(
-                    width: 1.0, color: Color.fromARGB(255, 150, 75, 75)),
-                borderRadius: BorderRadius.all(Radius.circular(100)),
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(8)),
               ),
               child: Center(
                 child: Text(
@@ -91,12 +92,21 @@ class _HomeScreen extends State<HomeScreen> {
   }
 
   contents(BuildContext context) {
-    return Container(
-        color: const Color.fromARGB(255, 233, 227, 227),
-        height: 24.v,
-        child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start, children: [])));
+    return Padding(
+      padding: EdgeInsets.only(left: 5.h, right: 5.h),
+      child: Container(
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8), topRight: Radius.circular(8))),
+          width: double.infinity,
+          child: SizedBox(
+            child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [Text("LOCATION")])),
+          )),
+    );
   }
 }
