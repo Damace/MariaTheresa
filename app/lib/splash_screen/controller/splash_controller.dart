@@ -1,3 +1,6 @@
+// ignore_for_file: unnecessary_import
+
+import 'package:app/routes/app_routes.dart';
 import 'package:app/splash_screen/models/splash_model.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -10,9 +13,9 @@ class SplashController extends GetxController {
   @override
   void onReady() {
     Future.delayed(const Duration(milliseconds: 3000), () {
-      Get.to(Home());
+      Get.offNamed(
+        AppRoutes.homescreen,
+      );
     });
   }
 }
-
-class Home {}
