@@ -42,6 +42,7 @@ dependencies:
   animate_do: ^3.3.4
   getwidget: ^4.0.0
   awesome_dialog: ^2.2.1
+  font_awesome_flutter: ^10.7.0
 
 
 dev_dependencies:

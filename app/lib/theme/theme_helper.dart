@@ -183,7 +183,13 @@ class PrimaryColors {
 
   Color get defaultcolor0 => Color(0XFFFFFFFF);
 
-  Color get defaultcolor => Color(0xFFFF7643);
+  //Color get defaultcolor => Color(0xFF641E16);
+
+  Color get defaultcolor => Color(0xFF1B4F72);
+
+  //Color get defaultcolor => Color(0xFFFF7643);
+
+  //#1B4F72
 
   // Blue
   Color get blue50 => Color(0XFFEAEFFF);

@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class Profile extends StatefulWidget {
+class Notification_screen extends StatefulWidget {
   @override
-  State<Profile> createState() => _Profile();
+  State<Notification_screen> createState() => _Notification_screen();
 }
 
-class _Profile extends State<Profile> {
+class _Notification_screen extends State<Notification_screen> {
   final formkey = GlobalKey<FormState>();
 
   @override
@@ -14,7 +14,7 @@ class _Profile extends State<Profile> {
     return Scaffold(
       body: Container(
         child: Center(
-          child: Text("Profile"),
+          child: Text("Notification_screen"),
         ),
       ),
     );

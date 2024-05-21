@@ -1,6 +1,6 @@
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/home_screen/home_screen.dart';
-import 'package:app/home_screen/profile.dart';
+import 'package:app/profile_screen/profile.dart';
 import 'package:app/kndege/kndege_contrroller.dart';
 import 'package:app/kndegetv/tv.dart';
 import 'package:app/michango/michango_screen.dart';

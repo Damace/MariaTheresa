@@ -14,7 +14,7 @@ class SplashController extends GetxController {
   void onReady() {
     Future.delayed(const Duration(milliseconds: 3000), () {
       Get.offNamed(
-        AppRoutes.kndege,
+        AppRoutes.homescreen,
       );
     });
   }
