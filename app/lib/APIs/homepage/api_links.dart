@@ -9,7 +9,7 @@ class GetRatiba {
           await client.get(Uri.parse('http://192.168.0.3:8000/ratiba'));
       if (response.statusCode == 200) {
         var jsonString = response.body;
-        print(jsonString);
+        //print(jsonString);
         return ratibaFromJson(jsonString);
       } else {
         return null;

@@ -43,6 +43,7 @@ dependencies:
   getwidget: ^4.0.0
   awesome_dialog: ^2.2.1
   font_awesome_flutter: ^10.7.0
+  flutter_downloader: ^1.11.7
 
 
 dev_dependencies:

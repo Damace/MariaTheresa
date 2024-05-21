@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('topbanner', function (Blueprint $table) {
             $table->id();
+            $table->string('path');
+            $table->string('title');
+            $table->string('description');
             $table->timestamps();
         });
     }
