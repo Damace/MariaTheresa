@@ -10,6 +10,8 @@ const kPrimaryGradientColor = LinearGradient(
 const kSecondaryColor = Color(0xFF979797);
 const kTextColor = Colors.black;
 
+const KappId = "8a35c248-1d32-4da8-9123-db8772b6b89e";
+
 const kAnimationDuration = Duration(milliseconds: 200);
 
 const headingStyle = TextStyle(

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "616078841853",
+    "project_id": "mariatheresa-6dd12",
+    "storage_bucket": "mariatheresa-6dd12.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616078841853:android:e1103ff0e9515a168aeb94",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANTWNZBrt67yfx6uVR4EWQ0oytiQx70Jg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

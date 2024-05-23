@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:app/APIs/homepage/api_links.dart';
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/fx/fx.dart';
 import 'package:app/home_screen/home_screen_controller.dart';
@@ -24,6 +25,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:getwidget/components/carousel/gf_carousel.dart';
 import 'package:marquee/marquee.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -31,10 +33,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
-  RatibaController matangazoController = Get.put(RatibaController());
+  
   final formkey = GlobalKey<FormState>();
 
-  final nv = new Fx();
   late String dropdown;
 
   final List<String> imageList = [
@@ -54,292 +55,306 @@ class _HomeScreen extends State<HomeScreen> {
 
   bool vsb = false;
 
+  Future<void> _refreshData() async {
+    await Future.delayed(Duration(seconds: 2));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         // backgroundColor: const Color.fromARGB(255, 99, 32, 32).withOpacity(0.93),
         backgroundColor: Colors.white.withOpacity(0.93),
-        body: Container(
-          // color: Colors.white,
-          width: double.infinity,
-          height: double.infinity,
-          child: Stack(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  GFCarousel(
-                    autoPlay: true,
-                    hasPagination: true,
-                    viewportFraction: 1.0,
-                    aspectRatio: 2,
-                    activeIndicator: Colors.white,
-                    items: imageList.map(
-                      (url) {
-                        return Container(
-                          child: ClipRRect(
-                            child: CachedNetworkImage(
-                              imageUrl: url,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
+        body: RefreshIndicator(
+          backgroundColor: Colors.white,
+          color: appTheme.defaultcolor,
+          strokeWidth: 1.75,
+          onRefresh: _refreshData,
+          child: Container(
+            // color: Colors.white,
+            width: double.infinity,
+            height: double.infinity,
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    GFCarousel(
+                      autoPlay: true,
+                      hasPagination: true,
+                      viewportFraction: 1.0,
+                      aspectRatio: 2,
+                      activeIndicator: Colors.white,
+                      items: imageList.map(
+                        (url) {
+                          return Container(
+                            child: ClipRRect(
+                              child: CachedNetworkImage(
+                                imageUrl: url,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      onPageChanged: (index) {
+                        setState(() {
+                          index;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 75.v,
+                    ),
+                    contents(context)
+                  ],
+                ),
+                Positioned(
+                  top: 155.h,
+                  left: null,
+                  right: 10.h,
+                  bottom: null,
+                  child: Container(
+                      height: 95.v,
+                      width: 350.h,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                          boxShadow: [
+                            BoxShadow(
+                                color: appTheme.defaultcolor.withOpacity(0.4),
+                                spreadRadius: 0.5,
+                                offset: Offset(0, 0.6))
+                          ]),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 15.v,
+                                ),
+                                GFButton(
+                                  textStyle: TextStyle(
+                                      fontSize: 11.5.fSize,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  color:
+                                      appTheme.defaultcolor.withOpacity(0.15),
+                                  onPressed: () {
+                                    ratiba(context);
+                                  },
+                                  text: "Ratiba za Ibada",
+                                  icon: Icon(
+                                    FontAwesomeIcons.listUl,
+                                    size: 18.fSize,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        );
-                      },
-                    ).toList(),
-                    onPageChanged: (index) {
-                      setState(() {
-                        index;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 75.v,
-                  ),
-                  contents(context)
-                ],
-              ),
-              Positioned(
-                top: 155.h,
-                left: null,
-                right: 10.h,
-                bottom: null,
-                child: Container(
-                    height: 95.v,
-                    width: 350.h,
+                          Padding(
+                            padding: EdgeInsets.only(top: 20.v, bottom: 20.v),
+                            child: VerticalDivider(color: Colors.black),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 15.v,
+                                ),
+                                GFButton(
+                                  textStyle: TextStyle(
+                                      fontSize: 11.5.fSize,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                  color:
+                                      appTheme.defaultcolor.withOpacity(0.15),
+                                  onPressed: () {
+                                    fomu_za_huduma(context);
+                                  },
+                                  text: "Fomu za huduma",
+                                  icon: Icon(
+                                    FontAwesomeIcons.filePdf,
+                                    size: 18.fSize,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      )),
+                ),
+                Positioned(
+                  top: 205.h,
+                  left: null,
+                  right: 155.h,
+                  bottom: null,
+                  child: Container(
+                    height: 60.v,
+                    width: 60.h,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
                         boxShadow: [
                           BoxShadow(
                               color: appTheme.defaultcolor.withOpacity(0.4),
                               spreadRadius: 0.5,
                               offset: Offset(0, 0.6))
-                        ]),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 15.v,
-                              ),
-                              GFButton(
-                                textStyle: TextStyle(
-                                    fontSize: 11.5.fSize,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                color: appTheme.defaultcolor.withOpacity(0.15),
-                                onPressed: () {
-                                  ratiba(context, matangazoController);
-                                },
-                                text: "Ratiba za Ibada",
-                                icon: Icon(
-                                  FontAwesomeIcons.listUl,
-                                  size: 18.fSize,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 20.v, bottom: 20.v),
-                          child: VerticalDivider(color: Colors.black),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 15.v,
-                              ),
-                              GFButton(
-                                textStyle: TextStyle(
-                                    fontSize: 11.5.fSize,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                                color: appTheme.defaultcolor.withOpacity(0.15),
-                                onPressed: () {
-                                  fomu_za_huduma(context);
-                                },
-                                text: "Fomu za huduma",
-                                icon: Icon(
-                                  FontAwesomeIcons.filePdf,
-                                  size: 18.fSize,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    )),
-              ),
-              Positioned(
-                top: 205.h,
-                left: null,
-                right: 155.h,
-                bottom: null,
-                child: Container(
-                  height: 60.v,
-                  width: 60.h,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: appTheme.defaultcolor.withOpacity(0.4),
-                            spreadRadius: 0.5,
-                            offset: Offset(0, 0.6))
-                      ],
-                      shape: BoxShape.circle),
+                        ],
+                        shape: BoxShape.circle),
+                    child: InkWell(
+                      onTap: () {
+                        maoni(context);
+                      },
+                      child: Icon(
+                        Icons.mail,
+                        color: appTheme.defaultcolor.withOpacity(0.7),
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 35.h,
+                  left: null,
+                  right: 7.h,
+                  bottom: null,
                   child: InkWell(
                     onTap: () {
-                      maoni(context);
+                      Get.to(Notification_screen(),
+                          duration: Duration(milliseconds: 500),
+                          transition: Transition.fadeIn //transition effect
+                          );
                     },
-                    child: Icon(
-                      Icons.mail,
-                      color: appTheme.defaultcolor.withOpacity(0.7),
+                    child: Badge(
+                      label: Text("0"),
+                      child: Icon(
+                        Icons.notifications_on_outlined,
+                        color: Colors.white,
+                        size: 25,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 35.h,
-                left: null,
-                right: 7.h,
-                bottom: null,
-                child: InkWell(
-                  onTap: () {
-                    Get.to(Notification_screen(),
-                        duration: Duration(milliseconds: 500),
-                        transition: Transition.fadeIn //transition effect
-                        );
-                  },
-                  child: Badge(
-                    label: Text("0"),
-                    child: Icon(
-                      Icons.notifications_on_outlined,
-                      color: Colors.white,
-                      size: 25,
-                    ),
-                  ),
-                ),
-              ),
-              Positioned(
-                  top: 35.h,
+                Positioned(
+                    top: 35.h,
+                    left: 7.0,
+                    right: null,
+                    bottom: null,
+                    child: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: PopupMenuButton(
+                          child: Icon(
+                            Icons.sort,
+                            color: Colors.white,
+                            size: 35,
+                          ),
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                                child: Row(
+                              children: [
+                                Icon(
+                                  Icons.share_outlined,
+                                  size: 23.fSize,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text("Share"),
+                                )
+                              ],
+                            )),
+                            PopupMenuItem(
+                                child: Row(
+                              children: [
+                                Icon(Icons.tv, size: 23.fSize),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text("Kndege TV"),
+                                )
+                              ],
+                            )),
+                            PopupMenuItem(
+                                child: Row(
+                              children: [
+                                Icon(Icons.mail_outlined, size: 23.fSize),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text("Toa Maoni"),
+                                )
+                              ],
+                            )),
+                            PopupMenuItem(
+                                child: Row(
+                              children: [
+                                Icon(Icons.call, size: 23.fSize),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text("Mawasiliano"),
+                                )
+                              ],
+                            )),
+                            PopupMenuItem(
+                                child: Row(
+                              children: [
+                                Icon(Icons.church_outlined, size: 23.fSize),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10),
+                                  child: Text("Historia ya Parokia"),
+                                )
+                              ],
+                            ))
+                          ],
+                        ))),
+                Positioned(
+                  top: 98.h,
                   left: 7.0,
                   right: null,
                   bottom: null,
-                  child: Padding(
-                      padding: const EdgeInsets.only(right: 5),
-                      child: PopupMenuButton(
-                        child: Icon(
-                          Icons.sort,
-                          color: Colors.white,
-                          size: 35,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 40.h,
+                          height: 40.v,
+                          child: Center(
+                            child: Image(
+                              image: AssetImage("assets/images/jesuit.png"),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(0.9),
+                              border: Border.all(
+                                  color: Color.fromARGB(255, 190, 148, 9))),
                         ),
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                              child: Row(
-                            children: [
-                              Icon(
-                                Icons.share_outlined,
-                                size: 23.fSize,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text("Share"),
-                              )
-                            ],
-                          )),
-                          PopupMenuItem(
-                              child: Row(
-                            children: [
-                              Icon(Icons.tv, size: 23.fSize),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text("Kndege TV"),
-                              )
-                            ],
-                          )),
-                          PopupMenuItem(
-                              child: Row(
-                            children: [
-                              Icon(Icons.mail_outlined, size: 23.fSize),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text("Toa Maoni"),
-                              )
-                            ],
-                          )),
-                          PopupMenuItem(
-                              child: Row(
-                            children: [
-                              Icon(Icons.call, size: 23.fSize),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text("Mawasiliano"),
-                              )
-                            ],
-                          )),
-                          PopupMenuItem(
-                              child: Row(
-                            children: [
-                              Icon(Icons.church_outlined, size: 23.fSize),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: Text("Historia ya Parokia"),
-                              )
-                            ],
-                          ))
-                        ],
-                      ))),
-              Positioned(
-                top: 98.h,
-                left: 7.0,
-                right: null,
-                bottom: null,
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Container(
-                    width: 40.h,
-                    height: 40.v,
-                    child: Center(
-                      child: Image(
-                        image: AssetImage("assets/images/jesuit.png"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.9),
-                        border: Border.all(
-                            color: Color.fromARGB(255, 190, 148, 9))),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text("Jimbo Kuu Katoriki Dodoma",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 247, 222, 5),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14.fSize,
-                          )),
-                      Text("Parokia ya Mwenyeheri Maria Theresa Ledochwosker",
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 247, 222, 5),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13.fSize,
-                          )),
-                    ],
-                  ),
-                ]),
-              ),
-            ],
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text("Jimbo Kuu Katoriki Dodoma",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 247, 222, 5),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.fSize,
+                                )),
+                            Text(
+                                "Parokia ya Mwenyeheri Maria Theresa Ledochwosker",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 247, 222, 5),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13.fSize,
+                                )),
+                          ],
+                        ),
+                      ]),
+                ),
+              ],
+            ),
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -1390,6 +1405,7 @@ class _HomeScreen extends State<HomeScreen> {
 // jumuiya(BuildContext context) {}
 
 fomu_za_huduma(BuildContext context) {
+  HomeController formController = Get.put(HomeController());
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -1432,171 +1448,88 @@ fomu_za_huduma(BuildContext context) {
                 ),
               ],
             ),
-            Card(
-              elevation: 0,
-              child: Padding(
-                padding: EdgeInsets.only(top: 10, left: 4.h, right: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: 12.fSize,
-                    ),
-                    SizedBox(width: 10.h),
-                    Text(
-                      "Fomu ya Ubatizo",
-                      style: TextStyle(
-                        fontSize: 12.fSize,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 200.h,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.download,
-                      color: appTheme.defaultcolor,
-                      size: 25.fSize,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(),
-            Card(
-              elevation: 0,
-              child: Padding(
-                padding: EdgeInsets.only(top: 5, left: 4.h, right: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: 12.fSize,
-                    ),
-                    SizedBox(width: 10.h),
-                    Text(
-                      "Fomu ya Mazishi",
-                      style: TextStyle(
-                        fontSize: 12.fSize,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 200.h,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.download,
-                      color: appTheme.defaultcolor,
-                      size: 25.fSize,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(),
-            Card(
-              elevation: 0,
-              child: Padding(
-                padding: EdgeInsets.only(top: 5, left: 4.h, right: 30.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: 12.fSize,
-                    ),
-                    SizedBox(width: 10.h),
-                    Text(
-                      "Fomu ya Kuomba kinanda",
-                      style: TextStyle(
-                        fontSize: 12.fSize,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 155.h,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.download,
-                      color: appTheme.defaultcolor,
-                      size: 25.fSize,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(),
-            Card(
-              elevation: 0,
-              child: Padding(
-                padding: EdgeInsets.only(top: 5, left: 4.h, right: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: 12.fSize,
-                    ),
-                    SizedBox(width: 10.h),
-                    Text(
-                      "Fomu ya Ubatizo",
-                      style: TextStyle(
-                        fontSize: 12.fSize,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 200.h,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.download,
-                      color: appTheme.defaultcolor,
-                      size: 25.fSize,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(),
-            Card(
-              elevation: 0,
-              child: Padding(
-                padding: EdgeInsets.only(top: 5, left: 4.h, right: 10.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.circle,
-                      size: 12.fSize,
-                    ),
-                    SizedBox(width: 10.h),
-                    Text(
-                      "Fomu ya Ubatizo",
-                      style: TextStyle(
-                        fontSize: 12.fSize,
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 200.h,
-                    ),
-                    Icon(
-                      FontAwesomeIcons.download,
-                      color: appTheme.defaultcolor,
-                      size: 25.fSize,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Divider(),
+            Container(
+                height: 120.v,
+                child: Obx(
+                  () => formController.fomuList.isNotEmpty
+                      ? ListView.builder(
+                          // itemCount: _urls.length,
+                          itemCount: formController.fomuList.length,
+                          itemBuilder: (BuildContext context, index) {
+                            // String _fileName = 'File ${i + 1}';
+                            return Card(
+                              elevation: 0,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Card(
+                                        elevation: 0,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 10, left: 4.h, right: 10.h),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.circle,
+                                                size: 12.fSize,
+                                              ),
+                                              SizedBox(width: 10.h),
+                                              Text(
+                                                "${formController.fomuList[index].jina}",
+                                                style: TextStyle(
+                                                  fontSize: 12.fSize,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 180.h,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  formController
+                                                      .requestDownload(
+                                                          formController
+                                                              .fomuList[index]
+                                                              .filePath,
+                                                          formController
+                                                              .fomuList[index]
+                                                              .jina);
+                                                },
+                                                child: Icon(
+                                                  FontAwesomeIcons.download,
+                                                  color: appTheme.defaultcolor,
+                                                  size: 25.fSize,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Divider(),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10),
+                                ],
+                              ),
+                            );
+                          },
+                        )
+                      : BounceInUp(
+                          child: GFLoader(
+                              size: GFSize.SMALL,
+                              loaderstrokeWidth: 2,
+                              type: GFLoaderType.ios),
+                        ),
+                )),
           ],
         ),
       ),
@@ -1686,7 +1619,8 @@ maoni(BuildContext context) {
   );
 }
 
-ratiba(BuildContext context, matangazoController) {
+ratiba(BuildContext context) {
+  HomeController ratibaController = Get.put(HomeController());
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -1765,7 +1699,7 @@ ratiba(BuildContext context, matangazoController) {
                 width: double.infinity,
                 height: 150.v,
                 child: Obx(
-                  () => matangazoController.ratiba_za_ibada.isNotEmpty
+                  () => ratibaController.ratibaList.isNotEmpty
                       ? DefaultTabController(
                           length: 2,
                           child: Column(

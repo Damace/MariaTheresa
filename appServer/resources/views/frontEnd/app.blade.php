@@ -14,5 +14,20 @@
         <br>
         <button type="submit">Upload</button>
     </form>
+
+    <p><br><p>
+// --------------------------- FOMU ZA HUDUMA  ---------------------------------------
+
+<form action="/myform" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="text" name="jina_la_fomu">
+        <br>
+        <input type="file" name="fomu_file">
+        <br>
+        <button type="submit">Upload</button>
+    </form>
+
+
+    // --------------------------- FOMU ZA HUDUMA  ---------------------------------------   
 </body>
 </html>
