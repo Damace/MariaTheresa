@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use OneSignal;
 
 class appController extends Controller
 {
@@ -46,9 +47,20 @@ class appController extends Controller
         $input_data = array('file_path' => $directory, 'jina' => $jina_la_form);
         //$input_data = array('path' => $directory);
         DB::table('fomu_za_huduma')->insert($input_data);
+
+        $fields['include_player_ids'] = ['9e22b8ae-dc11-48e3-8c00-b17379ce6e2e'];
+        //$fields['id'] = ['3656d49b-1eca-4b1a-b54f-d97ed9c410d2'];
+        $fields['contents'] = array(
+                          "en" => 'Alex Mwakalikamo',
+                          "es" => 'Alex Mwakalikamo', 
+                        );
+    
+        OneSignal::sendPush($fields);
+
         return redirect('/')->with('flash_message', 'Thank you for your donation');
 
     }
+    
 
 
     public function get_fomu(){
