@@ -1,7 +1,8 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:app/APIs/homepage/api_links.dart';
 import 'package:app/core/utils/size_utils.dart';
+import 'package:app/fx/fx.dart';
 import 'package:app/home_screen/home_screen_controller.dart';
-import 'package:app/jumuiya/jumuiya.dart';
 import 'package:app/kndegetv/tv.dart';
 import 'package:app/matangazo/matangazo.dart';
 import 'package:app/matukio/matukio.dart';
@@ -9,6 +10,7 @@ import 'package:app/notification/notification.dart';
 import 'package:app/profile_screen/profile.dart';
 import 'package:app/michango/michango_screen.dart';
 import 'package:app/theme/theme_helper.dart';
+import 'package:app/wageni/wageni_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,6 +25,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:getwidget/components/carousel/gf_carousel.dart';
 import 'package:marquee/marquee.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -392,21 +395,148 @@ class _HomeScreen extends State<HomeScreen> {
                 child: Container(
                   margin: EdgeInsets.only(bottom: 2.v),
                   child: Icon(
-                    FontAwesomeIcons.list,
+                    FontAwesomeIcons.sackDollar,
                     size: 23.fSize,
                   ),
                 ),
               ),
-              label: 'Wageni',
+              label: 'Michango',
               backgroundColor: Colors.white,
             ),
             BottomNavigationBarItem(
               icon: InkWell(
                 onTap: () {
-                  Get.to(Jumuiya(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
+                  var dropdownValue = "Select";
+                  showModalBottomSheet(
+                    isScrollControlled: true,
+                    context: context,
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadiusDirectional.only(
+                        topEnd: Radius.circular(25),
+                        topStart: Radius.circular(25),
+                      ),
+                    ),
+                    builder: (context) => SingleChildScrollView(
+                      padding: EdgeInsetsDirectional.only(
+                        bottom: 0,
+                        top: 8,
+                      ),
+                      child: Container(
+                        height: 650.v,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 10.v,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                      ),
+                                      color: appTheme.defaultcolor,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: appTheme.defaultcolor,
+                                          blurRadius: 3,
+                                        ),
+                                      ]),
+                                  child: Text("                              "),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 20.v, right: 8.h, left: 8.h),
+                              child: Container(
+                                height: 40.v,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color:
+                                        appTheme.defaultcolor.withOpacity(0.3),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 8.0),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        FontAwesomeIcons.peopleGroup,
+                                        size: 14.fSize,
+                                      ),
+                                      SizedBox(
+                                        width: 10.h,
+                                      ),
+                                      Text(
+                                        "Kwa matumizi ya jumuiya tu.",
+                                        style: TextStyle(
+                                            fontSize: 12.5.fSize,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GFSearchBar(
+                              searchList: list,
+                              searchQueryBuilder: (query, list) {
+                                return list
+                                    .where((item) => item
+                                        .toLowerCase()
+                                        .contains(query.toLowerCase()))
+                                    .toList();
+                              },
+                              overlaySearchListItemBuilder: (item) {
+                                return Container(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Text(
+                                    item,
+                                    style: TextStyle(fontSize: 14.fSize),
+                                  ),
+                                );
+                              },
+                              onItemSelected: (item) {
+                                setState(() {
+                                  //print('$item');
+
+                                  vsb = true;
+                                });
+                              },
+                            ),
+                            Container(
+                              color: appTheme.defaultcolor,
+                              height: 12.v,
+                              padding: const EdgeInsets.all(8),
+                            ),
+                            GFButton(
+                              textStyle: TextStyle(
+                                  fontSize: 11.5.fSize,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold),
+                              color: appTheme.defaultcolor.withOpacity(0.15),
+                              onPressed: () {
+                                Get.to(Wageni(),
+                                    duration: Duration(milliseconds: 500),
+                                    transition:
+                                        Transition.fadeIn //transition effect
+                                    );
+                              },
+                              text: "Log in",
+                              icon: Icon(
+                                FontAwesomeIcons.listUl,
+                                size: 18.fSize,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
                 },
                 child: Container(
                   margin: EdgeInsets.only(bottom: 2.v),
@@ -1319,137 +1449,86 @@ fomu_za_huduma(BuildContext context) {
             ),
             Container(
                 height: 120.v,
-                child: Card(
-                  elevation: 0,
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Card(
-                            elevation: 0,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 10, left: 4.h, right: 10.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 12.fSize,
+                child: Obx(
+                  () => formController.fomuList.isEmpty
+                      ? ListView.builder(
+                          // itemCount: _urls.length,
+                          itemCount: formController.fomuList.length,
+                          itemBuilder: (BuildContext context, index) {
+                            // String _fileName = 'File ${i + 1}';
+                            return Card(
+                              elevation: 0,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(height: 10),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Card(
+                                        elevation: 0,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 10, left: 4.h, right: 10.h),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Icon(
+                                                Icons.circle,
+                                                size: 12.fSize,
+                                              ),
+                                              SizedBox(width: 10.h),
+                                              Text(
+                                                "${formController.fomuList[index].jina}",
+                                                style: TextStyle(
+                                                  fontSize: 12.fSize,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 180.h,
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  formController
+                                                      .requestDownload(
+                                                          formController
+                                                              .fomuList[index]
+                                                              .filePath,
+                                                          formController
+                                                              .fomuList[index]
+                                                              .jina);
+                                                },
+                                                child: Icon(
+                                                  FontAwesomeIcons.download,
+                                                  color: appTheme.defaultcolor,
+                                                  size: 25.fSize,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Divider(),
+                                    ],
                                   ),
-                                  SizedBox(width: 10.h),
-                                  Text(
-                                    "Fomu ya Matangazo ya ndoa",
-                                    style: TextStyle(
-                                      fontSize: 12.fSize,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 160.h,
-                                  ),
-                                  Icon(
-                                    FontAwesomeIcons.download,
-                                    color: appTheme.defaultcolor,
-                                    size: 25.fSize,
-                                  ),
+                                  SizedBox(height: 10),
                                 ],
                               ),
-                            ),
-                          ),
-                          Divider(),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Card(
-                            elevation: 0,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 5.v, left: 4.h, right: 10.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 12.fSize,
-                                  ),
-                                  SizedBox(width: 10.h),
-                                  Text(
-                                    "Fomu ya Kutumia Ukumbi",
-                                    style: TextStyle(
-                                      fontSize: 12.fSize,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 175.h,
-                                  ),
-                                  Icon(
-                                    FontAwesomeIcons.download,
-                                    color: appTheme.defaultcolor,
-                                    size: 25.fSize,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Divider(),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Card(
-                            elevation: 0,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 5.v, left: 4.h, right: 10.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 12.fSize,
-                                  ),
-                                  SizedBox(width: 10.h),
-                                  Text(
-                                    "Fomu za Ubatizo",
-                                    style: TextStyle(
-                                      fontSize: 12.fSize,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 215.h,
-                                  ),
-                                  Icon(
-                                    FontAwesomeIcons.download,
-                                    color: appTheme.defaultcolor,
-                                    size: 25.fSize,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Divider(),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                    ],
-                  ),
-                ))
+                            );
+                          },
+                        )
+                      : BounceInUp(
+                          child: GFLoader(
+                              size: GFSize.SMALL,
+                              loaderstrokeWidth: 2,
+                              type: GFLoaderType.ios),
+                        ),
+                )),
           ],
         ),
       ),

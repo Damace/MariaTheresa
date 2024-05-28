@@ -2,10 +2,12 @@
 
 import 'package:app/core/utils/initial_bindings.dart';
 import 'package:app/core/utils/logger.dart';
+import 'package:app/firebase_options.dart';
 import 'package:app/notification/notification.dart';
 import 'package:app/routes/app_routes.dart';
 import 'package:app/theme/theme_helper.dart';
 import 'package:app/widgets/constants.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -16,6 +18,9 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await FlutterDownloader.initialize();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

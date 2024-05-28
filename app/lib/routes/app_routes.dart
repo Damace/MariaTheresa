@@ -1,5 +1,8 @@
 import 'package:app/home_screen/home_screen.dart';
 import 'package:app/kndege/kndege.dart';
+import 'package:app/notification/notification.dart';
+import 'package:app/otp_screen/OTP.dart';
+import 'package:app/otp_screen/phone_screen.dart';
 import 'package:app/splash_screen/binding/splash_binding.dart';
 import 'package:app/splash_screen/splash_screen.dart';
 import 'package:get/get.dart';
@@ -13,8 +16,23 @@ class AppRoutes {
   static const String tv = '/tv';
   static const String jumuiya = '/jumuiya';
   static const String profile = '/profile';
+  static const String otp = '/otp';
+  static const String notification = '/notification';
+  static const String phonenumber = '/phonenumber';
 
   static List<GetPage> pages = [
+    GetPage(
+      name: notification,
+      page: () => Notification_screen(),
+    ),
+    GetPage(
+      name: phonenumber,
+      page: () => PhoneNumber(),
+    ),
+    GetPage(
+      name: otp,
+      page: () => Otp(),
+    ),
     GetPage(
       name: profile,
       page: () => Home(),
