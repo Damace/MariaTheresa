@@ -1,5 +1,13 @@
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:ui';
+
 import 'package:app/APIs/jumuiya/api_links.dart';
 import 'package:app/APIs/jumuiya/mahudhulio_modal.dart';
+import 'package:app/home_screen/home_screen.dart';
+import 'package:app/jumuiya/jumuiya_home.dart';
+import 'package:app/routes/app_routes.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:app/APIs/jumuiya/mahudhulio_modal.dart';
@@ -17,6 +25,8 @@ class JumuiyaController extends GetxController {
     fetchratiba();
     super.onInit();
   }
+
+// *************************************************** API REQUESTING *********************************************************
 
   void fetchratiba() async {
     try {
@@ -47,56 +57,41 @@ class JumuiyaController extends GetxController {
     }
   }
 
-  // Future<void> insertData() async {
-  //   for (var item in _items) {
-  //     // print('Title: ${item.name}, Value: ${item.isChecked}');
-  //     try {
-  //       String uri = "http://192.168.0.103:8000/clients";
-  //       var res = await http.post(Uri.parse(uri), body: {
-  //         "category_entry": "Seller",
-  //         "title": '${item}',
-  //         "valuee": '${item.isChecked}'
-  //       });
+  // ***************************************************END OF  API REQUESTING *********************************************************
 
-  //       var rensponse = jsonDecode(res.body);
+// ********************************************************  DATA SUBMIT ***************************************************************
 
-  //       if (rensponse["status"] == true) {
-  //         Get.snackbar(
-  //           "Successfully",
-  //           "Account has been Updated Successfully",
-  //           snackPosition: SnackPosition.TOP,
-  //           backgroundColor: Color.fromARGB(255, 35, 135, 40),
-  //           colorText: Colors.white,
-  //           icon: const Icon(Icons.error, color: Colors.white),
-  //           shouldIconPulse: true,
-  //           barBlur: 20,
-  //         );
-  //       } else {
-  //         Get.snackbar(
-  //           "Not Inserted",
-  //           "Error",
-  //           snackPosition: SnackPosition.TOP,
-  //           backgroundColor: Colors.red,
-  //           colorText: Colors.white,
-  //           icon: const Icon(Icons.error, color: Colors.white),
-  //           shouldIconPulse: true,
-  //           barBlur: 20,
-  //         );
-  //       }
-  //     } catch (e) {
-  //       print(e);
-  //     }
-  //   }
+  // var items = <String>[].obs;
 
-  //   Get.snackbar(
-  //     "hhhhhhhhhhhhhh",
-  //     "Account has been Updated Successfully",
-  //     snackPosition: SnackPosition.TOP,
-  //     backgroundColor: Color.fromARGB(255, 35, 135, 40),
-  //     colorText: Colors.white,
-  //     icon: const Icon(Icons.error, color: Colors.white),
-  //     shouldIconPulse: true,
-  //     barBlur: 20,
-  //   );
-  // }
+  List<String> items = [];
+
+  void insertData() async {
+    items.forEach((element) async {
+      try {
+        String uri = "http://192.168.0.3:8000/mahudhurio";
+        var res = await http.post(Uri.parse(uri), body: {
+          "tarehe": "Seller",
+          "jumuiya": "Seller",
+          "mwanajumuiya": '${element}',
+          "mahudhurio": "true"
+        });
+      } catch (e) {
+        print(e);
+      }
+    });
+    Get.snackbar(
+      "Successfully",
+      "Account has been Updated Successfully",
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: Color.fromARGB(255, 35, 135, 40),
+      colorText: Colors.white,
+      icon: const Icon(Icons.error, color: Colors.white),
+      shouldIconPulse: true,
+      barBlur: 20,
+    );
+
+    // items.clear();
+
+    Get.offNamed(AppRoutes.jumuiya_home);
+  }
 }

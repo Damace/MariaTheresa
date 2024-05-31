@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:app/APIs/jumuiya/api_links.dart';
@@ -594,11 +595,26 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                                 mahudhurioController.mahudhurioList.length,
                             itemBuilder: (context, int index) {
                               return CheckboxListTile(
+                                shape: CircleBorder(),
                                 title: Text(mahudhurioController
                                     .mahudhurioList[index].mwanajumuiya),
                                 value: mahudhurioController
                                     .mahudhurioList[index].isChecked,
                                 onChanged: (bool? value) {
+                                  if (mahudhurioController.items.contains(
+                                      mahudhurioController.mahudhurioList[index]
+                                          .mwanajumuiya)) {
+                                    mahudhurioController.items.remove(
+                                        mahudhurioController
+                                            .mahudhurioList[index]
+                                            .mwanajumuiya);
+                                  } else {
+                                    mahudhurioController.items.add(
+                                        mahudhurioController
+                                            .mahudhurioList[index]
+                                            .mwanajumuiya);
+                                  }
+
                                   setState(() {
                                     mahudhurioController.mahudhurioList[index]
                                         .isChecked = value!;
@@ -623,7 +639,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // insertData();
+                    mahudhurioController.insertData();
                   },
                   style: ButtonStyle(
                     foregroundColor:

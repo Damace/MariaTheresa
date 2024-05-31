@@ -1,4 +1,5 @@
 import 'package:app/home_screen/home_screen.dart';
+import 'package:app/jumuiya/jumuiya_home.dart';
 import 'package:app/kndege/kndege.dart';
 import 'package:app/notification/notification.dart';
 import 'package:app/otp_screen/OTP.dart';
@@ -19,8 +20,13 @@ class AppRoutes {
   static const String otp = '/otp';
   static const String notification = '/notification';
   static const String phonenumber = '/phonenumber';
+  static const String jumuiya_home = '/jumuiya_home';
 
   static List<GetPage> pages = [
+    GetPage(
+      name: jumuiya_home,
+      page: () => Jumuiya_home(),
+    ),
     GetPage(
       name: notification,
       page: () => Notification_screen(),

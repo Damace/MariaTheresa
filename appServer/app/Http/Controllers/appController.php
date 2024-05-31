@@ -67,20 +67,12 @@ class appController extends Controller
         $mwanajumuiya = $request->input('mwanajumuiya');
         $mahudhurio = $request->input('mahudhurio');
 
-        $input_data = array('tarehe' => $tarehe, 'jumuiya' =>$jumuiya,'mwanajumuiya' => $mwanajumuiya, 'mahudhurio' => $mahudhurio);
-        $saved = DB::table('mahudhulio')->insert($input_data);
+        $input_data = array('tarehe' => $tarehe, 'jumuiya' =>$jumuiya,'mwanajumuiya' => $mwanajumuiya, 'isChecked' => $mahudhurio);
+        DB::table('mahudhulio')->insert($input_data);
 
-        if($saved)
-        {
-              return response()->json(['success' => true]);
+        return response()->json(['status' => true]);
 
-        }
-        else
-
-        {
-
-            return response()->json(['success' => false]);
-        }
+    
     }
 
     public function get_mahudhurio(){
@@ -98,11 +90,7 @@ class appController extends Controller
                 'mwanajumuiya' => $row -> mwanajumuiya,
                 'isChecked'   => false
                // 'isChecked'   => trim($row -> isChecked,"\r\n")
-
-
-                
-
-            );
+             );
 
               array_push($d,$p);
 
