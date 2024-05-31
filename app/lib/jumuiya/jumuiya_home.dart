@@ -1,16 +1,23 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'dart:convert';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:app/APIs/jumuiya/api_links.dart';
+import 'package:app/APIs/jumuiya/mahudhulio_modal.dart';
 import 'package:app/core/utils/size_utils.dart';
-import 'package:app/otp_screen/OTP.dart';
+import 'package:app/home_screen/home_screen_controller.dart';
+import 'package:app/jumuiya/jumuiya_controller.dart';
 import 'package:app/theme/theme_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
-import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:getwidget/components/loader/gf_loader.dart';
+import 'package:getwidget/size/gf_size.dart';
+import 'package:getwidget/types/gf_loader_type.dart';
+import 'package:http/http.dart' as http;
 
 class Jumuiya_home extends StatefulWidget {
   @override
@@ -20,6 +27,11 @@ class Jumuiya_home extends StatefulWidget {
 class _Jumuiya_home extends State<Jumuiya_home> {
   final formkey = GlobalKey<FormState>();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  JumuiyaController mahudhurioController = Get.put(JumuiyaController());
+
+  List<TextEditingController> _fullnameController = [];
+
+  late Future<List<Mahudhurio>> f;
 
   @override
   Widget build(BuildContext context) {
@@ -534,6 +546,10 @@ class _Jumuiya_home extends State<Jumuiya_home> {
   }
 
   mahudhulio(BuildContext context) {
+    JumuiyaController mahudhurioController = Get.put(JumuiyaController());
+
+    //HomeController ratibaController = Get.put(HomeController());
+
     return Padding(
       padding: EdgeInsets.only(top: 12.v, left: 10.h, right: 10.h),
       child: Container(
@@ -571,57 +587,32 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                           topLeft: Radius.circular(8),
                           topRight: Radius.circular(8))),
                   height: 460.v,
-                  child: ListView.builder(
-                      itemCount: 100,
-                      itemBuilder: (context, int index) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.person_outline_sharp,
-                                    size: 23.fSize,
-                                    color: appTheme.defaultcolor,
-                                  ),
-                                  Expanded(
-                                    child: FormBuilderTextField(
-                                      initialValue: 'Alex Mwakalikamo',
-                                      keyboardType: TextInputType.text,
-                                      readOnly: true,
-                                      name: 'name $index',
-                                      decoration: InputDecoration(
-                                        enabledBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.transparent),
-                                        ),
-                                        labelText: "",
-                                        labelStyle: TextStyle(
-                                            color: appTheme.defaultcolor,
-                                            fontSize: 12.fSize),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: 120.h,
-                            ),
-                            Expanded(
-                              child: FormBuilderCheckbox(
-                                name: 'mahudhulio$index',
-                                initialValue: false,
-                                title: Text(""),
-
-                                //validator:
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
+                  child: Obx(
+                    () => mahudhurioController.mahudhurioList.isNotEmpty
+                        ? ListView.builder(
+                            itemCount:
+                                mahudhurioController.mahudhurioList.length,
+                            itemBuilder: (context, int index) {
+                              return CheckboxListTile(
+                                title: Text(mahudhurioController
+                                    .mahudhurioList[index].mwanajumuiya),
+                                value: mahudhurioController
+                                    .mahudhurioList[index].isChecked,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    mahudhurioController.mahudhurioList[index]
+                                        .isChecked = value!;
+                                  });
+                                },
+                              );
+                            })
+                        : BounceInUp(
+                            child: GFLoader(
+                                size: GFSize.SMALL,
+                                loaderstrokeWidth: 2,
+                                type: GFLoaderType.ios),
+                          ),
+                  ),
                 ),
               ),
             ),
@@ -632,15 +623,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    _fbKey.currentState!.save();
-                    if (_fbKey.currentState!.validate()) {
-                      print(_fbKey.currentState!.value);
-                    }
-
-                    // Get.to(Register(),
-                    //     duration: Duration(milliseconds: 500),
-                    //     transition: Transition.fadeIn //transition effect
-                    //     );
+                    // insertData();
                   },
                   style: ButtonStyle(
                     foregroundColor:

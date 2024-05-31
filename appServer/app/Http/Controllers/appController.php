@@ -60,6 +60,57 @@ class appController extends Controller
         return redirect('/')->with('flash_message', 'Thank you for your donation');
 
     }
+
+    public function mahudhurio(Request $request){
+        $tarehe = $request->input('tarehe');
+        $jumuiya = $request->input('jumuiya');
+        $mwanajumuiya = $request->input('mwanajumuiya');
+        $mahudhurio = $request->input('mahudhurio');
+
+        $input_data = array('tarehe' => $tarehe, 'jumuiya' =>$jumuiya,'mwanajumuiya' => $mwanajumuiya, 'mahudhurio' => $mahudhurio);
+        $saved = DB::table('mahudhulio')->insert($input_data);
+
+        if($saved)
+        {
+              return response()->json(['success' => true]);
+
+        }
+        else
+
+        {
+
+            return response()->json(['success' => false]);
+        }
+    }
+
+    public function get_mahudhurio(){
+        // $users = DB::select('select * from users where active = ?', [1]);
+
+        $d = array();
+        $data = DB::select('select * from mahudhulio');
+
+        foreach($data as $row)
+        {
+            $p = array(
+                'id' => $row -> id,
+                'tarehe' => $row -> tarehe,
+                'jumuiya' => $row -> jumuiya,
+                'mwanajumuiya' => $row -> mwanajumuiya,
+                'isChecked'   => false
+               // 'isChecked'   => trim($row -> isChecked,"\r\n")
+
+
+                
+
+            );
+
+              array_push($d,$p);
+
+        }
+
+        return response()->json($d);
+
+   }
     
 
 

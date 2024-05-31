@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_import
 
+import 'package:app/APIs/homepage/api_links.dart';
+import 'package:app/APIs/jumuiya/api_links.dart';
 import 'package:app/routes/app_routes.dart';
 import 'package:app/splash_screen/models/splash_model.dart';
 import 'package:get/get.dart';
