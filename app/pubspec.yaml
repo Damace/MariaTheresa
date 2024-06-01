@@ -52,6 +52,7 @@ dependencies:
   flutter_form_builder: ^9.1.0
   form_builder_validators: ^9.1.0
   flutter_fast_forms: ^13.0.0
+  file_picker: ^8.0.3
 
 
 

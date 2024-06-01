@@ -6,13 +6,18 @@ import 'package:animate_do/animate_do.dart';
 import 'package:app/APIs/jumuiya/api_links.dart';
 import 'package:app/APIs/jumuiya/mahudhulio_modal.dart';
 import 'package:app/core/utils/size_utils.dart';
+import 'package:app/home_screen/home_screen.dart';
 import 'package:app/home_screen/home_screen_controller.dart';
+import 'package:app/jumuiya/jumuiya.dart';
 import 'package:app/jumuiya/jumuiya_controller.dart';
+import 'package:app/michango/michango_screen.dart';
+import 'package:app/profile_screen/profile.dart';
 import 'package:app/theme/theme_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
@@ -300,7 +305,11 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                             child: Column(
                               children: [
                                 InkWell(
+                                  onTap: () {
+                                    shukrani();
+                                  },
                                   child: Card(
+
                                       // color: appTheme.defaultcolor,
                                       shadowColor: Colors.grey,
                                       shape: RoundedRectangleBorder(
@@ -542,6 +551,170 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                     ],
                   )),
             ]),
+      ),
+    );
+  }
+
+  shukrani() {
+    HomeController ratibaController = Get.put(HomeController());
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8.v,
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(right: 8.h, left: 8.h),
+          child: Container(
+            height: 520.v,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 10.v,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          color: appTheme.defaultcolor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: appTheme.defaultcolor,
+                              blurRadius: 3,
+                            ),
+                          ]),
+                      child: Text("                              "),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16.v,
+                ),
+                Row(
+                  children: [
+                    Text("Sukrani"),
+                  ],
+                ),
+                FormBuilder(
+                  key: _fbKey,
+                  autovalidateMode: AutovalidateMode.always,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.15),
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            border: Border.all(color: appTheme.defaultcolor)),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                          child: FormBuilderTextField(
+                            keyboardType: TextInputType.visiblePassword,
+                            cursorColor: appTheme.defaultcolor,
+                            name: 'kiasi',
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.15)),
+                              ),
+                              labelText: "Kiasi Tsh",
+                              labelStyle: TextStyle(
+                                  color: appTheme.defaultcolor,
+                                  fontSize: 12.fSize),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.15),
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            border: Border.all(color: appTheme.defaultcolor)),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                          child: FormBuilderTextField(
+                            keyboardType: TextInputType.visiblePassword,
+                            cursorColor: appTheme.defaultcolor,
+                            name: 'kiasi',
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.black.withOpacity(0.15)),
+                              ),
+                              labelText: "Kiasi Tsh",
+                              labelStyle: TextStyle(
+                                  color: appTheme.defaultcolor,
+                                  fontSize: 12.fSize),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _fbKey.currentState!.save();
+                              if (_fbKey.currentState!.validate()) {
+                                print(_fbKey.currentState!.value);
+                              }
+
+                              // Get.to(Register(),
+                              //     duration: Duration(milliseconds: 500),
+                              //     transition: Transition.fadeIn //transition effect
+                              //     );
+                            },
+                            style: ButtonStyle(
+                              foregroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  appTheme.defaultcolor),
+                              shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.all(14.0),
+                              child: Text(
+                                'Submit',
+                                style: TextStyle(fontSize: 16.fSize),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
