@@ -1,15 +1,18 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, duplicate_import
 import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:app/APIs/jumuiya/api_links.dart';
 import 'package:app/APIs/jumuiya/mahudhulio_modal.dart';
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/home_screen/home_screen.dart';
 import 'package:app/home_screen/home_screen_controller.dart';
-import 'package:app/jumuiya/jumuiya.dart';
+import 'package:app/jumuiya/jumuiya_login.dart';
 import 'package:app/jumuiya/jumuiya_controller.dart';
+import 'package:app/jumuiya/jumuiya_sensa.dart';
+import 'package:app/jumuiya/jumuiya_taarifa_za_michango.dart';
+import 'package:app/jumuiya/sensa.dart';
+import 'package:app/jumuiya/wanajumuiya_wapya.dart';
 import 'package:app/michango/michango_screen.dart';
 import 'package:app/profile_screen/profile.dart';
 import 'package:app/theme/theme_helper.dart';
@@ -18,12 +21,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:getwidget/components/loader/gf_loader.dart';
 import 'package:getwidget/size/gf_size.dart';
 import 'package:getwidget/types/gf_loader_type.dart';
+import 'package:app/home_screen/home_screen.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Jumuiya_home extends StatefulWidget {
   @override
@@ -34,63 +40,132 @@ class _Jumuiya_home extends State<Jumuiya_home> {
   final formkey = GlobalKey<FormState>();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   JumuiyaController mahudhurioController = Get.put(JumuiyaController());
-
-  List<TextEditingController> _fullnameController = [];
+  
+    TextEditingController jumuiya = TextEditingController();
 
   late Future<List<Mahudhurio>> f;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: appTheme.defaultcolor,
-        foregroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Jumuiya ya Mt.Alberto",
-          style: TextStyle(
-            fontSize: 16.fSize,
-          ),
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
-          child: DefaultTabController(
-        length: 2,
-        child: Column(
-          children: [
-            Container(
-              child: TabBar(
-                padding: EdgeInsets.all(2),
-                indicatorColor: appTheme.defaultcolor,
-                tabAlignment: TabAlignment.center,
-                isScrollable: true,
-                labelColor: appTheme.defaultcolor,
-                labelStyle: TextStyle(
-                    fontWeight: FontWeight.normal, fontSize: 14.fSize),
-                unselectedLabelColor: Colors.black,
-                tabs: [
-                  Tab(
-                    //icon: Icon(Icons.sell_rounded),
-                    text: "Mt.Albeto Hutado",
-                  ),
-                  Tab(
-                    //icon: Icon(Icons.newspaper),
-                    text: "Mahudhulio kila Jumamosi",
-                  ),
-                ],
-              ),
+        appBar: AppBar(
+          backgroundColor: appTheme.defaultcolor,
+          foregroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          title: Text(
+            "Jumuiya ya Mt.Alberto",
+            style: TextStyle(
+              fontSize: 16.fSize,
             ),
-            Container(
-              height: 650.v,
-              child: TabBarView(
-                children: [menuOne(context), mahudhulio(context)],
-              ),
-            )
-          ],
+          ),
+          centerTitle: true,
         ),
-      )),
-    );
+        body: Container(
+            child: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              Container(
+                child: TabBar(
+                  padding: EdgeInsets.all(2),
+                  indicatorColor: appTheme.defaultcolor,
+                  tabAlignment: TabAlignment.center,
+                  isScrollable: true,
+                  labelColor: appTheme.defaultcolor,
+                  labelStyle: TextStyle(
+                      fontWeight: FontWeight.normal, fontSize: 12.fSize),
+                  unselectedLabelColor: Colors.black,
+                  tabs: [
+                    Tab(
+                      icon: Icon(Icons.church,
+                          size: 16, color: appTheme.defaultcolor),
+                      text: "Mt.Albeto Hutado",
+                    ),
+                    Tab(
+                      icon: Icon(Icons.people,
+                          size: 16, color: appTheme.defaultcolor),
+                      text: "Mahudhulio Jumiyani",
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 650.v,
+                child: TabBarView(
+                  children: [menuOne(context), mahudhulio(context)],
+                ),
+              )
+            ],
+          ),
+        )),
+        bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: true,
+          showSelectedLabels: true,
+          backgroundColor: Colors.white,
+          unselectedItemColor: appTheme.defaultcolor,
+          selectedItemColor: appTheme.defaultcolor,
+          selectedFontSize: 12.fSize,
+          unselectedFontSize: 12.fSize,
+          items: [
+            BottomNavigationBarItem(
+              icon: InkWell(
+                onTap: () {
+                  Get.to(HomeScreen(),
+                      duration: Duration(milliseconds: 500),
+                      transition: Transition.fadeIn //transition effect
+                      );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 2.v),
+                  child: Icon(
+                    FontAwesomeIcons.church,
+                    size: 23.fSize,
+                  ),
+                ),
+              ),
+              label: 'Home',
+              backgroundColor: Colors.white,
+            ),
+            BottomNavigationBarItem(
+              icon: InkWell(
+                onTap: () {
+                  Get.to(Taarifa_za_Michango(),
+                      duration: Duration(milliseconds: 500),
+                      transition: Transition.fadeIn //transition effect
+                      );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 2.v),
+                  child: Icon(
+                    FontAwesomeIcons.list,
+                    size: 23.fSize,
+                  ),
+                ),
+              ),
+              label: 'Taarifa za Michango',
+              backgroundColor: Colors.white,
+            ),
+            BottomNavigationBarItem(
+              icon: InkWell(
+                onTap: () {
+                  Get.to(Jumuiya_sensa(),
+                      duration: Duration(milliseconds: 500),
+                      transition: Transition.fadeIn //transition effect
+                      );
+                },
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 2.v),
+                  child: Icon(
+                    FontAwesomeIcons.peopleGroup,
+                    size: 23.fSize,
+                  ),
+                ),
+              ),
+              label: 'Sensa',
+              backgroundColor: Colors.white,
+            ),
+          ],
+        ));
   }
 
   menuOne(BuildContext context) {
@@ -114,7 +189,13 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                         child: Column(
                           children: [
                             InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(Wanajumuiya_wapya(),
+                                    duration: Duration(milliseconds: 500),
+                                    transition:
+                                        Transition.fadeIn //transition effect
+                                    );
+                              },
                               child: Card(
                                   // color: appTheme.defaultcolor,
                                   shadowColor: Colors.grey,
@@ -235,67 +316,6 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                             ) //Text("Taarifa za Kilimo"),
                             ),
                       ),
-                      SlideInRight(
-                        child: Padding(
-                            padding: EdgeInsets.only(left: 10, right: 10),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  child: Card(
-                                      // color: appTheme.defaultcolor,
-                                      shadowColor: Colors.grey,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                            topEnd: Radius.circular(15),
-                                            topStart: Radius.circular(15),
-                                            bottomEnd: Radius.circular(15),
-                                            bottomStart: Radius.circular(15),
-                                          ),
-
-                                          // --------------------------------------------------------------------------------------------------------------------------
-
-                                          side: BorderSide(
-                                              color: appTheme.defaultcolor)),
-                                      elevation: 10,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        child: Center(
-                                          child: Image(
-                                            image: const AssetImage(
-                                                "assets/images/agri.png"),
-                                            height: 50,
-                                            width: 50,
-                                            // fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        "Sensa",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize: 12.fSize,
-                                            color: appTheme.defaultcolor,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ) //Text("Taarifa za Kilimo"),
-                            ),
-                      ),
                       SlideInLeft(
                         child: Padding(
                             padding: EdgeInsets.only(
@@ -371,6 +391,9 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                             child: Column(
                               children: [
                                 InkWell(
+                                  onTap: () {
+                                    zaka();
+                                  },
                                   child: Card(
                                       // color: appTheme.defaultcolor,
                                       shadowColor: Colors.grey,
@@ -434,6 +457,9 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                             child: Column(
                               children: [
                                 InkWell(
+                                  onTap: () {
+                                    bahasha();
+                                  },
                                   child: Card(
                                       // color: appTheme.defaultcolor,
                                       shadowColor: Colors.grey,
@@ -495,6 +521,9 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                             child: Column(
                               children: [
                                 InkWell(
+                                  onTap: () {
+                                    michango_mingine();
+                                  },
                                   child: Card(
                                       // color: appTheme.defaultcolor,
                                       shadowColor: Colors.grey,
@@ -555,6 +584,23 @@ class _Jumuiya_home extends State<Jumuiya_home> {
     );
   }
 
+  taarifa_za_michango(BuildContext context) {
+    return Container(
+        child: Container(
+            child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          "Hakuna",
+          style: TextStyle(
+              color: appTheme.defaultcolor,
+              fontSize: 12.fSize,
+              fontWeight: FontWeight.bold),
+        ),
+      ],
+    )));
+  }
+
   shukrani() {
     HomeController ratibaController = Get.put(HomeController());
     showModalBottomSheet(
@@ -575,7 +621,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
         child: Padding(
           padding: EdgeInsets.only(right: 8.h, left: 8.h),
           child: Container(
-            height: 520.v,
+            height: 580.v,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -604,113 +650,773 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                 SizedBox(
                   height: 16.v,
                 ),
-                Row(
-                  children: [
-                    Text("Sukrani"),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: appTheme.defaultcolor.withOpacity(0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Sukrani",
+                            style: TextStyle(
+                                color: appTheme.defaultcolor,
+                                fontSize: 12.fSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 FormBuilder(
                   key: _fbKey,
-                  autovalidateMode: AutovalidateMode.always,
+                  //  autovalidateMode: AutovalidateMode.always,
                   child: Column(
                     children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.15),
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(color: appTheme.defaultcolor)),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 8.h, right: 8.h),
-                          child: FormBuilderTextField(
-                            keyboardType: TextInputType.visiblePassword,
-                            cursorColor: appTheme.defaultcolor,
-                            name: 'kiasi',
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.black.withOpacity(0.15)),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: appTheme.defaultcolor)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                            child: FormBuilderTextField(
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.numeric()
+                              ]),
+                              keyboardType: TextInputType.number,
+                              cursorColor: appTheme.defaultcolor,
+                              name: 'fedha',
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.15)),
+                                ),
+                                labelText: "Kiasi cha Fedha",
+                                labelStyle: TextStyle(
+                                    color: appTheme.defaultcolor,
+                                    fontSize: 12.fSize),
                               ),
-                              labelText: "Kiasi Tsh",
-                              labelStyle: TextStyle(
-                                  color: appTheme.defaultcolor,
-                                  fontSize: 12.fSize),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15.h,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.15),
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(color: appTheme.defaultcolor)),
-                        child: Padding(
-                          padding: EdgeInsets.only(left: 8.h, right: 8.h),
-                          child: FormBuilderTextField(
-                            keyboardType: TextInputType.visiblePassword,
-                            cursorColor: appTheme.defaultcolor,
-                            name: 'kiasi',
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.black.withOpacity(0.15)),
-                              ),
-                              labelText: "Kiasi Tsh",
-                              labelStyle: TextStyle(
-                                  color: appTheme.defaultcolor,
-                                  fontSize: 12.fSize),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20.h,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              _fbKey.currentState!.save();
-                              if (_fbKey.currentState!.validate()) {
-                                print(_fbKey.currentState!.value);
-                              }
-
-                              // Get.to(Register(),
-                              //     duration: Duration(milliseconds: 500),
-                              //     transition: Transition.fadeIn //transition effect
-                              //     );
-                            },
-                            style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  appTheme.defaultcolor),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: appTheme.defaultcolor)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                            child: FormBuilderTextField(
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                              ]),
+                              keyboardType: TextInputType.visiblePassword,
+                              cursorColor: appTheme.defaultcolor,
+                              name: 'maelezo',
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.15)),
                                 ),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.all(14.0),
-                              child: Text(
-                                'Submit',
-                                style: TextStyle(fontSize: 16.fSize),
+                                labelText: "Maelezo",
+                                labelStyle: TextStyle(
+                                    color: appTheme.defaultcolor,
+                                    fontSize: 12.fSize),
                               ),
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_fbKey.currentState!.validate()) {
+                          Get.snackbar(
+                            "Successfully",
+                            "Account has been Updated Successfully",
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Color.fromARGB(255, 35, 135, 40),
+                            colorText: Colors.white,
+                            icon: const Icon(Icons.error, color: Colors.white),
+                            shouldIconPulse: true,
+                            barBlur: 20,
+                          );
+                        }
+
+                        // _fbKey.currentState!.save();
+                        // if (_fbKey.currentState!.validate()) {
+                        //   print(_fbKey.currentState!.value);
+                        // }
+
+                        // Get.to(Register(),
+                        //     duration: Duration(milliseconds: 500),
+                        //     transition: Transition.fadeIn //transition effect
+                        //     );
+                      },
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            appTheme.defaultcolor),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(14.0),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(fontSize: 16.fSize),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  zaka() {
+    HomeController ratibaController = Get.put(HomeController());
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8.v,
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(right: 8.h, left: 8.h),
+          child: Container(
+            height: 580.v,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 10.v,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          color: appTheme.defaultcolor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: appTheme.defaultcolor,
+                              blurRadius: 3,
+                            ),
+                          ]),
+                      child: Text("                              "),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16.v,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: appTheme.defaultcolor.withOpacity(0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Zaka",
+                            style: TextStyle(
+                                color: appTheme.defaultcolor,
+                                fontSize: 12.fSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                FormBuilder(
+                  key: _fbKey,
+                  //  autovalidateMode: AutovalidateMode.always,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: appTheme.defaultcolor)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                            child: FormBuilderTextField(
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.numeric()
+                              ]),
+                              keyboardType: TextInputType.number,
+                              cursorColor: appTheme.defaultcolor,
+                              name: 'fedha',
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.15)),
+                                ),
+                                labelText: "Kiasi cha Fedha",
+                                labelStyle: TextStyle(
+                                    color: appTheme.defaultcolor,
+                                    fontSize: 12.fSize),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: appTheme.defaultcolor)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                            child: FormBuilderTextField(
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                              ]),
+                              keyboardType: TextInputType.visiblePassword,
+                              cursorColor: appTheme.defaultcolor,
+                              name: 'maelezo',
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.15)),
+                                ),
+                                labelText: "Maelezo",
+                                labelStyle: TextStyle(
+                                    color: appTheme.defaultcolor,
+                                    fontSize: 12.fSize),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_fbKey.currentState!.validate()) {
+                          Get.snackbar(
+                            "Successfully",
+                            "Account has been Updated Successfully",
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Color.fromARGB(255, 35, 135, 40),
+                            colorText: Colors.white,
+                            icon: const Icon(Icons.error, color: Colors.white),
+                            shouldIconPulse: true,
+                            barBlur: 20,
+                          );
+                        }
+
+                        // _fbKey.currentState!.save();
+                        // if (_fbKey.currentState!.validate()) {
+                        //   print(_fbKey.currentState!.value);
+                        // }
+
+                        // Get.to(Register(),
+                        //     duration: Duration(milliseconds: 500),
+                        //     transition: Transition.fadeIn //transition effect
+                        //     );
+                      },
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            appTheme.defaultcolor),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(14.0),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(fontSize: 16.fSize),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  bahasha() {
+    HomeController ratibaController = Get.put(HomeController());
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8.v,
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(right: 8.h, left: 8.h),
+          child: Container(
+            height: 580.v,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 10.v,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          color: appTheme.defaultcolor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: appTheme.defaultcolor,
+                              blurRadius: 3,
+                            ),
+                          ]),
+                      child: Text("                              "),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16.v,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: appTheme.defaultcolor.withOpacity(0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Bahasha",
+                            style: TextStyle(
+                                color: appTheme.defaultcolor,
+                                fontSize: 12.fSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                FormBuilder(
+                  key: _fbKey,
+                  //  autovalidateMode: AutovalidateMode.always,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: appTheme.defaultcolor)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                            child: FormBuilderTextField(
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.numeric()
+                              ]),
+                              keyboardType: TextInputType.number,
+                              cursorColor: appTheme.defaultcolor,
+                              name: 'fedha',
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.15)),
+                                ),
+                                labelText: "Kiasi cha Fedha",
+                                labelStyle: TextStyle(
+                                    color: appTheme.defaultcolor,
+                                    fontSize: 12.fSize),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: appTheme.defaultcolor)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                            child: FormBuilderTextField(
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                              ]),
+                              keyboardType: TextInputType.visiblePassword,
+                              cursorColor: appTheme.defaultcolor,
+                              name: 'maelezo',
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.15)),
+                                ),
+                                labelText: "Maelezo",
+                                labelStyle: TextStyle(
+                                    color: appTheme.defaultcolor,
+                                    fontSize: 12.fSize),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_fbKey.currentState!.validate()) {
+                          Get.snackbar(
+                            "Successfully",
+                            "Account has been Updated Successfully",
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Color.fromARGB(255, 35, 135, 40),
+                            colorText: Colors.white,
+                            icon: const Icon(Icons.error, color: Colors.white),
+                            shouldIconPulse: true,
+                            barBlur: 20,
+                          );
+                        }
+
+                        // _fbKey.currentState!.save();
+                        // if (_fbKey.currentState!.validate()) {
+                        //   print(_fbKey.currentState!.value);
+                        // }
+
+                        // Get.to(Register(),
+                        //     duration: Duration(milliseconds: 500),
+                        //     transition: Transition.fadeIn //transition effect
+                        //     );
+                      },
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            appTheme.defaultcolor),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(14.0),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(fontSize: 16.fSize),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  michango_mingine() {
+    HomeController ratibaController = Get.put(HomeController());
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8.v,
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(right: 8.h, left: 8.h),
+          child: Container(
+            height: 580.v,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 10.v,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          color: appTheme.defaultcolor,
+                          boxShadow: [
+                            BoxShadow(
+                              color: appTheme.defaultcolor,
+                              blurRadius: 3,
+                            ),
+                          ]),
+                      child: Text("                              "),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16.v,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: appTheme.defaultcolor.withOpacity(0.2),
+                        borderRadius: BorderRadius.all(Radius.circular(8))),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Michango Mingine",
+                            style: TextStyle(
+                                color: appTheme.defaultcolor,
+                                fontSize: 12.fSize,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                FormBuilder(
+                  key: _fbKey,
+                  //  autovalidateMode: AutovalidateMode.always,
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: appTheme.defaultcolor)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                            child: FormBuilderTextField(
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                                FormBuilderValidators.numeric()
+                              ]),
+                              keyboardType: TextInputType.number,
+                              cursorColor: appTheme.defaultcolor,
+                              name: 'fedha',
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.15)),
+                                ),
+                                labelText: "Kiasi cha Fedha",
+                                labelStyle: TextStyle(
+                                    color: appTheme.defaultcolor,
+                                    fontSize: 12.fSize),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.15),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                              border: Border.all(color: appTheme.defaultcolor)),
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 8.h, right: 8.h),
+                            child: FormBuilderTextField(
+                              validator: FormBuilderValidators.compose([
+                                FormBuilderValidators.required(),
+                              ]),
+                              keyboardType: TextInputType.visiblePassword,
+                              cursorColor: appTheme.defaultcolor,
+                              name: 'maelezo',
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.black.withOpacity(0.15)),
+                                ),
+                                labelText: "Maelezo",
+                                labelStyle: TextStyle(
+                                    color: appTheme.defaultcolor,
+                                    fontSize: 12.fSize),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_fbKey.currentState!.validate()) {
+                          Get.snackbar(
+                            "Successfully",
+                            "Account has been Updated Successfully",
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: Color.fromARGB(255, 35, 135, 40),
+                            colorText: Colors.white,
+                            icon: const Icon(Icons.error, color: Colors.white),
+                            shouldIconPulse: true,
+                            barBlur: 20,
+                          );
+                        }
+
+                        // _fbKey.currentState!.save();
+                        // if (_fbKey.currentState!.validate()) {
+                        //   print(_fbKey.currentState!.value);
+                        // }
+
+                        // Get.to(Register(),
+                        //     duration: Duration(milliseconds: 500),
+                        //     transition: Transition.fadeIn //transition effect
+                        //     );
+                      },
+                      style: ButtonStyle(
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            appTheme.defaultcolor),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(14.0),
+                        child: Text(
+                          'Submit',
+                          style: TextStyle(fontSize: 16.fSize),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -721,6 +1427,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
 
   mahudhulio(BuildContext context) {
     JumuiyaController mahudhurioController = Get.put(JumuiyaController());
+  
 
     //HomeController ratibaController = Get.put(HomeController());
 
@@ -734,74 +1441,85 @@ class _Jumuiya_home extends State<Jumuiya_home> {
               decoration: BoxDecoration(
                   color: appTheme.defaultcolor.withOpacity(0.35),
                   borderRadius: BorderRadius.circular(8)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Mahudhulio ya Jumamosi ya Tarehe 5 / 8 /2024",
-                        style: TextStyle(
-                            fontSize: 13.fSize, fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                ],
+              child: FormBuilder(
+                key: _fbKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 5.h,
+                        ),
+                        Icon(
+                          Icons.info,
+                          color: appTheme.defaultcolor,
+                        ),
+                        SizedBox(
+                          width: 5.h,
+                        ),
+                        Text(
+                          "Mahudhulio ya Jumamosi",
+                          style: TextStyle(
+                              fontSize: 13.fSize, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(
+                          width: 10.h,
+                        ),
+                    
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(top: 8.0),
-              child: FormBuilder(
-                key: _fbKey,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.2),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(8),
-                          topRight: Radius.circular(8))),
-                  height: 460.v,
-                  child: Obx(
-                    () => mahudhurioController.mahudhurioList.isNotEmpty
-                        ? ListView.builder(
-                            itemCount:
-                                mahudhurioController.mahudhurioList.length,
-                            itemBuilder: (context, int index) {
-                              return CheckboxListTile(
-                                shape: CircleBorder(),
-                                title: Text(mahudhurioController
-                                    .mahudhurioList[index].mwanajumuiya),
-                                value: mahudhurioController
-                                    .mahudhurioList[index].isChecked,
-                                onChanged: (bool? value) {
-                                  if (mahudhurioController.items.contains(
-                                      mahudhurioController.mahudhurioList[index]
-                                          .mwanajumuiya)) {
-                                    mahudhurioController.items.remove(
-                                        mahudhurioController
-                                            .mahudhurioList[index]
-                                            .mwanajumuiya);
-                                  } else {
-                                    mahudhurioController.items.add(
-                                        mahudhurioController
-                                            .mahudhurioList[index]
-                                            .mwanajumuiya);
-                                  }
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.2),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8))),
+                height: 460.v,
+                child: Obx(
+                  () => mahudhurioController.mahudhurioList.isNotEmpty
+                      ? ListView.builder(
+                          itemCount: mahudhurioController.mahudhurioList.length,
+                          itemBuilder: (context, int index) {
+                            return CheckboxListTile(
+                              shape: CircleBorder(),
+                              title: Text(mahudhurioController
+                                  .mahudhurioList[index].mwanajumuiya),
+                              value: mahudhurioController
+                                  .mahudhurioList[index].isChecked,
+                              onChanged: (bool? value) {
+                                if (mahudhurioController.items.contains(
+                                    mahudhurioController
+                                        .mahudhurioList[index].mwanajumuiya)) {
+                                  mahudhurioController.items.remove(
+                                      mahudhurioController
+                                          .mahudhurioList[index].mwanajumuiya);
+                                } else {
+                                  mahudhurioController.items.add(
+                                      mahudhurioController
+                                          .mahudhurioList[index].mwanajumuiya);
+                                }
 
-                                  setState(() {
-                                    mahudhurioController.mahudhurioList[index]
-                                        .isChecked = value!;
-                                  });
-                                },
-                              );
-                            })
-                        : BounceInUp(
-                            child: GFLoader(
-                                size: GFSize.SMALL,
-                                loaderstrokeWidth: 2,
-                                type: GFLoaderType.ios),
-                          ),
-                  ),
+                                setState(() {
+                                  mahudhurioController
+                                      .mahudhurioList[index].isChecked = value!;
+                                });
+                              },
+                            );
+                          })
+                      : BounceInUp(
+                          child: GFLoader(
+                              size: GFSize.SMALL,
+                              loaderstrokeWidth: 2,
+                              type: GFLoaderType.ios),
+                        ),
                 ),
               ),
             ),

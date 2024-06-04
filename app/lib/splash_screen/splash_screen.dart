@@ -22,13 +22,15 @@ class SplashScreen extends GetWidget<SplashController> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    child: FadeIn(
-                      child: Image(
-                        image: AssetImage("assets/images/jesuit.png"),
-                        fit: BoxFit.contain,
-                        width: 200.h,
-                        height: 200.v,
+                  BounceInDown(
+                    child: Container(
+                      width: 180.h,
+                      height: 180.v,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        'assets/images/logo.png',
                       ),
                     ),
                   ),

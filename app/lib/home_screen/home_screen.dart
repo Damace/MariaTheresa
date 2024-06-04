@@ -1,7 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/home_screen/home_screen_controller.dart';
-import 'package:app/jumuiya/jumuiya.dart';
+import 'package:app/jumuiya/jumuiya_login.dart';
 import 'package:app/kndegetv/tv.dart';
 import 'package:app/matangazo/matangazo.dart';
 import 'package:app/matukio/matukio.dart';
@@ -9,6 +9,7 @@ import 'package:app/notification/notification.dart';
 import 'package:app/profile_screen/profile.dart';
 import 'package:app/michango/michango_screen.dart';
 import 'package:app/theme/theme_helper.dart';
+import 'package:app/wageni/wageni_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -353,6 +354,8 @@ class _HomeScreen extends State<HomeScreen> {
             ),
           ),
         ),
+
+        
         bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: true,
           showSelectedLabels: true,
@@ -384,7 +387,7 @@ class _HomeScreen extends State<HomeScreen> {
             BottomNavigationBarItem(
               icon: InkWell(
                 onTap: () {
-                  Get.to(Michango(),
+                  Get.to(Wageni(),
                       duration: Duration(milliseconds: 500),
                       transition: Transition.fadeIn //transition effect
                       );

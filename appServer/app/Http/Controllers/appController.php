@@ -15,13 +15,7 @@ class appController extends Controller
 {
     //
 
-    public function index(): View
-    {
-        // $doners = Donation::All();
-        // return view('FrontEnd.donate')->with('student', $doners);       
-     return view('FrontEnd.app');
-    }
-
+    
     public function topbanner(Request $request){
 
         $file = $request->file('myImage');
@@ -35,7 +29,6 @@ class appController extends Controller
         return redirect('/')->with('flash_message', 'Thank you for your donation');
 
     }
-
 
     public function fomu_za_huduma(Request $request){
         $jina_la_form = $request->input('jina_la_fomu');
@@ -60,6 +53,28 @@ class appController extends Controller
         return redirect('/')->with('flash_message', 'Thank you for your donation');
 
     }
+    public function jumuiya_login(Request $request){
+
+             $jumuiya = $request->input('jumuiya');
+             $jumuiya_password = $request->input('jumuiya_password');
+             
+             $data = DB::select("select * from jumuiya where jina = '$jumuiya' and password = '$jumuiya_password'");
+             $data2 = count($data);
+
+             if($data2 > 0 ){
+                 return response()->json(['status' => true]);
+                }
+             else{
+                 return response()->json(['status' => false]);
+             }
+             
+      
+    
+    }
+
+
+
+
 
     public function mahudhurio(Request $request){
         $tarehe = $request->input('tarehe');

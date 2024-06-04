@@ -1,5 +1,6 @@
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/home_screen/home_screen.dart';
+import 'package:app/jumuiya/jumuiya_login.dart';
 import 'package:app/kndegetv/tv.dart';
 import 'package:app/michango/michango_screen.dart';
 import 'package:app/profile_screen/profile.dart';
@@ -23,7 +24,7 @@ class _Wageni extends State<Wageni> {
     return Scaffold(
         body: Container(
           child: Center(
-            child: Text("Jumuiya"),
+            child: Text("Wageni"),
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -57,7 +58,7 @@ class _Wageni extends State<Wageni> {
             BottomNavigationBarItem(
               icon: InkWell(
                 onTap: () {
-                  Get.to(Michango(),
+                  Get.to(Wageni(),
                       duration: Duration(milliseconds: 500),
                       transition: Transition.fadeIn //transition effect
                       );
@@ -65,18 +66,18 @@ class _Wageni extends State<Wageni> {
                 child: Container(
                   margin: EdgeInsets.only(bottom: 2.v),
                   child: Icon(
-                    FontAwesomeIcons.sackDollar,
+                    FontAwesomeIcons.list,
                     size: 23.fSize,
                   ),
                 ),
               ),
-              label: 'Michango',
+              label: 'Wageni',
               backgroundColor: Colors.white,
             ),
             BottomNavigationBarItem(
               icon: InkWell(
                 onTap: () {
-                  Get.to(Wageni(),
+                  Get.to(Jumuiya(),
                       duration: Duration(milliseconds: 500),
                       transition: Transition.fadeIn //transition effect
                       );

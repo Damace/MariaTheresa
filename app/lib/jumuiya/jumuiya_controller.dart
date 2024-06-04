@@ -57,20 +57,16 @@ class JumuiyaController extends GetxController {
     }
   }
 
-  // ***************************************************END OF  API REQUESTING *********************************************************
-
-// ********************************************************  DATA SUBMIT ***************************************************************
-
-  // var items = <String>[].obs;
-
   List<String> items = [];
+
+  DateTime getDate = DateTime.now();
 
   void insertData() async {
     items.forEach((element) async {
       try {
         String uri = "http://192.168.0.3:8000/mahudhurio";
         var res = await http.post(Uri.parse(uri), body: {
-          "tarehe": "Seller",
+          "tarehe": '${getDate.day}${getDate.month}${getDate.year}',
           "jumuiya": "Seller",
           "mwanajumuiya": '${element}',
           "mahudhurio": "true"
