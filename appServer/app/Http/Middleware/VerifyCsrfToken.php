@@ -13,6 +13,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
        '/mahudhurio',
-       '/jumuiya_login'   //
+       '/jumuiya_login',
+       '/maoni'
+         //
     ];
 }

@@ -30,29 +30,7 @@ class appController extends Controller
 
     }
 
-    public function fomu_za_huduma(Request $request){
-        $jina_la_form = $request->input('jina_la_fomu');
-        $file = $request->file('fomu_file');
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $path = $file->storeAs('uploads', $filename, 'public');
-        $url = $request->root();
-        $directory =$url.'/storage/'. $path;
-        $input_data = array('file_path' => $directory, 'jina' => $jina_la_form);
-        //$input_data = array('path' => $directory);
-        DB::table('fomu_za_huduma')->insert($input_data);
 
-        $fields['include_player_ids'] = ['9e22b8ae-dc11-48e3-8c00-b17379ce6e2e'];
-        //$fields['id'] = ['3656d49b-1eca-4b1a-b54f-d97ed9c410d2'];
-        $fields['contents'] = array(
-                          "en" => 'Alex Mwakalikamo',
-                          "es" => 'Alex Mwakalikamo', 
-                        );
-    
-        OneSignal::sendPush($fields);
-
-        return redirect('/')->with('flash_message', 'Thank you for your donation');
-
-    }
     public function jumuiya_login(Request $request){
 
              $jumuiya = $request->input('jumuiya');
@@ -89,6 +67,45 @@ class appController extends Controller
 
     
     }
+
+
+
+    public function maoni(Request $request){
+        $namba_ya_simu = $request->input('namba_ya_simu');
+        $majina_kamili = $request->input('majina_kamili');
+        $contents = $request->input('contents');
+
+        $input_data = array('namba_ya_simu' => $namba_ya_simu,'majina_kamili' =>$majina_kamili,'contents' => $contents);
+        DB::table('maoni')->insert($input_data);
+
+        return response()->json(['status' => true]);
+
+    
+    }
+
+
+    public function fom_download($file_name){
+
+      $file = public_path('storage/uploads/'.$file_name);
+   
+      return response()->download($file);
+
+    }
+
+
+
+
+   
+
+
+
+
+
+
+
+
+    
+    
 
     public function get_mahudhurio(){
         // $users = DB::select('select * from users where active = ?', [1]);

@@ -64,23 +64,10 @@
                     <p class="text-center small">Enter your username & password to login</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate action="/login" method="POST">
-
-
-
-
-                 
-
-
-
-
-
-
-
-
-
+                  <form class="row g-3 needs-validation" novalidate action="{{ url('login') }}" method="POST">
                   @csrf
                   @method('post')
+
 
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Username</label>

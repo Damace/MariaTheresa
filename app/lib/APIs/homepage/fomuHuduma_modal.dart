@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-List<Fomu> fomuFromJson(String str) =>
+List<Fomu>fomuFromJson(String str) =>
     List<Fomu>.from(json.decode(str).map((x) => Fomu.fromJson(x)));
 
 String fomuToJson(List<Fomu> data) =>

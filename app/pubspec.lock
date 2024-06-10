@@ -217,6 +217,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.10"
+  dio:
+    dependency: "direct main"
+    description:
+      name: dio
+      sha256: "11e40df547d418cc0c4900a9318b26304e665da6fa4755399a9ff9efd09034b5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.4.3+1"
+  dropdown_search:
+    dependency: "direct main"
+    description:
+      name: dropdown_search
+      sha256: "55106e8290acaa97ed15bea1fdad82c3cf0c248dd410e651f5a8ac6870f783ab"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.6"
   fading_edge_scrollview:
     dependency: transitive
     description:
@@ -374,6 +390,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "13.0.0"
+  flutter_file_downloader:
+    dependency: "direct main"
+    description:
+      name: flutter_file_downloader
+      sha256: e36f1a23937c83b96003ecc48f3227acbd468a1ff26be87959cecd057222632a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.1"
   flutter_form_builder:
     dependency: "direct main"
     description:
@@ -382,6 +406,62 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.2.1"
+  flutter_inappwebview:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview
+      sha256: "3e9a443a18ecef966fb930c3a76ca5ab6a7aafc0c7b5e14a4a850cf107b09959"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.0.0"
+  flutter_inappwebview_android:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_android
+      sha256: d247f6ed417f1f8c364612fa05a2ecba7f775c8d0c044c1d3b9ee33a6515c421
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.13"
+  flutter_inappwebview_internal_annotations:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_internal_annotations
+      sha256: "5f80fd30e208ddded7dbbcd0d569e7995f9f63d45ea3f548d8dd4c0b473fb4c8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.1"
+  flutter_inappwebview_ios:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_ios
+      sha256: f363577208b97b10b319cd0c428555cd8493e88b468019a8c5635a0e4312bd0f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.13"
+  flutter_inappwebview_macos:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_macos
+      sha256: b55b9e506c549ce88e26580351d2c71d54f4825901666bd6cfa4be9415bb2636
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.11"
+  flutter_inappwebview_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_platform_interface
+      sha256: "545fd4c25a07d2775f7d5af05a979b2cac4fbf79393b0a7f5d33ba39ba4f6187"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.10"
+  flutter_inappwebview_web:
+    dependency: transitive
+    description:
+      name: flutter_inappwebview_web
+      sha256: d8c680abfb6fec71609a700199635d38a744df0febd5544c5a020bd73de8ee07
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.8"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -893,6 +973,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  searchfield:
+    dependency: "direct main"
+    description:
+      name: searchfield
+      sha256: b6cd3b685e931542d87a83765df6fb1885e1bca22668bfe3a159e43e009aa98c
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -1250,6 +1338,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.5.0"
+  youtube_player_flutter:
+    dependency: "direct main"
+    description:
+      name: youtube_player_flutter
+      sha256: "899f1fd15e924eb41150c78c5e2adfd7310100c26b2e1996c148d79e42737d72"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.1"
 sdks:
   dart: ">=3.3.4 <4.0.0"
   flutter: ">=3.19.0"

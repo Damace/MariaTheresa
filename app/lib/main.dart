@@ -1,8 +1,11 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
+import 'package:app/connectivity/connectivityController.dart';
 import 'package:app/core/utils/initial_bindings.dart';
 import 'package:app/core/utils/logger.dart';
 import 'package:app/firebase_options.dart';
+import 'package:app/home_screen/home_screen_controller.dart';
+import 'package:app/jumuiya/jumuiya_controller.dart';
 import 'package:app/notification/notification.dart';
 import 'package:app/routes/app_routes.dart';
 import 'package:app/theme/theme_helper.dart';
@@ -21,6 +24,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  Get.put(ConnectivityController());
   await FlutterDownloader.initialize();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unused_import
 
 import 'package:animate_do/animate_do.dart';
 import 'package:app/core/utils/size_utils.dart';

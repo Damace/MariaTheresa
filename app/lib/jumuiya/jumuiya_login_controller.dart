@@ -31,47 +31,47 @@ class Jumuiya_login_Controller extends GetxController {
   void register() async {
     Get.toNamed(AppRoutes.jumuiya_home);
 
-    // String _jumuiya = jumuiya.text;
-    // String _jumuiya_password = jumuiya_password.text;
+    String _jumuiya = jumuiya.text;
+    String _jumuiya_password = jumuiya_password.text;
 
-    // String url = "http://192.168.0.3:8000/jumuiya_login";
+    String url = "http://192.168.0.3:8000/jumuiya_login";
 
-    // var response = await http.post(Uri.parse(url), body: {
-    //   "jumuiya": "$_jumuiya",
-    //   "jumuiya_password": "$_jumuiya_password",
-    // });
+    var response = await http.post(Uri.parse(url), body: {
+      "jumuiya": "$_jumuiya",
+      "jumuiya_password": "$_jumuiya_password",
+    });
 
-    // var rensponse = jsonDecode(response.body);
+    var rensponse = jsonDecode(response.body);
 
-    // if (rensponse["status"] == true) {
-    //   Get.snackbar(
-    //     "Welcome",
-    //     "",
-    //     snackPosition: SnackPosition.BOTTOM,
-    //     backgroundColor: Color.fromARGB(255, 35, 135, 40),
-    //     colorText: Colors.white,
-    //     icon: const Icon(Icons.church, color: Colors.white),
-    //     shouldIconPulse: true,
-    //     barBlur: 20,
-    //   );
+    if (rensponse["status"] == true) {
+      Get.snackbar(
+        "Welcome",
+        "",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Color.fromARGB(255, 35, 135, 40),
+        colorText: Colors.white,
+        icon: const Icon(Icons.church, color: Colors.white),
+        shouldIconPulse: true,
+        barBlur: 20,
+      );
 
-    //   jumuiya.clear();
-    //   jumuiya_password.clear();
-    //   Get.toNamed(AppRoutes.jumuiya_home);
-    // } else {
-    //   Get.snackbar(
-    //     "Wrong Password or Username",
-    //     "Try again",
-    //     snackPosition: SnackPosition.BOTTOM,
-    //     backgroundColor: Colors.red,
-    //     colorText: Colors.white,
-    //     icon: const Icon(Icons.church, color: Colors.white),
-    //     shouldIconPulse: true,
-    //     barBlur: 20,
-    //   );
+      jumuiya.clear();
+      jumuiya_password.clear();
+      Get.toNamed(AppRoutes.jumuiya_home);
+    } else {
+      Get.snackbar(
+        "Wrong Password or Username",
+        "Try again",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        icon: const Icon(Icons.church, color: Colors.white),
+        shouldIconPulse: true,
+        barBlur: 20,
+      );
 
-    //   jumuiya.clear();
-    //   jumuiya_password.clear();
-    // }
+      jumuiya.clear();
+      jumuiya_password.clear();
+    }
   }
 }

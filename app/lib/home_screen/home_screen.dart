@@ -3,19 +3,21 @@ import 'package:app/core/utils/size_utils.dart';
 import 'package:app/home_screen/home_screen_controller.dart';
 import 'package:app/jumuiya/jumuiya_login.dart';
 import 'package:app/kndegetv/tv.dart';
+import 'package:app/maoni/maoni.dart';
 import 'package:app/matangazo/matangazo.dart';
 import 'package:app/matukio/matukio.dart';
 import 'package:app/notification/notification.dart';
 import 'package:app/profile_screen/profile.dart';
-import 'package:app/michango/michango_screen.dart';
 import 'package:app/theme/theme_helper.dart';
 import 'package:app/wageni/wageni_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_file_downloader/flutter_file_downloader.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -31,6 +33,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreen extends State<HomeScreen> {
+  HomeController connections = Get.put(HomeController());
+
   final formkey = GlobalKey<FormState>();
 
   late String dropdown;
@@ -43,13 +47,6 @@ class _HomeScreen extends State<HomeScreen> {
     "http://192.168.0.3:8000/storage/uploads/1716302966_altare.jpg"
   ];
 
-  List list = [
-    "Flutter",
-    "React",
-    "Ionic",
-    "Xamarin",
-  ];
-
   bool vsb = false;
 
   Future<void> _refreshData() async {
@@ -59,7 +56,6 @@ class _HomeScreen extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // backgroundColor: const Color.fromARGB(255, 99, 32, 32).withOpacity(0.93),
         backgroundColor: Colors.white.withOpacity(0.93),
         body: RefreshIndicator(
           backgroundColor: Colors.white,
@@ -102,6 +98,30 @@ class _HomeScreen extends State<HomeScreen> {
                     ),
                     SizedBox(
                       height: 75.v,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        FileDownloader.downloadFile(
+                            url:
+                                "http://192.168.0.3:8000/fom_download/1717777070_myCart Proposal.pdf"
+                                    .trim(),
+                            onProgress: (name, double progress) {
+                              setState(() {
+                                progress = progress;
+                              });
+                            },
+                            onDownloadCompleted: (value) {
+                              print('path  $value ');
+                              setState(() {
+                                // progress = null;
+                              });
+                            });
+                      },
+                      child: Icon(
+                        FontAwesomeIcons.download,
+                        color: appTheme.defaultcolor,
+                        size: 25.fSize,
+                      ),
                     ),
                     contents(context)
                   ],
@@ -207,7 +227,10 @@ class _HomeScreen extends State<HomeScreen> {
                         shape: BoxShape.circle),
                     child: InkWell(
                       onTap: () {
-                        maoni(context);
+                        Get.to(Maoni(),
+                            duration: Duration(milliseconds: 500),
+                            transition: Transition.fadeIn //transition effect
+                            );
                       },
                       child: Icon(
                         Icons.mail,
@@ -269,19 +292,18 @@ class _HomeScreen extends State<HomeScreen> {
                                 child: Row(
                               children: [
                                 Icon(Icons.tv, size: 23.fSize),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text("Kndege TV"),
-                                )
-                              ],
-                            )),
-                            PopupMenuItem(
-                                child: Row(
-                              children: [
-                                Icon(Icons.mail_outlined, size: 23.fSize),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text("Toa Maoni"),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(Tv(),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition
+                                            .fadeIn //transition effect
+                                        );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Text("Kndege TV"),
+                                  ),
                                 )
                               ],
                             )),
@@ -295,16 +317,6 @@ class _HomeScreen extends State<HomeScreen> {
                                 )
                               ],
                             )),
-                            PopupMenuItem(
-                                child: Row(
-                              children: [
-                                Icon(Icons.church_outlined, size: 23.fSize),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text("Historia ya Parokia"),
-                                )
-                              ],
-                            ))
                           ],
                         ))),
                 Positioned(
@@ -354,8 +366,6 @@ class _HomeScreen extends State<HomeScreen> {
             ),
           ),
         ),
-
-        
         bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: true,
           showSelectedLabels: true,
@@ -442,13 +452,7 @@ class _HomeScreen extends State<HomeScreen> {
               backgroundColor: Colors.white,
             ),
           ],
-        )
-        
-        
-        
-        
-        
-        );
+        ));
   }
 
   contents(BuildContext context) {
@@ -1278,295 +1282,137 @@ class _HomeScreen extends State<HomeScreen> {
           ])),
     );
   }
-}
 
-// jumuiya(BuildContext context) {}
-
-fomu_za_huduma(BuildContext context) {
-  HomeController formController = Get.put(HomeController());
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadiusDirectional.only(
-        topEnd: Radius.circular(25),
-        topStart: Radius.circular(25),
-      ),
-    ),
-    builder: (context) => SingleChildScrollView(
-      padding: EdgeInsetsDirectional.only(
-        bottom: 0,
-        top: 8,
-      ),
-      child: Container(
-        height: 300.h,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: 10.v,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      color: appTheme.defaultcolor,
-                      boxShadow: [
-                        BoxShadow(
-                          color: appTheme.defaultcolor,
-                          blurRadius: 3,
-                        ),
-                      ]),
-                  child: Text("                              "),
-                ),
-              ],
-            ),
-            Container(
-                height: 120.v,
-                child: Card(
-                  elevation: 0,
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Card(
-                            elevation: 0,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 10, left: 4.h, right: 10.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 12.fSize,
-                                  ),
-                                  SizedBox(width: 10.h),
-                                  Text(
-                                    "Fomu ya Matangazo ya ndoa",
-                                    style: TextStyle(
-                                      fontSize: 12.fSize,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 160.h,
-                                  ),
-                                  Icon(
-                                    FontAwesomeIcons.download,
-                                    color: appTheme.defaultcolor,
-                                    size: 25.fSize,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Divider(),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Card(
-                            elevation: 0,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 5.v, left: 4.h, right: 10.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 12.fSize,
-                                  ),
-                                  SizedBox(width: 10.h),
-                                  Text(
-                                    "Fomu ya Kutumia Ukumbi",
-                                    style: TextStyle(
-                                      fontSize: 12.fSize,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 175.h,
-                                  ),
-                                  Icon(
-                                    FontAwesomeIcons.download,
-                                    color: appTheme.defaultcolor,
-                                    size: 25.fSize,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Divider(),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Card(
-                            elevation: 0,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: 5.v, left: 4.h, right: 10.h),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 12.fSize,
-                                  ),
-                                  SizedBox(width: 10.h),
-                                  Text(
-                                    "Fomu za Ubatizo",
-                                    style: TextStyle(
-                                      fontSize: 12.fSize,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 215.h,
-                                  ),
-                                  Icon(
-                                    FontAwesomeIcons.download,
-                                    color: appTheme.defaultcolor,
-                                    size: 25.fSize,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Divider(),
-                        ],
-                      ),
-                      SizedBox(height: 5),
-                    ],
-                  ),
-                ))
-          ],
+  fomu_za_huduma(BuildContext context) {
+    HomeController formController = Get.put(HomeController());
+    showModalBottomSheet(
+      isDismissible: true,
+      enableDrag: false,
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
         ),
       ),
-    ),
-  );
-}
-
-maoni(BuildContext context) {
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadiusDirectional.only(
-        topEnd: Radius.circular(25),
-        topStart: Radius.circular(25),
-      ),
-    ),
-    builder: (context) => SingleChildScrollView(
-      padding: EdgeInsetsDirectional.only(
-        bottom: 0,
-        top: 8,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8,
+        ),
+        child: Container(
+          height: 300.h,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                height: 10.v,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                    color: appTheme.defaultcolor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: appTheme.defaultcolor,
-                        blurRadius: 3,
-                      ),
-                    ]),
-                child: Text("                              "),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 100.v,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.15),
-                  borderRadius: BorderRadius.all(Radius.circular(8))),
-              child: Column(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Maoni yako ni muhimu sana kwa Maendeleo ya Parokia yetu.",
-                    style: TextStyle(
-                        fontSize: 12.fSize, fontWeight: FontWeight.w500),
-                  ),
-                  GFButton(
-                    textStyle: TextStyle(
-                        fontSize: 11.5.fSize,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                    color: appTheme.defaultcolor.withOpacity(0.15),
-                    onPressed: () {
-                      // ratiba(context);
-                    },
-                    text: "Karibu utuandikie",
-                    icon: Icon(
-                      FontAwesomeIcons.edit,
-                      size: 18.fSize,
-                    ),
+                  Container(
+                    height: 10.v,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        color: appTheme.defaultcolor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: appTheme.defaultcolor,
+                            blurRadius: 3,
+                          ),
+                        ]),
+                    child: Text("                              "),
                   ),
                 ],
               ),
-            ),
-          )
-        ],
+              SizedBox(
+                height: 10,
+              ),
+              Obx(
+                () => formController.ratibaList.isNotEmpty
+                    ? Expanded(
+                        child: ListView.builder(
+                          //shrinkWrap: true,
+                          itemCount: formController.fomuList.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                                leading: const Icon(
+                                  FontAwesomeIcons.filePdf,
+                                  color: Colors.red,
+                                  size: 16,
+                                ),
+                                trailing: formController.progress != null
+                                    ? CircularProgressIndicator()
+                                    : InkWell(
+                                        onTap: () {
+                                          FileDownloader.downloadFile(
+                                              url: formController
+                                                  .fomuList[index].filePath
+                                                  .trim(),
+                                              onProgress: (name, progress) {
+                                                setState(() {
+                                                  formController.progress =
+                                                      progress;
+                                                });
+                                              },
+                                              onDownloadCompleted: (value) {
+                                                print('path  $value ');
+                                                setState(() {
+                                                  formController.progress =
+                                                      null;
+                                                });
+                                              });
+                                        },
+                                        child: Icon(
+                                          FontAwesomeIcons.download,
+                                          color: appTheme.defaultcolor,
+                                          size: 25.fSize,
+                                        ),
+                                      ),
+                                title: Text(
+                                  formController.fomuList[index].jina,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 16.fSize,
+                                      color: appTheme.defaultcolor),
+                                ));
+                          },
+                        ),
+                      )
+                    : BounceInUp(
+                        child: GFLoader(
+                            size: GFSize.SMALL,
+                            loaderstrokeWidth: 2,
+                            type: GFLoaderType.ios),
+                      ),
+              )
+            ],
+          ),
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-ratiba(BuildContext context) {
-  HomeController ratibaController = Get.put(HomeController());
-  showModalBottomSheet(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadiusDirectional.only(
-        topEnd: Radius.circular(25),
-        topStart: Radius.circular(25),
+  maoni(BuildContext context) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
       ),
-    ),
-    builder: (context) => SingleChildScrollView(
-      padding: EdgeInsetsDirectional.only(
-        bottom: 0,
-        top: 8.v,
-      ),
-      child: Container(
-        height: 340.v,
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -1592,302 +1438,388 @@ ratiba(BuildContext context) {
                 ),
               ],
             ),
-            Card(
-              elevation: 0,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 40.v,
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        FontAwesomeIcons.church,
-                        size: 16.fSize,
+                height: 100.v,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.blue.withOpacity(0.15),
+                    borderRadius: BorderRadius.all(Radius.circular(8))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Maoni yako ni muhimu sana kwa Maendeleo ya Parokia yetu.",
+                      style: TextStyle(
+                          fontSize: 12.fSize, fontWeight: FontWeight.w500),
+                    ),
+                    GFButton(
+                      textStyle: TextStyle(
+                          fontSize: 11.5.fSize,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                      color: appTheme.defaultcolor.withOpacity(0.15),
+                      onPressed: () {},
+                      text: "Karibu utuandikie",
+                      icon: Icon(
+                        FontAwesomeIcons.edit,
+                        size: 18.fSize,
                       ),
-                      SizedBox(
-                        width: 15.h,
-                      ),
-                      Text(
-                        "Ratiba za Ibada",
-                        style: TextStyle(
-                          fontSize: 12.fSize,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black.withOpacity(0.5),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  ratiba(BuildContext context) {
+    HomeController ratibaController = Get.put(HomeController());
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8.v,
+        ),
+        child: Container(
+          height: 340.v,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 10.v,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
                         ),
-                      ),
-                    ],
+                        color: appTheme.defaultcolor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: appTheme.defaultcolor,
+                            blurRadius: 3,
+                          ),
+                        ]),
+                    child: Text("                              "),
+                  ),
+                ],
+              ),
+              Card(
+                elevation: 0,
+                child: Container(
+                  height: 40.v,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.church,
+                          size: 16.fSize,
+                        ),
+                        SizedBox(
+                          width: 15.h,
+                        ),
+                        Text(
+                          "Ratiba za Ibada",
+                          style: TextStyle(
+                            fontSize: 12.fSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Divider(
-              color: Colors.black.withOpacity(0.06),
-            ),
-            Container(
-                width: double.infinity,
-                height: 150.v,
-                child: Obx(
-                  () => ratibaController.ratibaList.isEmpty
-                      ? DefaultTabController(
-                          length: 2,
-                          child: Column(
-                            children: [
-                              Container(
-                                child: TabBar(
-                                  padding: EdgeInsets.zero,
-                                  indicatorColor: appTheme.defaultcolor,
-                                  tabAlignment: TabAlignment.start,
-                                  isScrollable: true,
-                                  labelColor: appTheme.defaultcolor,
-                                  labelStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                  unselectedLabelColor: Colors.black,
-                                  tabs: [
-                                    FadeInLeft(
-                                      child: Tab(
-                                        text: "Jumapili",
-                                      ),
+              Divider(
+                color: Colors.black.withOpacity(0.06),
+              ),
+              Container(
+                  width: double.infinity,
+                  height: 150.v,
+                  child: Obx(
+                    () => ratibaController.ratibaList.isNotEmpty
+                        ? DefaultTabController(
+                            length: 2,
+                            child: Column(
+                              children: [
+                                Container(
+                                  child: TabBar(
+                                    padding: EdgeInsets.zero,
+                                    indicatorColor: appTheme.defaultcolor,
+                                    tabAlignment: TabAlignment.start,
+                                    isScrollable: true,
+                                    labelColor: appTheme.defaultcolor,
+                                    labelStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
                                     ),
-                                    FadeInRight(
-                                      child: Tab(
-                                        text: "Siku za Juma",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 180.v,
-                                child: SlideInUp(
-                                  child: TabBarView(
-                                    children: [
-                                      Container(
-                                        height: 180.v,
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 15.h,
-                                                  top: 15.v,
-                                                  right: 120.h),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Ibada ya Kwanza",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  Text(
-                                                    "12:00 - 12:50  Asubuhi",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 15.h,
-                                                  top: 15.v,
-                                                  right: 120.h),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Ibada ya Pili",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  Text(
-                                                    "1:00 - 2:50  Asubuhi",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 15.h,
-                                                  top: 15.v,
-                                                  right: 120.h),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Ibada ya  Tatu",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  Text(
-                                                    "3:00 - 4:40  Asubuhi",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 15.h,
-                                                  top: 15.v,
-                                                  right: 120.h),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Ibada ya Nne ( Watoto )",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  Text(
-                                                    "5:00 - 6.00  Mchana ",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
+                                    unselectedLabelColor: Colors.black,
+                                    tabs: [
+                                      FadeInLeft(
+                                        child: Tab(
+                                          text: "Jumapili",
                                         ),
                                       ),
-                                      Container(
-                                        height: 180.v,
-                                        child: Column(
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 15.h,
-                                                  top: 15.v,
-                                                  right: 100.h),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Ibada za Hasubuhi",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  Text(
-                                                    "12:30- 1:00  Asubuhi",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 15.h,
-                                                  top: 15.v,
-                                                  right: 100.h),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Alhamis ( Kuabudu Ekarist)",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  Text(
-                                                    "11:00 - 12:30  Jioni",
-                                                    style: TextStyle(
-                                                        fontSize: 12.fSize,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                      FadeInRight(
+                                        child: Tab(
+                                          text: "Siku za Juma",
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              )
-                            ],
+                                Container(
+                                  height: 180.v,
+                                  child: SlideInUp(
+                                    child: TabBarView(
+                                      children: [
+                                        Container(
+                                          height: 180.v,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 15.h,
+                                                    top: 15.v,
+                                                    right: 120.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Ibada ya Kwanza",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Text(
+                                                      "12:00 - 12:50  Asubuhi",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 15.h,
+                                                    top: 15.v,
+                                                    right: 120.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Ibada ya Pili",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Text(
+                                                      "1:00 - 2:50  Asubuhi",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 15.h,
+                                                    top: 15.v,
+                                                    right: 120.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Ibada ya  Tatu",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Text(
+                                                      "3:00 - 4:40  Asubuhi",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 15.h,
+                                                    top: 15.v,
+                                                    right: 120.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Ibada ya Nne ( Watoto )",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Text(
+                                                      "5:00 - 6.00  Mchana ",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 180.v,
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 15.h,
+                                                    top: 15.v,
+                                                    right: 100.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Ibada za Hasubuhi",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Text(
+                                                      "12:30- 1:00  Asubuhi",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: 15.h,
+                                                    top: 15.v,
+                                                    right: 100.h),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      "Alhamis ( Kuabudu Ekarist)",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    Text(
+                                                      "11:00 - 12:30  Jioni",
+                                                      style: TextStyle(
+                                                          fontSize: 12.fSize,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        : BounceInUp(
+                            child: GFLoader(
+                                size: GFSize.SMALL,
+                                loaderstrokeWidth: 2,
+                                type: GFLoaderType.ios),
                           ),
-                        )
-                      : BounceInUp(
-                          child: GFLoader(
-                              size: GFSize.SMALL,
-                              loaderstrokeWidth: 2,
-                              type: GFLoaderType.ios),
-                        ),
-                )
-                
-                )
-          ],
+                  ))
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-Widget buildImage(String imageUrl, String service, context) {
-  return Container(
-    height: 12.v, // Set padding to 0
-    child: ClipRRect(
-      borderRadius:
-          BorderRadius.all(Radius.circular(0)), // Set border radius to 0
-      child: Card(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadiusDirectional.only(
-              topEnd: Radius.circular(15),
-              topStart: Radius.circular(15),
-              bottomEnd: Radius.circular(15),
-              bottomStart: Radius.circular(15),
-            ),
+  Widget buildImage(String imageUrl, String service, context) {
+    return Container(
+      height: 12.v, // Set padding to 0
+      child: ClipRRect(
+        borderRadius:
+            BorderRadius.all(Radius.circular(0)), // Set border radius to 0
+        child: Card(
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusDirectional.only(
+                topEnd: Radius.circular(15),
+                topStart: Radius.circular(15),
+                bottomEnd: Radius.circular(15),
+                bottomStart: Radius.circular(15),
+              ),
 
-            // --------------------------------------------------------------------------------------------------------------------------
+              // --------------------------------------------------------------------------------------------------------------------------
 
-            side: BorderSide(color: appTheme.defaultcolor)),
-        elevation: 8,
-        child: Container(
-            height: 10.v,
-            width: 350.h,
-            child: Image(image: AssetImage(imageUrl), fit: BoxFit.cover)),
+              side: BorderSide(color: appTheme.defaultcolor)),
+          elevation: 8,
+          child: Container(
+              height: 10.v,
+              width: 350.h,
+              child: Image(image: AssetImage(imageUrl), fit: BoxFit.cover)),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }
+
+// jumuiya(BuildContext context) {}
+
+

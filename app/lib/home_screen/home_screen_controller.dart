@@ -1,9 +1,13 @@
+// ignore_for_file: unused_import
+
 import 'dart:io';
 import 'package:app/APIs/homepage/api_links.dart';
 import 'package:app/APIs/homepage/fomuHuduma_modal.dart';
 import 'package:app/APIs/homepage/ratibaIbada_modal.dart';
 import 'package:app/notification/notification.dart';
 import 'package:app/widgets/constants.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -15,22 +19,76 @@ class HomeController extends GetxController {
   var ratibaList = <Ratiba>[].obs;
   var fomuList = <Fomu>[].obs;
   var isLoading = true.obs;
+  var isConnected = false.obs;
 
   @override
   void onInit() {
+    GetRatiba();
+    Get_fomu_za_huduma();
     fetchratiba();
     fetchfomu();
-//    configOneSignel();
     super.onInit();
+
+    if (Platform.isAndroid) {
+      platform = TargetPlatform.android;
+    } else {
+      platform = TargetPlatform.iOS;
+    }
   }
 
-  // void configOneSignel() {
-  //   OneSignal.initialize(KappId);
+//************************************* */
 
-  //   OneSignal.Notifications.addClickListener((event) {
-  //     Get.to(Notification_screen());
-  //   });
-  // }
+ double? progress;
+
+
+
+
+
+
+late String localPath;
+late bool permissionReady;
+late TargetPlatform? platform;
+
+
+ Future<bool> checkPermission() async {
+    if (platform == TargetPlatform.android) {
+      final status = await Permission.storage.status;
+      if (status != PermissionStatus.granted) {
+        final result = await Permission.storage.request();
+        if (result == PermissionStatus.granted) {
+          return true;
+        }
+      } else {
+        return true;
+      }
+    } else {
+      return true;
+    }
+    return false;
+  }
+
+  Future<void> prepareSaveDir() async {
+    localPath = (await _findLocalPath())!;
+
+    print(localPath);
+    final savedDir = Directory(localPath);
+    bool hasExisted = await savedDir.exists();
+    if (!hasExisted) {
+      savedDir.create();
+    }
+  }
+
+  Future<String?> _findLocalPath() async {
+    if (platform == TargetPlatform.android) {
+      return "/sdcard/download/";
+    } else {
+      var directory = await getApplicationDocumentsDirectory();
+      return directory.path + Platform.pathSeparator + 'Download';
+    }
+  }
+
+
+
 
   Future<void> requestDownload(String _url, String _name) async {
     final status = await Permission.storage.request();
@@ -39,13 +97,13 @@ class HomeController extends GetxController {
       final dir =
           await getApplicationDocumentsDirectory(); //From path_provider package
 
-      var _localPath = dir.path + _name;
-      final savedDir = Directory(_localPath);
+      var localPath = dir.path + _name;
+      final savedDir = Directory(localPath);
       await savedDir.create(recursive: true).then((value) async {
         String? _taskid = await FlutterDownloader.enqueue(
           url: _url,
           fileName: _name,
-          savedDir: _localPath,
+          savedDir: localPath,
           showNotification: true,
           openFileFromNotification: true,
         );

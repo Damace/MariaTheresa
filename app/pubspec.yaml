@@ -53,6 +53,11 @@ dependencies:
   form_builder_validators: ^9.1.0
   flutter_fast_forms: ^13.0.0
   file_picker: ^8.0.3
+  searchfield: ^1.0.5
+  dropdown_search: ^5.0.2
+  dio: ^5.4.3+1
+  youtube_player_flutter: ^9.0.1
+  flutter_file_downloader: ^1.2.1
 
 
 
