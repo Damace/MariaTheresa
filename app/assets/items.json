@@ -1,0 +1,74 @@
+[
+    {
+        "categoryid": "1",
+        "name": "Mahindi",
+        "image": "assets/images/shy.jpeg",
+        "price": "30,000"
+    },
+    {
+        "categoryid": "2",
+        "name": "Mpunga",
+        "image": "assets/images/palachichi.jpeg",
+        "price": "60,000"
+    },
+    {
+        "categoryid": "3",
+        "name": "Ufuta",
+        "image": "assets/images/shy.jpeg",
+        "price": "60,000"
+    },
+    {
+        "categoryid": "4",
+        "name": "Alizati",
+        "image": "assets/images/palachichi.jpeg",
+        "price": "20,000"
+    },
+    {
+        "categoryid": "1",
+        "name": "Mahindi",
+        "image": "assets/images/shy.jpeg",
+        "price": "30,000"
+    },
+    {
+        "categoryid": "2",
+        "name": "Mpunga",
+        "image": "assets/images/palachichi.jpeg",
+        "price": "60,000"
+    },
+    {
+        "categoryid": "3",
+        "name": "Ufuta",
+        "image": "assets/images/shy.jpeg",
+        "price": "60,000"
+    },
+    {
+        "categoryid": "4",
+        "name": "Alizati",
+        "image": "assets/images/palachichi.jpeg",
+        "price": "20,000"
+    },
+    {
+        "categoryid": "1",
+        "name": "Mahindi",
+        "image": "assets/images/shy.jpeg",
+        "price": "30,000"
+    },
+    {
+        "categoryid": "2",
+        "name": "Mpunga",
+        "image": "assets/images/palachichi.jpeg",
+        "price": "60,000"
+    },
+    {
+        "categoryid": "3",
+        "name": "Ufuta",
+        "image": "assets/images/shy.jpeg",
+        "price": "60,000"
+    },
+    {
+        "categoryid": "4",
+        "name": "Alizati",
+        "image": "assets/images/palachichi.jpeg",
+        "price": "20,000"
+    }
+]

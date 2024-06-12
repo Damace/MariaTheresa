@@ -1,36 +1,33 @@
 // ignore_for_file: unused_import
 
+import 'dart:async';
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:http/http.dart' as http;
 
 class ConnectivityController extends GetxController {
-  var connectionType = "".obs;
-
-  final Connectivity connectivity = Connectivity();
-
   @override
   void onInit() {
     super.onInit();
-    getConnectionStatus();
+    hasNetwork();
   }
 
-  Future<void> getConnectionStatus() async {
-    var connectivityResults;
-
+  Future<bool> hasNetwork() async {
     try {
-      connectivityResults = await connectivity.checkConnectivity();
-      getConnectionType(connectivityResults);
-    } catch (e) {
-      Get.snackbar("error", "error durinng checking");
+      final result = await http.get(Uri.parse('http://www.google.com'));
+      if (result.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
     }
   }
-
-  void getConnectionType(connectivityResults) {
-    if (connectivityResults == ConnectivityResult.wifi) {
-    } else if (connectivityResults == ConnectivityResult.mobile) {
-    } else {}
-  }
 }
+

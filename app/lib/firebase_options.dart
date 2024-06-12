@@ -65,4 +65,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'mariatheresa-6dd12.appspot.com',
     iosBundleId: 'com.example.app',
   );
+
 }

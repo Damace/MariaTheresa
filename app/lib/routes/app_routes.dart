@@ -3,6 +3,8 @@ import 'package:app/jumuiya/jumuiya_home.dart';
 import 'package:app/kndege/kndege.dart';
 import 'package:app/notification/notification.dart';
 import 'package:app/otp_screen/OTP.dart';
+import 'package:app/otp_screen/form_otp_screen.dart';
+import 'package:app/otp_screen/otp_screen.dart';
 import 'package:app/otp_screen/phone_screen.dart';
 import 'package:app/splash_screen/binding/splash_binding.dart';
 import 'package:app/splash_screen/splash_screen.dart';
@@ -21,8 +23,18 @@ class AppRoutes {
   static const String notification = '/notification';
   static const String phonenumber = '/phonenumber';
   static const String jumuiya_home = '/jumuiya_home';
+  static const String otp_screen = '/jumuiya_home';
+  static const String form_otp_screen = '/form_otp_screen';
 
   static List<GetPage> pages = [
+    GetPage(
+      name: form_otp_screen,
+      page: () => FormOtpScreen(),
+    ),
+    GetPage(
+      name: otp_screen,
+      page: () => Otp_screen(),
+    ),
     GetPage(
       name: jumuiya_home,
       page: () => Jumuiya_home(),
