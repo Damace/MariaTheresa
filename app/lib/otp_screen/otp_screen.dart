@@ -40,7 +40,7 @@ class _Otp_screen extends State<Otp_screen> {
       canPop: false,
       onPopInvoked: (bool didPop) {
         if (kDebugMode) {
-          print("$didPop");
+         // print("$didPop");
         }
       },
       child: Container(
@@ -108,7 +108,7 @@ class _Otp_screen extends State<Otp_screen> {
                                 fontWeight: FontWeight.w500),
                           ),
 
-                          SizedBox(height: 10.v),
+                          SizedBox(height: 20.v),
                           Text(
                             "Enter mobile number",
                             style: TextStyle(
@@ -132,6 +132,7 @@ class _Otp_screen extends State<Otp_screen> {
                                     cursorColor: appTheme.defaultcolor,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
+                                      prefixText: "+255",
                                       prefixIcon:
                                           Icon(Icons.phone_android_rounded),
                                     ),
@@ -141,7 +142,7 @@ class _Otp_screen extends State<Otp_screen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 50.v),
+                          SizedBox(height: 32.v),
 
                           Container(
                             height: 60.v,
@@ -266,8 +267,8 @@ class _Otp_screen extends State<Otp_screen> {
     if (phoneNumber == null || phoneNumber.trim().isEmpty) {
       return 'This field is required';
     }
-    if (phoneNumber.trim().length == 15) {
-      return 'Phone number must be 14 characters in length';
+    if (phoneNumber.trim().length == 9) {
+      return 'Phone number must be 9 characters in length Should not start with 0';
     }
     return null;
   }

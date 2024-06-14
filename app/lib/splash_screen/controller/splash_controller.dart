@@ -32,12 +32,12 @@ class SplashController extends GetxController {
     if (onboarding == "true") {
       Future.delayed(const Duration(milliseconds: 4000), () {
         // Get.offNamed(AppRoutes.homescreen);
-        Get.offNamed(AppRoutes.otp_screen);
+        Get.offNamed(AppRoutes.form_otp_screen);
       });
     } else {
       Future.delayed(const Duration(milliseconds: 4000), () {
         // Get.offNamed(AppRoutes.homescreen);
-        Get.offNamed(AppRoutes.otp_screen);
+        Get.offNamed(AppRoutes.form_otp_screen);
       });
     }
   }
