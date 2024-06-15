@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, sort_child_properties_last
 
 import 'package:app/core/utils/size_utils.dart';
-import 'package:app/jumuiya/jumuiya_login.dart';
 import 'package:app/theme/theme_helper.dart';
 import 'package:app/usajiri/usajili_controler.dart';
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
@@ -22,16 +22,13 @@ class Usajiri extends StatefulWidget {
 class _Usajiri extends State<Usajiri> {
   UsajiriController usajiliController = Get.put(UsajiriController());
 
-  List data = [];
-
-  int _value = 1;
+  bool obscurePassword = true;
 
   @override
   void initState() {
     super.initState();
 
     fetchdata();
-    //usajiliController.fetchJumuiya();
   }
 
   void _handleRadioValueChange(String? value) {
@@ -44,12 +41,10 @@ class _Usajiri extends State<Usajiri> {
     final response = await http.get(
         Uri.parse('https://app.parokiayakiwanjachandege.or.tz/jumuiya_all'));
 
-    data = jsonDecode(response.body);
+    usajiliController.data = jsonDecode(response.body);
 
     if (mounted) {
-      setState(() {
-        // print(_value);
-      });
+      setState(() {});
     }
   }
 
@@ -96,7 +91,7 @@ class _Usajiri extends State<Usajiri> {
                 padding: EdgeInsets.only(top: 10.v),
                 child: FormBuilder(
                   key: usajiliController.formkey,
-                  autovalidateMode: AutovalidateMode.always,
+                  // autovalidateMode: AutovalidateMode.always,
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -104,6 +99,9 @@ class _Usajiri extends State<Usajiri> {
                             color: Colors.black.withOpacity(0.05),
                             borderRadius: BorderRadius.circular(8)),
                         child: FormBuilderTextField(
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
                           controller: usajiliController.majinaKamili,
                           keyboardType: TextInputType.text,
                           cursorColor: appTheme.defaultcolor,
@@ -403,33 +401,36 @@ class _Usajiri extends State<Usajiri> {
                             SizedBox(
                               width: 10.h,
                             ),
-                            DropdownButton(
-                              hint: Text(
-                                "Jumuiya",
-                                style: TextStyle(
-                                    fontSize: 12.fSize,
-                                    fontWeight: FontWeight.bold,
-                                    color: appTheme.defaultcolor),
+
+                            Expanded(
+                              child: DropdownButton(
+                                hint: Text(
+                                  "Jumuiya",
+                                  style: TextStyle(
+                                      fontSize: 12.fSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: appTheme.defaultcolor),
+                                ),
+                                items: usajiliController.data.map((e) {
+                                  return DropdownMenuItem(
+                                      child: Text(
+                                        e["jina"],
+                                        style: TextStyle(
+                                            fontSize: 12.fSize,
+                                            fontWeight: FontWeight.bold,
+                                            color: appTheme.defaultcolor),
+                                      ),
+                                      value: e["jina"]);
+                                }).toList(),
+                                value: usajiliController.value,
+                                onChanged: (v) {
+                                  usajiliController.value = v as String;
+                                  setState(() {
+                                    // print(usajiliController.value);
+                                    usajiliController.value = v;
+                                  });
+                                },
                               ),
-                              items: data.map((e) {
-                                return DropdownMenuItem(
-                                    child: Text(
-                                      e["jina"],
-                                      style: TextStyle(
-                                          fontSize: 12.fSize,
-                                          fontWeight: FontWeight.bold,
-                                          color: appTheme.defaultcolor),
-                                    ),
-                                    value: e["id"]);
-                              }).toList(),
-                              value: _value,
-                              onChanged: (v) {
-                                _value = v as int;
-                                setState(() {
-                                  usajiliController.selected_Jumuiya =
-                                      v as String?;
-                                });
-                              },
                             ),
                           ]),
 
@@ -463,6 +464,7 @@ class _Usajiri extends State<Usajiri> {
                                   keyboardType: TextInputType.visiblePassword,
                                   cursorColor: appTheme.defaultcolor,
                                   readOnly: true,
+                                  controller: usajiliController.namba,
                                   name: 'phone_number',
                                   decoration: InputDecoration(
                                     enabledBorder: UnderlineInputBorder(
@@ -491,6 +493,11 @@ class _Usajiri extends State<Usajiri> {
                                     color: Colors.black.withOpacity(0.05),
                                     borderRadius: BorderRadius.circular(8)),
                                 child: FormBuilderTextField(
+                                  validator: FormBuilderValidators.compose([
+                                    FormBuilderValidators.required(),
+                                  ]),
+                                  obscureText: obscurePassword,
+                                  controller: usajiliController.password,
                                   keyboardType: TextInputType.visiblePassword,
                                   cursorColor: appTheme.defaultcolor,
                                   name: 'password',
@@ -499,10 +506,18 @@ class _Usajiri extends State<Usajiri> {
                                       borderSide:
                                           BorderSide(color: Colors.transparent),
                                     ),
-                                    prefixIcon: Icon(
-                                      Icons.lock_outline,
-                                      size: 23.fSize,
-                                      color: appTheme.defaultcolor,
+                                    prefixIcon: InkWell(
+                                      onTap: () {
+                                        obscurePassword = !obscurePassword;
+                                        setState(() {});
+                                      },
+                                      child: Icon(
+                                        obscurePassword
+                                            ? Icons.lock
+                                            : Icons.lock_open,
+                                        size: 23.fSize,
+                                        color: appTheme.defaultcolor,
+                                      ),
                                     ),
                                     labelText: "Namba ya Siri (Password)",
                                     labelStyle: TextStyle(
@@ -516,24 +531,35 @@ class _Usajiri extends State<Usajiri> {
                         ),
                       ),
 
-                      SizedBox(height: 15.v),
+                      SizedBox(height: 10.v),
 
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.05),
                             borderRadius: BorderRadius.circular(8)),
                         child: FormBuilderTextField(
+                          validator: FormBuilderValidators.compose([
+                            FormBuilderValidators.required(),
+                          ]),
+                          obscureText: obscurePassword,
+                          controller: usajiliController.password2,
                           keyboardType: TextInputType.visiblePassword,
                           cursorColor: appTheme.defaultcolor,
-                          name: 'password2',
+                          name: 'password',
                           decoration: InputDecoration(
                             enabledBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.transparent),
                             ),
-                            prefixIcon: Icon(
-                              Icons.lock_outline,
-                              size: 23.fSize,
-                              color: appTheme.defaultcolor,
+                            prefixIcon: InkWell(
+                              onTap: () {
+                                obscurePassword = !obscurePassword;
+                                setState(() {});
+                              },
+                              child: Icon(
+                                obscurePassword ? Icons.lock : Icons.lock_open,
+                                size: 23.fSize,
+                                color: appTheme.defaultcolor,
+                              ),
                             ),
                             labelText: "Hakikisha namba ya siri (Password)",
                             labelStyle: TextStyle(
@@ -558,10 +584,37 @@ class _Usajiri extends State<Usajiri> {
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
-                      usajiliController.register();
-                      // _fbKey.currentState!.save();
-                      // if (_fbKey.currentState!.validate()) {
-                      //   print(_fbKey.currentState!.value);
+                      Get.defaultDialog(
+                        title: 'Confirm',
+                        titleStyle: TextStyle(
+                            color: appTheme.defaultcolor,
+                            fontSize: 18.fSize,
+                            fontWeight: FontWeight.bold),
+                        cancelTextColor: appTheme.defaultcolor,
+                        confirmTextColor: Colors.white,
+                        middleTextStyle: TextStyle(
+                            color: appTheme.defaultcolor,
+                            fontSize: 14.fSize,
+                            fontWeight: FontWeight.bold),
+                        middleText: 'Are you sure you want to Submit ?',
+                        buttonColor: appTheme.defaultcolor,
+                        textConfirm: 'Yes',
+                        backgroundColor: Colors.white,
+                        textCancel: 'No',
+                        onConfirm: () {
+                          usajiliController.submit();
+                          //  usajiliController.formkey.currentState!.validate();
+                          Get.back();
+                          toastSent();
+                        },
+                        onCancel: () {
+                          //Get.back();
+                          toast();
+                        },
+                      );
+                      //usajiliController.formkey.currentState!.save();
+                      // if (usajiliController.formkey.currentState!.validate()) {
+
                       // }
 
                       // // Get.to(Register(),
@@ -595,5 +648,25 @@ class _Usajiri extends State<Usajiri> {
         )),
       ),
     );
+  }
+
+  toast() {
+    Fluttertoast.showToast(
+        msg: "Submition Cancelled",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        fontSize: 14.0.fSize);
+  }
+
+  toastSent() {
+    Fluttertoast.showToast(
+        msg: "Submitting .......",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        textColor: Colors.white,
+        fontSize: 14.0.fSize);
   }
 }

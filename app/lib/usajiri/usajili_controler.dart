@@ -1,10 +1,13 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, prefer_const_constructors, avoid_print
 
 import 'dart:convert';
 
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/modals/all_modals.dart';
+import 'package:app/routes/app_routes.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,12 +22,16 @@ class UsajiriController extends GetxController with CodeAutoFill {
   TextEditingController majinaKamili = TextEditingController();
   TextEditingController umli = TextEditingController();
 
+  TextEditingController namba = TextEditingController(text: "0123456");
+  TextEditingController password = TextEditingController();
+  TextEditingController password2 = TextEditingController();
+
   String selectedValue = 'Mwanaume';
   final formkey = GlobalKey<FormState>();
 
   //RxInt tabIndex = 0.obs;
 
-  RxString jumuiya_value = 'hghg'.obs;
+  //RxString jumuiya_value = 'hghg'.obs;
 
   RxString umli_value = 'Umli'.obs;
   final umli_options = ['Umli', '7 - 13', '14 - 35', '36 - 99'];
@@ -47,53 +54,139 @@ class UsajiriController extends GetxController with CodeAutoFill {
   RxString kanda_value = 'Kanda'.obs;
   final kanda_options = ['Kanda', 'Samlia', 'Nasareti'];
 
-  String selected_jumuiya = 'Jumuiya';
+  List data = [];
+  String? value;
 
-  String? selected_Jumuiya;
+  void submit() async {
+    String url = "https://app.parokiayakiwanjachandege.or.tz/wanaparokia";
 
-  register() {
-    print(majinaKamili.text);
-    print(selectedValue);
-    print(umli_value);
-    print(ubatizo_value);
-    print(ekarist_value);
-    print(kipaimara_value);
-    print(ndoa_value);
-    print(mtaa_value);
-    print(kanda_value);
+    var response = await http.post(Uri.parse(url), body: {
+      "majina_kamili": "${majinaKamili.text}",
+      "jinsia": selectedValue,
+      "umli": "${umli_value}",
+      "ubatizo": "${ubatizo_value}",
+      "ekarist": "${ekarist_value}",
+      "kipaimara": "${kipaimara_value}",
+      "ndoa": "${ndoa_value}",
+      "mtaa": "${mtaa_value}",
+      "kanda": "${kanda_value}",
+      "namba": "${namba.text}",
+      "password": "${password.text}"
+    });
 
-    print(selected_Jumuiya);
+    var rensponse = jsonDecode(response.body);
 
-    Get.snackbar("${selected_Jumuiya}", "Check fon Connection then try again",
+    if (rensponse["status"] == true) {
+      Get.snackbar(
+        "",
+        "",
         titleText: Text(
-          "No internet Connection",
+          "Submitted Successfully",
           style: TextStyle(
-              color: Colors.white,
-              fontSize: 14.fSize,
-              fontWeight: FontWeight.bold),
+            fontSize: 14.fSize,
+            color: Colors.white,
+          ),
         ),
-        messageText: Text(
-          "Check for Internet Connection then try again.",
-          style: TextStyle(color: Colors.white, fontSize: 12.fSize),
-        ),
-        duration: 60.minutes,
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.white.withOpacity(0.25),
+        backgroundColor: Colors.green[800],
         colorText: Colors.white,
-        icon: Icon(
-          Icons.network_check_outlined,
-          color: Colors.white,
-        ),
+        icon: const Icon(Icons.church, color: Colors.white),
         shouldIconPulse: true,
-        barBlur: 120,
-        mainButton:
-            TextButton(onPressed: Get.back, child: const Text("Close")));
+        barBlur: 20,
+      );
+
+      majinaKamili.clear();
+      namba.clear();
+      password.clear();
+      Get.toNamed(AppRoutes.homescreen);
+    } else {
+      Fluttertoast.showToast(
+          msg: "Check for internet Connection",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
   }
+
+  // register() async {
+  // print(majinaKamili.text);
+  // print(selectedValue);
+  // print(umli_value);
+  // print(ubatizo_value);
+  // print(ekarist_value);
+  // print(kipaimara_value);
+  // print(ndoa_value);
+  // print(mtaa_value);
+  // print(kanda_value);
+  // print(namba.text);
+  // print(password.text);
+  // print(password2.text);
+  // print(value);
+
+  //   if (password.text == password2.text) {
+  //     try {
+  //       String uri = "https://app.parokiayakiwanjachandege.or.tz/wanaparokia";
+  //       var res = await http.post(Uri.parse(uri), body: {
+  //         "majina_kamili": '${majinaKamili.text}',
+  //         "jinsia": '${selectedValue}',
+  //         "umli": '${umli_value}',
+  //         "ubatizo": '${ubatizo_value}',
+  //         "ekarist": '${ekarist_value}',
+  //         "kipaimara": '${kipaimara_value}',
+  //         "ndoa": '${ndoa_value}',
+  //         "mtaa": '${mtaa_value}',
+  //         "kanda": '${kanda_value}',
+  //         "namba": '${namba.text}',
+  //         "password": '${password.text}'
+  //       });
+
+  //       var rensponse = jsonDecode(res.body);
+  //       if (rensponse["status"] == true) {
+  //         Get.snackbar("", "",
+  //             titleText: Text(
+  //               "Registered Successfully",
+  //               style: TextStyle(
+  //                   color: Colors.white,
+  //                   fontSize: 14.fSize,
+  //                   fontWeight: FontWeight.bold),
+  //             ),
+  //             messageText: Text(
+  //               "Check for Internet Connection then try again.",
+  //               style: TextStyle(color: Colors.white, fontSize: 12.fSize),
+  //             ),
+  //             duration: 500.milliseconds,
+  //             snackPosition: SnackPosition.TOP,
+  //             backgroundColor: Colors.green[800],
+  //             colorText: Colors.white,
+  //             icon: Icon(
+  //               Icons.check_circle_outline,
+  //               color: Colors.white,
+  //             ),
+  //             shouldIconPulse: true,
+  //             barBlur: 120,
+  //             mainButton:
+  //                 TextButton(onPressed: Get.back, child: const Text("Close")));
+  //       } else {
+  //         Fluttertoast.showToast(
+  //             msg: "Massage do note match",
+  //             toastLength: Toast.LENGTH_SHORT,
+  //             gravity: ToastGravity.CENTER,
+  //             timeInSecForIosWeb: 1,
+  //             textColor: Colors.white,
+  //             fontSize: 16.0);
+  //       }
+  //     } catch (e) {
+  //       print(e);
+  //     }
+  //   } else {
+  //     print("ddd");
+  //   }
+  // }
 
   @override
-  void codeUpdated() {
-    // otpController.value.text = code!;
-  }
+  void codeUpdated() {}
 
   @override
   void onInit() {
@@ -105,64 +198,4 @@ class UsajiriController extends GetxController with CodeAutoFill {
   void onReady() {
     super.onReady();
   }
-
-//   Future<void> fetchData() async {
-//     try {
-//       // Replace with your actual API call
-//       final response = await get(Uri.parse('https://your-api.com/data'));
-//       final List<dynamic> responseData = jsonDecode(response.body);
-//       data.value = responseData.map((item) => MyDataItem(item['id'], item['name'])).toList();
-//     } catch (error) {
-//       print('Error fetching data: $error');
-//     }
-//   }
-// }
-
-  // fetchJumuiya() async {
-  //   try {
-  //     isLoading(true);
-  //     final response = await http.get(
-  //         Uri.parse('https://app.parokiayakiwanjachandege.or.tz/jumuiya_all'));
-  //     if (response.statusCode == 200) {
-  //       var jsonResponse = json.decode(response.body) as List;
-  //       // final List<dynamic> data = json.decode(response.body);
-  //       // final List<dynamic> responseData = jsonDecode(response.body);
-
-  //       final List<dynamic> data = json.decode(response.body);
-  //       data.map((item) => Jumuiya.fromJson(item)).toList();
-
-  //       // data.value = responseData.map((item) => Jumuiya.fromJson(item)).toList();
-
-  //       print(jsonResponse);
-  //       // jumuiya.value = data.map((item) => Jumuiya.fromJson(item)).toList();
-  //     } else {
-  //       Get.snackbar("", "Check fon Connection then try again",
-  //           titleText: Text(
-  //             "No internet Connection",
-  //             style: TextStyle(
-  //                 color: Colors.white,
-  //                 fontSize: 14.fSize,
-  //                 fontWeight: FontWeight.bold),
-  //           ),
-  //           messageText: Text(
-  //             "Check for Internet Connection then try again.",
-  //             style: TextStyle(color: Colors.white, fontSize: 12.fSize),
-  //           ),
-  //           duration: 60.minutes,
-  //           snackPosition: SnackPosition.TOP,
-  //           backgroundColor: Colors.white.withOpacity(0.25),
-  //           colorText: Colors.white,
-  //           icon: Icon(
-  //             Icons.network_check_outlined,
-  //             color: Colors.white,
-  //           ),
-  //           shouldIconPulse: true,
-  //           barBlur: 120,
-  //           mainButton:
-  //               TextButton(onPressed: Get.back, child: const Text("Close")));
-  //     }
-  //   } finally {
-  //     isLoading(false);
-  //   }
-  // }
 }

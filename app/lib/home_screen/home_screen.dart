@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_file_downloader/flutter_file_downloader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -26,6 +27,7 @@ import 'package:get/get_navigation/src/routes/transitions_type.dart';
 import 'package:getwidget/components/carousel/gf_carousel.dart';
 import 'package:marquee/marquee.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -101,26 +103,12 @@ class _HomeScreen extends State<HomeScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        FileDownloader.downloadFile(
-                            url:
-                                "http://192.168.0.3:8000/fom_download/1717777070_myCart Proposal.pdf"
-                                    .trim(),
-                            onProgress: (name, double progress) {
-                              setState(() {
-                                progress = progress;
-                              });
-                            },
-                            onDownloadCompleted: (value) {
-                              print('path  $value ');
-                              setState(() {
-                                // progress = null;
-                              });
-                            });
+                        downloadfile();
                       },
                       child: Icon(
                         FontAwesomeIcons.download,
                         color: appTheme.defaultcolor,
-                        size: 25.fSize,
+                        size: 90.fSize,
                       ),
                     ),
                     contents(context)
@@ -162,7 +150,9 @@ class _HomeScreen extends State<HomeScreen> {
                                   color:
                                       appTheme.defaultcolor.withOpacity(0.15),
                                   onPressed: () {
-                                    ratiba(context);
+                                    // Navigator.pop(context);
+
+                                    // ratiba(context);
                                   },
                                   text: "Ratiba za Ibada",
                                   icon: Icon(
@@ -453,6 +443,41 @@ class _HomeScreen extends State<HomeScreen> {
             ),
           ],
         ));
+  }
+
+  void downloadfile() async {
+    var status = await Permission.storage.request();
+    if (status == PermissionStatus.granted) {
+      FileDownloader.downloadFile(
+          url:
+              "https://app.parokiayakiwanjachandege.or.tz/uploaded/1718474487_KndegeSRS.pdf",
+          name: "filename.png",
+          onProgress: (String? filename, double process) {
+            Fluttertoast.showToast(
+                msg: "Downloading.... ${process}%",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                textColor: Colors.white,
+                fontSize: 16.0);
+
+            //  print("FILE $filename HAS PROGRESS $process");
+          },
+          onDownloadCompleted: (String path) {
+            Fluttertoast.showToast(
+                msg: "Downloading Completed",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.SNACKBAR,
+                timeInSecForIosWeb: 1,
+                textColor: Colors.white,
+                fontSize: 16.0);
+          },
+          onDownloadError: (String error) {
+            print("DOWNLOAD ERROR $error");
+          });
+    } else {
+      print("Permission is not granted");
+    }
   }
 
   contents(BuildContext context) {
