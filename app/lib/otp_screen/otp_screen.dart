@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Otp_screen extends StatefulWidget {
   @override
@@ -40,7 +41,7 @@ class _Otp_screen extends State<Otp_screen> {
       canPop: false,
       onPopInvoked: (bool didPop) {
         if (kDebugMode) {
-         // print("$didPop");
+          // print("$didPop");
         }
       },
       child: Container(
@@ -116,6 +117,7 @@ class _Otp_screen extends State<Otp_screen> {
                                 fontSize: 14.fSize,
                                 fontWeight: FontWeight.bold),
                           ),
+                          SizedBox(height: 5.v),
                           Form(
                             key: formkey,
                             child: Container(
@@ -132,7 +134,9 @@ class _Otp_screen extends State<Otp_screen> {
                                     cursorColor: appTheme.defaultcolor,
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
-                                      prefixText: "+255",
+                                      hintText: '0762700405',
+                                      hintStyle: TextStyle(
+                                          color: Colors.black.withOpacity(0.2)),
                                       prefixIcon:
                                           Icon(Icons.phone_android_rounded),
                                     ),
@@ -142,7 +146,7 @@ class _Otp_screen extends State<Otp_screen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 32.v),
+                          SizedBox(height: 28.v),
 
                           Container(
                             height: 60.v,
@@ -152,8 +156,11 @@ class _Otp_screen extends State<Otp_screen> {
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (formkey.currentState!.validate()) {
+                                    var myphome =
+                                        int.parse(phoneNumberController.text);
+
                                     AuthService.sentOtp(
-                                        phone: phoneNumberController.text,
+                                        phone: myphome.toString(),
                                         errorStep: () => ScaffoldMessenger.of(
                                                     context as BuildContext)
                                                 .showSnackBar(SnackBar(
@@ -166,6 +173,7 @@ class _Otp_screen extends State<Otp_screen> {
                                               backgroundColor: Colors.red,
                                             )),
                                         nextStep: () {
+                                          otpset(phoneNumberController.text);
                                           Get.toNamed(
                                             AppRoutes.form_otp_screen,
                                           );
@@ -268,11 +276,16 @@ class _Otp_screen extends State<Otp_screen> {
       return 'This field is required';
     }
     if (phoneNumber.trim().length == 9) {
-      return 'Phone number must be 9 characters in length Should not start with 0';
+      return 'Phone number must be 10 characters in length';
     }
+
     return null;
   }
 
+  otpset(String? phoneNumber) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('phone_number', "${phoneNumber}");
+  }
 // // *********************************************************************  CHECK
 
   Future<void> checkforConnectivity() async {

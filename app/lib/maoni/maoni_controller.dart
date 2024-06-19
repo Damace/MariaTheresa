@@ -3,7 +3,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:app/APIs/homepage/api_links.dart';
-import 'package:app/APIs/homepage/fomuHuduma_modal.dart';
 import 'package:app/APIs/homepage/ratibaIbada_modal.dart';
 import 'package:app/notification/notification.dart';
 import 'package:app/routes/app_routes.dart';

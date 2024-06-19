@@ -3,15 +3,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/home_screen/home_screen.dart';
-import 'package:app/michango/michango_screen.dart';
 import 'package:app/profile_content/bahasha.dart';
-import 'package:app/profile_content/sadaka.dart';
-import 'package:app/profile_content/shukrani.dart';
-import 'package:app/profile_content/ujenzi.dart';
-import 'package:app/profile_content/zaka_screen.dart';
-import 'package:app/profile_content/michango_mingine.dart';
 import 'package:app/theme/theme_helper.dart';
-import 'package:app/wageni/wageni_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +13,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';
+import 'package:app/jumuiya/jumuiya_login.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -67,7 +61,7 @@ class _Profile extends State<Profile> {
                   Container(
                     color: appTheme.defaultcolor,
                     width: double.infinity,
-                    height: 200.v,
+                    height: 180.v,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -84,7 +78,8 @@ class _Profile extends State<Profile> {
                                   shape: BoxShape.circle,
                                 ),
                                 child: Icon(
-                                  Icons.person_2_outlined,
+                                  //Icons.person_2_outlined,
+                                  FontAwesomeIcons.user,
                                   size: 32,
                                 ),
                               )
@@ -118,11 +113,21 @@ class _Profile extends State<Profile> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "+255 762700405",
+                                  "Alex Boniphace Mwakalikamo",
                                   style: TextStyle(
-                                      color: appTheme.defaultcolor,
-                                      fontSize: 16.fSize,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.fSize),
+                                ),
+                                SizedBox(
+                                  width: 5.h,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 8.h),
+                                  child: Icon(
+                                    Icons.verified,
+                                    size: 16,
+                                    color: appTheme.defaultcolor,
+                                  ),
                                 )
                               ],
                             ),
@@ -165,32 +170,13 @@ class _Profile extends State<Profile> {
                   ),
                 ),
               ),
-              label: 'Home',
+              label: 'K/ndege',
               backgroundColor: Colors.white,
             ),
             BottomNavigationBarItem(
               icon: InkWell(
                 onTap: () {
-                  Get.to(Michango(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 2.v),
-                  child: Icon(
-                    FontAwesomeIcons.sackDollar,
-                    size: 23.fSize,
-                  ),
-                ),
-              ),
-              label: 'Michango',
-              backgroundColor: Colors.white,
-            ),
-            BottomNavigationBarItem(
-              icon: InkWell(
-                onTap: () {
-                  Get.to(Wageni(),
+                  Get.to(Jumuiya_(),
                       duration: Duration(milliseconds: 500),
                       transition: Transition.fadeIn //transition effect
                       );
@@ -230,583 +216,11 @@ class _Profile extends State<Profile> {
   }
 
   tabSection(BuildContext context) {
-    return DefaultTabController(
-      length: 5,
-      child: Column(
-        children: [
-          Container(
-            child: TabBar(
-              padding: EdgeInsets.zero,
-              indicatorColor: appTheme.defaultcolor,
-              tabAlignment: TabAlignment.start,
-              isScrollable: true,
-              labelColor: appTheme.defaultcolor,
-              labelStyle:
-                  TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-              unselectedLabelColor: Colors.black,
-              tabs: [
-                FadeInLeft(
-                  child: Tab(
-                    icon: Icon(Icons.person_2_outlined, size: 25),
-                    text: "Details",
-                  ),
-                ),
-                FadeInLeft(
-                  child: Tab(
-                    icon: Icon(
-                      FontAwesomeIcons.sackDollar,
-                      size: 25,
-                    ),
-                    text: "Michango",
-                  ),
-                ),
-                FadeInLeft(
-                  child: Tab(
-                    icon: Icon(Icons.people, size: 25),
-                    text: "Jumuiya",
-                  ),
-                ),
-                FadeInLeft(
-                  child: Tab(
-                    icon: Icon(Icons.people, size: 25),
-                    text: "Chama cha Kitume",
-                  ),
-                ),
-                FadeInLeft(
-                  child: Tab(
-                    icon: Icon(Icons.settings_outlined, size: 25),
-                    text: "Settings",
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            height: 380.v,
-            child: TabBarView(
-              children: [
-                details(context),
-                michango(context),
-                jumuiya(context),
-                kitume(context),
-                setting(context),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  details(context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 8.0),
-      child: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 5.h, right: 5.h),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.15),
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  width: double.infinity,
-                  height: 150.v,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 20.v,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Alex Boniphace Mwakalikamo",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.fSize),
-                          ),
-                          SizedBox(
-                            width: 5.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 8.h),
-                            child: Icon(
-                              Icons.verified,
-                              size: 16,
-                              color: Colors.green,
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.v,
-                      ),
-                      Container(
-                        height: 30.v,
-                        width: 90.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(color: Colors.black)),
-                        child: Center(
-                          child: Text(
-                            "Taarifa Zaidi",
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  michango(context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 8.0),
-      child: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(Zaka(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Zaka",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16.fSize,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(Shukrani(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Shukrani",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16.fSize,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(Bahasha(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Bahasha",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16.fSize,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(Sadaka(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Sadaka",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16.fSize,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(Ujenzi(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Ujenzi",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16.fSize,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(MichangoMingine(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Michango Mingine",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 16.fSize,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              SizedBox(
-                height: 10.v,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  jumuiya(context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 8.0),
-      child: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 5.h, right: 5.h),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.15),
-                      borderRadius: BorderRadius.all(Radius.circular(8))),
-                  width: double.infinity,
-                  height: 150.v,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 20.v,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Mt. Albeto Hutado",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12.fSize),
-                          ),
-                          SizedBox(
-                            width: 5.h,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 8.h),
-                            child: Icon(
-                              Icons.verified,
-                              size: 16,
-                              color: Colors.green,
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 15.v,
-                      ),
-                      Container(
-                        height: 30.v,
-                        width: 90.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            border: Border.all(color: Colors.black)),
-                        child: Center(
-                          child: Text(
-                            "Mahudhulio",
-                            style: TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  kitume(context) {
     return Padding(
       padding: EdgeInsets.only(top: 8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 5.h, right: 5.h),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.blue.withOpacity(0.15),
-                          borderRadius: BorderRadius.all(Radius.circular(8))),
-                      width: double.infinity,
-                      height: 100.v,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "UWAKA",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.fSize),
-                              ),
-                              SizedBox(
-                                width: 5.h,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(right: 8.h),
-                                child: Icon(
-                                  Icons.verified,
-                                  size: 16,
-                                  color: Colors.green,
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
           Container(
             child: Padding(
               padding: EdgeInsets.all(8.0),
@@ -814,7 +228,7 @@ class _Profile extends State<Profile> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Vyama va Hiyali",
+                    "Mt. Alberto",
                     style: TextStyle(
                         fontSize: 14.fSize, fontWeight: FontWeight.bold),
                   ),
@@ -824,7 +238,7 @@ class _Profile extends State<Profile> {
           ),
           Container(
             child: SizedBox(
-              height: 175.v,
+              height: 480.v,
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -837,10 +251,7 @@ class _Profile extends State<Profile> {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.to(Zaka(),
-                            duration: Duration(milliseconds: 500),
-                            transition: Transition.fadeIn //transition effect
-                            );
+                        taarifaBinafsi(context);
                       },
                       child: Padding(
                         padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
@@ -861,7 +272,7 @@ class _Profile extends State<Profile> {
                                     width: 10.h,
                                   ),
                                   Text(
-                                    "Karmatic Kathoric",
+                                    "Taarifa binafsi",
                                     style: TextStyle(
                                         fontSize: 16.fSize,
                                         fontWeight: FontWeight.w500),
@@ -885,10 +296,7 @@ class _Profile extends State<Profile> {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.to(Shukrani(),
-                            duration: Duration(milliseconds: 500),
-                            transition: Transition.fadeIn //transition effect
-                            );
+                        padri(context);
                       },
                       child: Padding(
                         padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
@@ -909,7 +317,187 @@ class _Profile extends State<Profile> {
                                     width: 10.h,
                                   ),
                                   Text(
-                                    "Shukrani",
+                                    "Mawasiliano ya Padri",
+                                    style: TextStyle(
+                                        fontSize: 16.fSize,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16.fSize,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Divider(
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        walei(context);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
+                        child: Container(
+                          height: 30.v,
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.person_2,
+                                    size: 25.fSize,
+                                  ),
+                                  SizedBox(
+                                    width: 10.h,
+                                  ),
+                                  Text(
+                                    "Halmashauri walei ( Viongozi )",
+                                    style: TextStyle(
+                                        fontSize: 16.fSize,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16.fSize,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Divider(
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        jumuiya(context);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
+                        child: Container(
+                          height: 30.v,
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.people_alt_outlined,
+                                    size: 25.fSize,
+                                  ),
+                                  SizedBox(
+                                    width: 10.h,
+                                  ),
+                                  Text(
+                                    "Viongozi wa Jumuiya",
+                                    style: TextStyle(
+                                        fontSize: 16.fSize,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16.fSize,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Divider(
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        jumuiya(context);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
+                        child: Container(
+                          height: 30.v,
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.people_alt_outlined,
+                                    size: 25.fSize,
+                                  ),
+                                  SizedBox(
+                                    width: 10.h,
+                                  ),
+                                  Text(
+                                    "Mahudhulio yangu jumuiyani",
+                                    style: TextStyle(
+                                        fontSize: 16.fSize,
+                                        fontWeight: FontWeight.w500),
+                                  )
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16.fSize,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Divider(
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        jumuiya(context);
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
+                        child: Container(
+                          height: 30.v,
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Icon(
+                                    Icons.mail,
+                                    size: 25.fSize,
+                                  ),
+                                  SizedBox(
+                                    width: 10.h,
+                                  ),
+                                  Text(
+                                    "Maoni",
                                     style: TextStyle(
                                         fontSize: 16.fSize,
                                         fontWeight: FontWeight.w500),
@@ -950,14 +538,14 @@ class _Profile extends State<Profile> {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Icon(
-                                    Icons.person_2,
+                                    Icons.logout_outlined,
                                     size: 25.fSize,
                                   ),
                                   SizedBox(
                                     width: 10.h,
                                   ),
                                   Text(
-                                    "Bahasha",
+                                    "Log Out",
                                     style: TextStyle(
                                         fontSize: 16.fSize,
                                         fontWeight: FontWeight.w500),
@@ -971,161 +559,77 @@ class _Profile extends State<Profile> {
                             ],
                           ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Divider(
-                        color: Colors.black.withOpacity(0.1),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(Sadaka(),
-                            duration: Duration(milliseconds: 500),
-                            transition: Transition.fadeIn //transition effect
-                            );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                        child: Container(
-                          height: 30.v,
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.person_2,
-                                    size: 25.fSize,
-                                  ),
-                                  SizedBox(
-                                    width: 10.h,
-                                  ),
-                                  Text(
-                                    "Sadaka",
-                                    style: TextStyle(
-                                        fontSize: 16.fSize,
-                                        fontWeight: FontWeight.w500),
-                                  )
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16.fSize,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Divider(
-                        color: Colors.black.withOpacity(0.1),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(Ujenzi(),
-                            duration: Duration(milliseconds: 500),
-                            transition: Transition.fadeIn //transition effect
-                            );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                        child: Container(
-                          height: 30.v,
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.person_2,
-                                    size: 25.fSize,
-                                  ),
-                                  SizedBox(
-                                    width: 10.h,
-                                  ),
-                                  Text(
-                                    "Ujenzi",
-                                    style: TextStyle(
-                                        fontSize: 16.fSize,
-                                        fontWeight: FontWeight.w500),
-                                  )
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16.fSize,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Divider(
-                        color: Colors.black.withOpacity(0.1),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Get.to(MichangoMingine(),
-                            duration: Duration(milliseconds: 500),
-                            transition: Transition.fadeIn //transition effect
-                            );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                        child: Container(
-                          height: 30.v,
-                          width: double.infinity,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Icon(
-                                    Icons.person_2,
-                                    size: 25.fSize,
-                                  ),
-                                  SizedBox(
-                                    width: 10.h,
-                                  ),
-                                  Text(
-                                    "Michango Mingine",
-                                    style: TextStyle(
-                                        fontSize: 16.fSize,
-                                        fontWeight: FontWeight.w500),
-                                  )
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 16.fSize,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Divider(
-                        color: Colors.black.withOpacity(0.1),
                       ),
                     ),
                     SizedBox(
                       height: 10.v,
                     ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.0),
+                      child: Divider(
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                    ),
+                    Container(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Mitandao ya Kijamii",
+                                style: TextStyle(
+                                    fontSize: 14.fSize,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ]),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10.h),
+                      child: Row(children: [
+                        FadeInLeft(
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.youtube,
+                                  color: Colors.red,
+                                  size: 50.fSize,
+                                ),
+                                Text(
+                                  "Kndege Parish",
+                                  style: TextStyle(
+                                      fontSize: 11.5.fSize,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 15.h),
+                        FadeInLeft(
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  FontAwesomeIcons.facebook,
+                                  color: Colors.blue,
+                                  size: 50.fSize,
+                                ),
+                                Text(
+                                  "Kndege Parish",
+                                  style: TextStyle(
+                                      fontSize: 11.5.fSize,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 15.h),
+                      ]),
+                    )
                   ],
                 ),
               ),
@@ -1136,160 +640,554 @@ class _Profile extends State<Profile> {
     );
   }
 
-  setting(context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 8.0),
-      child: Container(
-        child: SingleChildScrollView(
+  taarifaBinafsi(BuildContext context) {
+    //HomeController formController = Get.put(HomeController());
+    showModalBottomSheet(
+      isDismissible: true,
+      enableDrag: false,
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8,
+        ),
+        child: Container(
+          height: 300.h,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(Zaka(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Change Language",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 10.v,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
                         ),
+                        color: appTheme.defaultcolor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: appTheme.defaultcolor,
+                            blurRadius: 3,
+                          ),
+                        ]),
+                    child: Text("                              "),
+                  ),
+                ],
+              ),
+              Card(
+                elevation: 0,
+                child: Container(
+                  height: 40.v,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
                         Icon(
-                          Icons.arrow_forward_ios,
+                          FontAwesomeIcons.church,
                           size: 16.fSize,
                         ),
+                        SizedBox(
+                          width: 15.h,
+                        ),
+                        Text(
+                          "Taarifa binafi",
+                          style: TextStyle(
+                            fontSize: 12.fSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
+              Divider(
+                color: Colors.black.withOpacity(0.06),
               ),
-              InkWell(
-                onTap: () {
-                  Get.to(Shukrani(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Change Theme",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
+              SizedBox(
+                height: 10,
+              ),
+              // Obx(
+              //   () => formController.fomuList.isNotEmpty
+              //       ? Expanded(
+              //           child: ListView.builder(
+              //             //shrinkWrap: true,
+              //             itemCount: formController.fomuList.length,
+              //             itemBuilder: (context, index) {
+              //               return ListTile(
+              //                   leading: const Icon(
+              //                     FontAwesomeIcons.filePdf,
+              //                     color: Colors.red,
+              //                     size: 16,
+              //                   ),
+              //                   trailing: formController.progress != null
+              //                       ? CircularProgressIndicator()
+              //                       : InkWell(
+              //                           onTap: () {
+              //                             Get.back();
+              //                             downloadfile(
+              //                                 formController
+              //                                     .fomuList[index].preview
+              //                                     .toString(),
+              //                                 formController
+              //                                     .fomuList[index].jina
+              //                                     .toString());
+              //                           },
+              //                           child: Icon(
+              //                             FontAwesomeIcons.download,
+              //                             color: appTheme.defaultcolor,
+              //                             size: 25.fSize,
+              //                           ),
+              //                         ),
+              //                   title: Text(
+              //                     "${formController.fomuList[index].jina}",
+              //                     overflow: TextOverflow.ellipsis,
+              //                     style: TextStyle(
+              //                         fontSize: 14.fSize,
+              //                         color: appTheme.defaultcolor,
+              //                         fontWeight: FontWeight.bold),
+              //                   ));
+              //             },
+              //           ),
+              //         )
+              //       : BounceInUp(
+              //           child: GFLoader(
+              //               size: GFSize.SMALL,
+              //               loaderstrokeWidth: 2,
+              //               type: GFLoaderType.ios),
+              //         ),
+              // )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  walei(BuildContext context) {
+    //HomeController formController = Get.put(HomeController());
+
+    showModalBottomSheet(
+      isDismissible: true,
+      enableDrag: false,
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8,
+        ),
+        child: Container(
+          height: 300.h,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 10.v,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
                         ),
+                        color: appTheme.defaultcolor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: appTheme.defaultcolor,
+                            blurRadius: 3,
+                          ),
+                        ]),
+                    child: Text("                              "),
+                  ),
+                ],
+              ),
+              Card(
+                elevation: 0,
+                child: Container(
+                  height: 40.v,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
                         Icon(
-                          Icons.arrow_forward_ios,
+                          FontAwesomeIcons.church,
                           size: 16.fSize,
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(Bahasha(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Padding(
-                  padding: EdgeInsets.only(left: 10.0.h, right: 10.0.h),
-                  child: Container(
-                    height: 30.v,
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.person_2,
-                              size: 25.fSize,
-                            ),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Text(
-                              "Log Out",
-                              style: TextStyle(
-                                  fontSize: 16.fSize,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
+                        SizedBox(
+                          width: 15.h,
+                        ),
+                        Text(
+                          "Taarifa binafi",
+                          style: TextStyle(
+                            fontSize: 12.fSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(left: 10.0),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.1),
+              Divider(
+                color: Colors.black.withOpacity(0.06),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // Obx(
+              //   () => formController.fomuList.isNotEmpty
+              //       ? Expanded(
+              //           child: ListView.builder(
+              //             //shrinkWrap: true,
+              //             itemCount: formController.fomuList.length,
+              //             itemBuilder: (context, index) {
+              //               return ListTile(
+              //                   leading: const Icon(
+              //                     FontAwesomeIcons.filePdf,
+              //                     color: Colors.red,
+              //                     size: 16,
+              //                   ),
+              //                   trailing: formController.progress != null
+              //                       ? CircularProgressIndicator()
+              //                       : InkWell(
+              //                           onTap: () {
+              //                             Get.back();
+              //                             downloadfile(
+              //                                 formController
+              //                                     .fomuList[index].preview
+              //                                     .toString(),
+              //                                 formController
+              //                                     .fomuList[index].jina
+              //                                     .toString());
+              //                           },
+              //                           child: Icon(
+              //                             FontAwesomeIcons.download,
+              //                             color: appTheme.defaultcolor,
+              //                             size: 25.fSize,
+              //                           ),
+              //                         ),
+              //                   title: Text(
+              //                     "${formController.fomuList[index].jina}",
+              //                     overflow: TextOverflow.ellipsis,
+              //                     style: TextStyle(
+              //                         fontSize: 14.fSize,
+              //                         color: appTheme.defaultcolor,
+              //                         fontWeight: FontWeight.bold),
+              //                   ));
+              //             },
+              //           ),
+              //         )
+              //       : BounceInUp(
+              //           child: GFLoader(
+              //               size: GFSize.SMALL,
+              //               loaderstrokeWidth: 2,
+              //               type: GFLoaderType.ios),
+              //         ),
+              // )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  padri(BuildContext context) {
+    //HomeController formController = Get.put(HomeController());
+
+    showModalBottomSheet(
+      isDismissible: true,
+      enableDrag: false,
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8,
+        ),
+        child: Container(
+          height: 300.h,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 10.v,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        color: appTheme.defaultcolor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: appTheme.defaultcolor,
+                            blurRadius: 3,
+                          ),
+                        ]),
+                    child: Text("                              "),
+                  ),
+                ],
+              ),
+              Card(
+                elevation: 0,
+                child: Container(
+                  height: 40.v,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.church,
+                          size: 16.fSize,
+                        ),
+                        SizedBox(
+                          width: 15.h,
+                        ),
+                        Text(
+                          "Taarifa binafi",
+                          style: TextStyle(
+                            fontSize: 12.fSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
+              Divider(
+                color: Colors.black.withOpacity(0.06),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // Obx(
+              //   () => formController.fomuList.isNotEmpty
+              //       ? Expanded(
+              //           child: ListView.builder(
+              //             //shrinkWrap: true,
+              //             itemCount: formController.fomuList.length,
+              //             itemBuilder: (context, index) {
+              //               return ListTile(
+              //                   leading: const Icon(
+              //                     FontAwesomeIcons.filePdf,
+              //                     color: Colors.red,
+              //                     size: 16,
+              //                   ),
+              //                   trailing: formController.progress != null
+              //                       ? CircularProgressIndicator()
+              //                       : InkWell(
+              //                           onTap: () {
+              //                             Get.back();
+              //                             downloadfile(
+              //                                 formController
+              //                                     .fomuList[index].preview
+              //                                     .toString(),
+              //                                 formController
+              //                                     .fomuList[index].jina
+              //                                     .toString());
+              //                           },
+              //                           child: Icon(
+              //                             FontAwesomeIcons.download,
+              //                             color: appTheme.defaultcolor,
+              //                             size: 25.fSize,
+              //                           ),
+              //                         ),
+              //                   title: Text(
+              //                     "${formController.fomuList[index].jina}",
+              //                     overflow: TextOverflow.ellipsis,
+              //                     style: TextStyle(
+              //                         fontSize: 14.fSize,
+              //                         color: appTheme.defaultcolor,
+              //                         fontWeight: FontWeight.bold),
+              //                   ));
+              //             },
+              //           ),
+              //         )
+              //       : BounceInUp(
+              //           child: GFLoader(
+              //               size: GFSize.SMALL,
+              //               loaderstrokeWidth: 2,
+              //               type: GFLoaderType.ios),
+              //         ),
+              // )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  jumuiya(BuildContext context) {
+    //HomeController formController = Get.put(HomeController());
+
+    showModalBottomSheet(
+      isDismissible: true,
+      enableDrag: false,
+      isScrollControlled: true,
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadiusDirectional.only(
+          topEnd: Radius.circular(25),
+          topStart: Radius.circular(25),
+        ),
+      ),
+      builder: (context) => SingleChildScrollView(
+        padding: EdgeInsetsDirectional.only(
+          bottom: 0,
+          top: 8,
+        ),
+        child: Container(
+          height: 300.h,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 10.v,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        color: appTheme.defaultcolor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: appTheme.defaultcolor,
+                            blurRadius: 3,
+                          ),
+                        ]),
+                    child: Text("                              "),
+                  ),
+                ],
+              ),
+              Card(
+                elevation: 0,
+                child: Container(
+                  height: 40.v,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          FontAwesomeIcons.church,
+                          size: 16.fSize,
+                        ),
+                        SizedBox(
+                          width: 15.h,
+                        ),
+                        Text(
+                          "Taarifa binafi",
+                          style: TextStyle(
+                            fontSize: 12.fSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Divider(
+                color: Colors.black.withOpacity(0.06),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // Obx(
+              //   () => formController.fomuList.isNotEmpty
+              //       ? Expanded(
+              //           child: ListView.builder(
+              //             //shrinkWrap: true,
+              //             itemCount: formController.fomuList.length,
+              //             itemBuilder: (context, index) {
+              //               return ListTile(
+              //                   leading: const Icon(
+              //                     FontAwesomeIcons.filePdf,
+              //                     color: Colors.red,
+              //                     size: 16,
+              //                   ),
+              //                   trailing: formController.progress != null
+              //                       ? CircularProgressIndicator()
+              //                       : InkWell(
+              //                           onTap: () {
+              //                             Get.back();
+              //                             downloadfile(
+              //                                 formController
+              //                                     .fomuList[index].preview
+              //                                     .toString(),
+              //                                 formController
+              //                                     .fomuList[index].jina
+              //                                     .toString());
+              //                           },
+              //                           child: Icon(
+              //                             FontAwesomeIcons.download,
+              //                             color: appTheme.defaultcolor,
+              //                             size: 25.fSize,
+              //                           ),
+              //                         ),
+              //                   title: Text(
+              //                     "${formController.fomuList[index].jina}",
+              //                     overflow: TextOverflow.ellipsis,
+              //                     style: TextStyle(
+              //                         fontSize: 14.fSize,
+              //                         color: appTheme.defaultcolor,
+              //                         fontWeight: FontWeight.bold),
+              //                   ));
+              //             },
+              //           ),
+              //         )
+              //       : BounceInUp(
+              //           child: GFLoader(
+              //               size: GFSize.SMALL,
+              //               loaderstrokeWidth: 2,
+              //               type: GFLoaderType.ios),
+              //         ),
+              // )
             ],
           ),
         ),

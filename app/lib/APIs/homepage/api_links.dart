@@ -1,4 +1,3 @@
-import 'package:app/APIs/homepage/fomuHuduma_modal.dart';
 import 'package:app/APIs/homepage/ratibaIbada_modal.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,26 +20,6 @@ class GetRatiba {
   }
 }
 
-class Get_fomu_za_huduma {
-  static var client = http.Client();
-
-  static Future<List<Fomu>?> fetchfomu_za_huduma() async {
-    try {
-      var response =
-          await client.get(Uri.parse('http://192.168.0.3:8000/fomu'));
-
-      if (response.statusCode == 200) {
-        var jsonString = response.body;
-        print(jsonString);
-        return fomuFromJson(jsonString);
-      } else {
-        return null;
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-}
 
 
 

@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_import
 import 'dart:async';
 
+import 'package:app/jumuiya/jumuiya_login.dart';
 import 'package:app/routes/app_routes.dart';
 import 'package:app/splash_screen/models/splash_model.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -27,18 +28,49 @@ class SplashController extends GetxController {
 
   Future<void> loging() async {
     final SharedPreferences pref = await SharedPreferences.getInstance();
-    var onboarding = pref.getString("onboarding");
+    var registered = pref.getString("registered");
 
-    if (onboarding == "true") {
+    if (registered == "true") {
       Future.delayed(const Duration(milliseconds: 4000), () {
-        Get.offNamed(AppRoutes.homescreen);
-        // Get.offNamed(AppRoutes.form_otp_screen);
+        //Get.offNamed(AppRoutes.homescreen);
+
+         Get.to(Jumuiya_(),
+                                  duration: Duration(milliseconds: 500),
+                                  transition:
+                                      Transition.fadeIn //transition effect
+                                  );
+
+
       });
     } else {
       Future.delayed(const Duration(milliseconds: 4000), () {
-        Get.offNamed(AppRoutes.homescreen);
-        //Get.offNamed(AppRoutes.form_otp_screen);
+       // Get.offNamed(AppRoutes.homescreen);
+
+           Get.to(Jumuiya_(),
+                                  duration: Duration(milliseconds: 500),
+                                  transition:
+                                      Transition.fadeIn //transition effect
+                                  );
+
+
+
+
       });
     }
   }
+
+  // Future<void> loging() async {
+  //   final SharedPreferences pref = await SharedPreferences.getInstance();
+  //   var registered = pref.getString("registered");
+
+  //   if (registered == "true") {
+  //     Future.delayed(const Duration(milliseconds: 4000), () {
+  //       Get.offNamed(AppRoutes.homescreen);
+  //     });
+  //   } else {
+  //     Future.delayed(const Duration(milliseconds: 4000), () {
+  //       Get.offNamed(AppRoutes.otp_screen);
+  //     });
+  //   }
+  // }
 }

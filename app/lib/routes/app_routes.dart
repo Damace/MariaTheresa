@@ -9,6 +9,7 @@ import 'package:app/otp_screen/phone_screen.dart';
 import 'package:app/splash_screen/binding/splash_binding.dart';
 import 'package:app/splash_screen/splash_screen.dart';
 import 'package:get/get.dart';
+import 'package:app/profile_screen/profile.dart';
 
 class AppRoutes {
   static const String splashScreen = '/splash_screen';
@@ -27,6 +28,12 @@ class AppRoutes {
   static const String form_otp_screen = '/form_otp_screen';
 
   static List<GetPage> pages = [
+
+   GetPage(
+      name: profile,
+      page: () =>  Profile(),
+    ),
+
     GetPage(
       name: form_otp_screen,
       page: () => FormOtpScreen(),

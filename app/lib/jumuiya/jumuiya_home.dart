@@ -13,13 +13,17 @@ import 'package:app/jumuiya/jumuiya_sensa.dart';
 import 'package:app/jumuiya/jumuiya_taarifa_za_michango.dart';
 import 'package:app/jumuiya/sensa.dart';
 import 'package:app/jumuiya/wanajumuiya_wapya.dart';
+import 'package:app/jumuiya/wanajumuiya_wote.dart';
 import 'package:app/michango/michango_screen.dart';
 import 'package:app/profile_screen/profile.dart';
 import 'package:app/theme/theme_helper.dart';
+import 'package:app/usajiri/mwanajumuiya.dart';
+import 'package:app/usajiri/usajiri.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get.dart';
@@ -30,6 +34,7 @@ import 'package:getwidget/types/gf_loader_type.dart';
 import 'package:app/home_screen/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Jumuiya_home extends StatefulWidget {
   @override
@@ -40,10 +45,26 @@ class _Jumuiya_home extends State<Jumuiya_home> {
   final formkey = GlobalKey<FormState>();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   JumuiyaController mahudhurioController = Get.put(JumuiyaController());
-  
-    TextEditingController jumuiya = TextEditingController();
+
+  TextEditingController jumuiya = TextEditingController();
 
   late Future<List<Mahudhurio>> f;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _loadJumuiya();
+    mahudhurioController.fetchMatango();
+  }
+
+  // Load username from SharedPreferences
+  Future<void> _loadJumuiya() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      mahudhurioController.shared_jumuiya = prefs.getString('jumuiya_') ?? '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +74,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
           foregroundColor: Colors.white,
           automaticallyImplyLeading: false,
           title: Text(
-            "Jumuiya ya Mt.Alberto",
+            "Jumuiya ya ${mahudhurioController.shared_jumuiya}",
             style: TextStyle(
               fontSize: 16.fSize,
             ),
@@ -78,12 +99,12 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                   tabs: [
                     Tab(
                       icon: Icon(Icons.church,
-                          size: 16, color: appTheme.defaultcolor),
+                          size: 16.fSize, color: appTheme.defaultcolor),
                       text: "Mt.Albeto Hutado",
                     ),
                     Tab(
                       icon: Icon(Icons.people,
-                          size: 16, color: appTheme.defaultcolor),
+                          size: 16.fSize, color: appTheme.defaultcolor),
                       text: "Mahudhulio Jumiyani",
                     ),
                   ],
@@ -123,7 +144,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                   ),
                 ),
               ),
-              label: 'Home',
+              label: 'K/ndege',
               backgroundColor: Colors.white,
             ),
             BottomNavigationBarItem(
@@ -190,7 +211,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.to(Wanajumuiya_wapya(),
+                                Get.to(Mwanajumuiya(),
                                     duration: Duration(milliseconds: 500),
                                     transition:
                                         Transition.fadeIn //transition effect
@@ -225,14 +246,10 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                                       width: MediaQuery.of(context).size.width *
                                           0.18,
                                       child: Center(
-                                        child: Image(
-                                          image: const AssetImage(
-                                              "assets/images/agri.png"),
-                                          height: 50,
-                                          width: 50,
-                                          // fit: BoxFit.cover,
-                                        ),
-                                      ),
+                                          child: Icon(
+                                        Icons.person_add_alt_1_outlined,
+                                        color: appTheme.defaultcolor,
+                                      )),
                                     ),
                                   )),
                             ),
@@ -253,6 +270,71 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                             )
                           ],
                         ),
+                      ),
+                      SlideInDown(
+                        child: Padding(
+                            padding: EdgeInsets.only(
+                                left: 10, right: 10, bottom: 20),
+                            child: Column(
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(Mwanajumuiya_wote(),
+                                        duration: Duration(milliseconds: 500),
+                                        transition: Transition
+                                            .fadeIn //transition effect
+                                        );
+                                  },
+                                  child: Card(
+                                      // color: appTheme.defaultcolor,
+                                      shadowColor: Colors.grey,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadiusDirectional.only(
+                                            topEnd: Radius.circular(15),
+                                            topStart: Radius.circular(15),
+                                            bottomEnd: Radius.circular(15),
+                                            bottomStart: Radius.circular(15),
+                                          ),
+
+                                          // --------------------------------------------------------------------------------------------------------------------------
+
+                                          side: BorderSide(
+                                              color: appTheme.defaultcolor)),
+                                      elevation: 10,
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.18,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.18,
+                                        child: Center(
+                                          child: Icon(
+                                            Icons.people_alt_outlined,
+                                            color: appTheme.defaultcolor,
+                                          ),
+                                        ),
+                                      )),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Text(
+                                        "Wanajumuiya",
+                                        style: TextStyle(
+                                            fontSize: 12.fSize,
+                                            color: appTheme.defaultcolor,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
+                            ) //Text("Taarifa za Kilimo"),
+                            ),
                       ),
                       SlideInDown(
                         child: Padding(
@@ -287,12 +369,9 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                                             MediaQuery.of(context).size.width *
                                                 0.18,
                                         child: Center(
-                                          child: Image(
-                                            image: const AssetImage(
-                                                "assets/images/agri.png"),
-                                            height: 50,
-                                            width: 50,
-                                            // fit: BoxFit.cover,
+                                          child: Icon(
+                                            Icons.money,
+                                            color: appTheme.defaultcolor,
                                           ),
                                         ),
                                       )),
@@ -303,274 +382,13 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10),
                                       child: Text(
-                                        "Wanajumuiya",
+                                        "Michango",
                                         style: TextStyle(
                                             fontSize: 12.fSize,
                                             color: appTheme.defaultcolor,
                                             fontWeight: FontWeight.w500),
                                       ),
                                     )
-                                  ],
-                                )
-                              ],
-                            ) //Text("Taarifa za Kilimo"),
-                            ),
-                      ),
-                      SlideInLeft(
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                            ),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    shukrani();
-                                  },
-                                  child: Card(
-
-                                      // color: appTheme.defaultcolor,
-                                      shadowColor: Colors.grey,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                            topEnd: Radius.circular(15),
-                                            topStart: Radius.circular(15),
-                                            bottomEnd: Radius.circular(15),
-                                            bottomStart: Radius.circular(15),
-                                          ),
-
-                                          // --------------------------------------------------------------------------------------------------------------------------
-                                          side: BorderSide(
-                                              color: appTheme.defaultcolor)),
-                                      elevation: 10,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        child: Center(
-                                          child: Image(
-                                            image: const AssetImage(
-                                                "assets/images/agri.png"),
-                                            height: 50,
-                                            width: 50,
-                                            // fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        "Shukrani",
-                                        style: TextStyle(
-                                            fontSize: 12.fSize,
-                                            color: appTheme.defaultcolor,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ) //Text("Taarifa za Kilimo"),
-                            ),
-                      ),
-                      SlideInUp(
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                            ),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    zaka();
-                                  },
-                                  child: Card(
-                                      // color: appTheme.defaultcolor,
-                                      shadowColor: Colors.grey,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                            topEnd: Radius.circular(15),
-                                            topStart: Radius.circular(15),
-                                            bottomEnd: Radius.circular(15),
-                                            bottomStart: Radius.circular(15),
-                                          ),
-
-                                          // --------------------------------------------------------------------------------------------------------------------------
-
-                                          side: BorderSide(
-                                              color: appTheme.defaultcolor)),
-                                      elevation: 10,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        child: Center(
-                                          child: Image(
-                                            image: const AssetImage(
-                                                "assets/images/agri.png"),
-                                            height: 50,
-                                            width: 50,
-                                            // fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: Text(
-                                        "Zaka",
-                                        style: TextStyle(
-                                            fontSize: 12.fSize,
-                                            color: appTheme.defaultcolor,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ) //Text("Taarifa za Kilimo"),
-                            ),
-                      ),
-                      SlideInRight(
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                            ),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    bahasha();
-                                  },
-                                  child: Card(
-                                      // color: appTheme.defaultcolor,
-                                      shadowColor: Colors.grey,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                            topEnd: Radius.circular(15),
-                                            topStart: Radius.circular(15),
-                                            bottomEnd: Radius.circular(15),
-                                            bottomStart: Radius.circular(15),
-                                          ),
-
-                                          // --------------------------------------------------------------------------------------------------------------------------
-
-                                          side: BorderSide(
-                                              color: appTheme.defaultcolor)),
-                                      elevation: 10,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        child: Center(
-                                          child: Image(
-                                            image: const AssetImage(
-                                                "assets/images/agri.png"),
-                                            height: 50,
-                                            width: 50,
-                                            // fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          "Bahasha",
-                                          style: TextStyle(
-                                              fontSize: 12.fSize,
-                                              color: appTheme.defaultcolor),
-                                        ))
-                                  ],
-                                )
-                              ],
-                            ) //Text("Taarifa za Kilimo"),
-                            ),
-                      ),
-                      SlideInRight(
-                        child: Padding(
-                            padding: EdgeInsets.only(
-                              left: 10,
-                              right: 10,
-                            ),
-                            child: Column(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    michango_mingine();
-                                  },
-                                  child: Card(
-                                      // color: appTheme.defaultcolor,
-                                      shadowColor: Colors.grey,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadiusDirectional.only(
-                                            topEnd: Radius.circular(15),
-                                            topStart: Radius.circular(15),
-                                            bottomEnd: Radius.circular(15),
-                                            bottomStart: Radius.circular(15),
-                                          ),
-
-                                          // --------------------------------------------------------------------------------------------------------------------------
-
-                                          side: BorderSide(
-                                              color: appTheme.defaultcolor)),
-                                      elevation: 10,
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.18,
-                                        child: Center(
-                                          child: Image(
-                                            image: const AssetImage(
-                                                "assets/images/agri.png"),
-                                            height: 50,
-                                            width: 50,
-                                            // fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          "Michango mingine",
-                                          style: TextStyle(
-                                              fontSize: 13.5.fSize,
-                                              color: appTheme.defaultcolor,
-                                              fontWeight: FontWeight.w500),
-                                        ))
                                   ],
                                 )
                               ],
@@ -1427,7 +1245,6 @@ class _Jumuiya_home extends State<Jumuiya_home> {
 
   mahudhulio(BuildContext context) {
     JumuiyaController mahudhurioController = Get.put(JumuiyaController());
-  
 
     //HomeController ratibaController = Get.put(HomeController());
 
@@ -1467,7 +1284,6 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                         SizedBox(
                           width: 10.h,
                         ),
-                    
                       ],
                     ),
                   ],

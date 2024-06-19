@@ -15,6 +15,7 @@ class AuthService {
         .verifyPhoneNumber(
             timeout: Duration(seconds: 30),
             phoneNumber: "+255$phone",
+
             verificationCompleted: ((phoneAuthCredential) async {
               return;
             }),

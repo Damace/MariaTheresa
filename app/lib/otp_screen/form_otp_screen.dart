@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -45,7 +46,7 @@ class FormOtpScreen extends GetWidget<FormOtpController> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: Padding(
-          padding: EdgeInsets.only(top: 25.v, left: 10.h, right: 10.h),
+          padding: EdgeInsets.only(top: 50.v, left: 10.h, right: 10.h),
           child: Container(
               width: double.maxFinite,
               //padding: getPadding(left: 24, top: 22, right: 24, bottom: 22),
@@ -138,40 +139,36 @@ class FormOtpScreen extends GetWidget<FormOtpController> {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            Get.to(OtpSuccess(),
+                          
+
+                            if (formkey.currentState!.validate()) {
+                              AuthService.loginWithOtp(otp: otpController.text)
+                                  .then((value) async {
+                                if (value == "Success") {
+                                   Get.to(OtpSuccess(),
                                 duration: Duration(milliseconds: 500),
                                 transition:
                                     Transition.fadeIn //transition effect
                                 );
+                                  final SharedPreferences pref =
+                                      await SharedPreferences.getInstance();
+                                  pref.setString("phoneVerified", "true");
 
-                            // if (formkey.currentState!.validate()) {
-                            //   AuthService.loginWithOtp(otp: otpController.text)
-                            //       .then((value) async {
-                            //     if (value == "Success") {
-                            //       Get.toNamed(
-
-                            //         AppRoutes.homescreen,
-
-                            //       );
-                            //       final SharedPreferences pref =
-                            //           await SharedPreferences.getInstance();
-                            //       pref.setString("phoneVerified", "true");
-
-                            //     } else {
-                            //       Get.snackbar(
-                            //         "Error",
-                            //         "Invalid OTP Codes",
-                            //         snackPosition: SnackPosition.TOP,
-                            //         backgroundColor: Colors.red,
-                            //         colorText: Colors.white,
-                            //         icon: const Icon(Icons.error,
-                            //             color: Colors.white),
-                            //         shouldIconPulse: true,
-                            //         barBlur: 20,
-                            //       );
-                            //     }
-                            //   });
-                            // }
+                                } else {
+                                  Get.snackbar(
+                                    "Error",
+                                    "Invalid OTP Codes",
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: Colors.red,
+                                    colorText: Colors.white,
+                                    icon: const Icon(Icons.error,
+                                        color: Colors.white),
+                                    shouldIconPulse: true,
+                                    barBlur: 20,
+                                  );
+                                }
+                              });
+                            }
                           },
                           style: ButtonStyle(
                               elevation: MaterialStateProperty.all(32),
@@ -201,12 +198,23 @@ class FormOtpScreen extends GetWidget<FormOtpController> {
                             //         fontSize: 12.fSize,
                             //         fontWeight: FontWeight.bold,
                             //         color: appTheme.defaultcolor)),
-                            Text("Resend OTP Code",
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                    fontSize: 12.fSize,
-                                    fontWeight: FontWeight.bold,
-                                    color: appTheme.defaultcolor)),
+                            InkWell(
+                              onTap: () {
+                                Fluttertoast.showToast(
+                                    msg: "Requesting new OTP ....",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    textColor: Colors.white,
+                                    fontSize: 14.0.fSize);
+                              },
+                              child: Text("Resend OTP Code",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                      fontSize: 12.fSize,
+                                      fontWeight: FontWeight.bold,
+                                      color: appTheme.defaultcolor)),
+                            ),
                           ]),
                     )
                   ])),
@@ -215,23 +223,9 @@ class FormOtpScreen extends GetWidget<FormOtpController> {
     );
   }
 
-  Widget _buildLoginButton() {
-    return ElevatedButton(
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Color.fromARGB(255, 7, 105, 64),
-        shape: const StadiumBorder(),
-        elevation: 20,
-        shadowColor: myColor,
-        minimumSize: const Size.fromHeight(60),
-      ),
-      child: const Text("Verify OTP"),
-    );
-  }
-
-  onTapBtnArrowleft() {
-    Get.back();
-  }
+  // onTapBtnArrowleft() {
+  //   Get.back();
+  // }
 
   // onTapSubmit() {
   //   Get.toNamed(

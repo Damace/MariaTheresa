@@ -6,6 +6,7 @@ import 'package:app/otp_screen/otp_successifuly_verified.dart';
 import 'package:app/theme/theme_helper.dart';
 import 'package:app/usajiri/Untitled-1.dart';
 import 'package:app/usajiri/usajiri.dart';
+import 'package:app/usajiri/usajiri_wageni.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -149,7 +150,11 @@ class _Usajiri_jumuiya extends State<Usajiri_jumuiya> {
                                       Transition.fadeIn //transition effect
                                   );
                             } else {
-                              print(_selectedValue);
+                              Get.to(Usajiriwagani(),
+                                  duration: Duration(milliseconds: 500),
+                                  transition:
+                                      Transition.fadeIn //transition effect
+                                  );
                             }
                           },
                           style: ButtonStyle(

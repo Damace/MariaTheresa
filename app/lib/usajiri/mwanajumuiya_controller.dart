@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:app/core/utils/size_utils.dart';
+import 'package:app/jumuiya/jumuiya_home.dart';
 import 'package:app/modals/all_modals.dart';
 import 'package:app/routes/app_routes.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,7 +16,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 
-class UsajiriController extends GetxController with CodeAutoFill {
+class MwanajumuiyaController extends GetxController with CodeAutoFill {
   var isLoading = false.obs;
   var jumuiya = <Jumuiya>[].obs;
   var selectedJumuiya = Rx<Jumuiya?>(null);
@@ -77,14 +78,9 @@ class UsajiriController extends GetxController with CodeAutoFill {
     'Gethesmani'
   ];
 
-  List data = [];
-  String? value;
+  String shared_jumuiya = '';
 
   void submit() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('jina', "${majinaKamili.text}");
-    prefs.setString('jumuiya', "${value}");
-
     String url = "https://app.parokiayakiwanjachandege.or.tz/wanaparokia";
 
     var response = await http.post(Uri.parse(url), body: {
@@ -98,15 +94,13 @@ class UsajiriController extends GetxController with CodeAutoFill {
       "mtaa": "${mtaa_value}",
       "kanda": "${kanda_value}",
       "namba": "${namba.text}",
-      "jumuiya": "${value}",
+      "jumuiya": "${shared_jumuiya}",
       "password": "${password.text}"
     });
 
     var rensponse = jsonDecode(response.body);
 
     if (rensponse["status"] == true) {
-      prefs.setString('registered', "true");
-
       Get.snackbar(
         "",
         "",
@@ -128,7 +122,10 @@ class UsajiriController extends GetxController with CodeAutoFill {
       majinaKamili.clear();
       namba.clear();
       password.clear();
-      Get.toNamed(AppRoutes.homescreen);
+      Get.to(Jumuiya_home(),
+          duration: Duration(milliseconds: 500),
+          transition: Transition.fadeIn //transition effect
+          );
     } else {
       Fluttertoast.showToast(
           msg: "Check for internet Connection",
