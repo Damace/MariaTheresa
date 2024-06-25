@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 
-class UsajiriController extends GetxController with CodeAutoFill {
+class UsajiriWageniController extends GetxController with CodeAutoFill {
   var isLoading = false.obs;
   var jumuiya = <Jumuiya>[].obs;
   var selectedJumuiya = Rx<Jumuiya?>(null);
@@ -97,9 +97,9 @@ class UsajiriController extends GetxController with CodeAutoFill {
       "kipaimara": "${kipaimara_value}",
       "ndoa": "${ndoa_value}",
       "mtaa": "${mtaa_value}",
-      "kanda": "${kanda_value}",
+      "kanda": "",
       "namba": "${phone_num}",
-      "jumuiya": "${value}",
+      "jumuiya": "Mgeni",
       "password": "${password2.text}"
     });
 
@@ -111,10 +111,10 @@ class UsajiriController extends GetxController with CodeAutoFill {
       Fluttertoast.showToast(
           msg: "Karibu",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           textColor: Colors.white,
-          fontSize: 16.0);
+          fontSize: 12.0);
 
       majinaKamili.clear();
       password.clear();

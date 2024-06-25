@@ -25,6 +25,7 @@ class HomeController extends GetxController {
   var ratibaList = <Ratiba>[].obs;
   var fomuList = <Fomu>[].obs;
   var matangazoList = <Matangazo>[].obs;
+  var matangazofile = <MatangazoFile>[].obs;
   var parokiaMatukioList = <ParokiaMatukio>[].obs;
   var isLoading = true.obs;
   var isConnected = false.obs;
@@ -100,6 +101,30 @@ class HomeController extends GetxController {
         parokiaMatukioList.value = jsonResponse
             .map((album) => ParokiaMatukio.fromJson(album))
             .toList();
+      } else {
+        Fluttertoast.showToast(
+            msg: " Hakuna Tukio",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            textColor: Colors.white,
+            fontSize: 14.0.fSize);
+      }
+    } finally {
+      isLoading(false);
+    }
+  }
+
+  void fetchMatangazo() async {
+    try {
+      isLoading(true);
+      final response = await http.get(Uri.parse(
+          'https://app.parokiayakiwanjachandege.or.tz/matangazo_app'));
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body) as List;
+        print(jsonResponse);
+        matangazofile.value =
+            jsonResponse.map((album) => MatangazoFile.fromJson(album)).toList();
       } else {
         Fluttertoast.showToast(
             msg: " Hakuna Tukio",

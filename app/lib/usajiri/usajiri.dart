@@ -14,6 +14,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Usajiri extends StatefulWidget {
   @override
   _Usajiri createState() => _Usajiri();
@@ -29,11 +31,20 @@ class _Usajiri extends State<Usajiri> {
     super.initState();
 
     fetchdata();
+    _loadNumber();
   }
 
   void _handleRadioValueChange(String? value) {
     setState(() {
       usajiliController.selectedValue = value!;
+    });
+  }
+
+  // Load username from SharedPreferences
+  Future<void> _loadNumber() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      usajiliController.phone_num = prefs.getString('phone_number') ?? '';
     });
   }
 
@@ -442,93 +453,13 @@ class _Usajiri extends State<Usajiri> {
                       Row(
                         children: [
                           Text(
-                            "Mawasiliano / Namba ya Siri",
+                            "Namba ya Siri",
                             style: TextStyle(
                                 color: appTheme.defaultcolor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14.fSize),
                           )
                         ],
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.05),
-                                    borderRadius: BorderRadius.circular(8)),
-                                child: FormBuilderTextField(
-                                  keyboardType: TextInputType.visiblePassword,
-                                  cursorColor: appTheme.defaultcolor,
-                                  readOnly: true,
-                                  controller: usajiliController.namba,
-                                  name: 'phone_number',
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.transparent),
-                                    ),
-                                    prefixIcon: Icon(
-                                      Icons.person_outline_sharp,
-                                      size: 23.fSize,
-                                      color: appTheme.defaultcolor,
-                                    ),
-                                    labelText: "Namba ya Simu",
-                                    labelStyle: TextStyle(
-                                        color: appTheme.defaultcolor,
-                                        fontSize: 12.fSize),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5.h,
-                            ),
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.05),
-                                    borderRadius: BorderRadius.circular(8)),
-                                child: FormBuilderTextField(
-                                  validator: FormBuilderValidators.compose([
-                                    FormBuilderValidators.required(),
-                                  ]),
-                                  obscureText: obscurePassword,
-                                  controller: usajiliController.password,
-                                  keyboardType: TextInputType.visiblePassword,
-                                  cursorColor: appTheme.defaultcolor,
-                                  name: 'password',
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.transparent),
-                                    ),
-                                    prefixIcon: InkWell(
-                                      onTap: () {
-                                        obscurePassword = !obscurePassword;
-                                        setState(() {});
-                                      },
-                                      child: Icon(
-                                        obscurePassword
-                                            ? Icons.lock
-                                            : Icons.lock_open,
-                                        size: 23.fSize,
-                                        color: appTheme.defaultcolor,
-                                      ),
-                                    ),
-                                    labelText: "Namba ya Siri (Password)",
-                                    labelStyle: TextStyle(
-                                        color: appTheme.defaultcolor,
-                                        fontSize: 12.fSize),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
 
                       SizedBox(height: 10.v),
@@ -561,7 +492,7 @@ class _Usajiri extends State<Usajiri> {
                                 color: appTheme.defaultcolor,
                               ),
                             ),
-                            labelText: "Hakikisha namba ya siri (Password)",
+                            labelText: "Namba ya siri (Password)",
                             labelStyle: TextStyle(
                                 color: appTheme.defaultcolor,
                                 fontSize: 12.fSize),

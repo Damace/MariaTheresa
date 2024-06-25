@@ -18,6 +18,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MaoniController extends GetxController {
   static var client = http.Client();
@@ -30,16 +31,19 @@ class MaoniController extends GetxController {
   }
 
   void submit() async {
-    // Get.toNamed(AppRoutes.jumuiya_home);
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    var jina = pref.getString('jina') ?? '';
+    var namba = pref.getString("phone_number") ?? '';
+    var jumuiya_a = pref.getString("jumuiya") ?? '';
 
     var _maoni = maoniTextfield.text;
 
-    String url = "http://192.168.0.3:8000/maoni";
+    String url = "https://app.parokiayakiwanjachandege.or.tz/maoni";
 
     var response = await http.post(Uri.parse(url), body: {
-      "namba_ya_simu": "078887878",
-      "majina_kamili": "Alex Mwakalikamo",
-      "contents": "$_maoni"
+      "namba_ya_simu": "${namba}",
+      "majina_kamili": "${jina}",
+      "contents": "${_maoni}"
     });
 
     var rensponse = jsonDecode(response.body);

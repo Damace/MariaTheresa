@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unused_import, unnecessary_new, sort_child_properties_last, unused_field
 
 import 'dart:convert';
-
 import 'package:animate_do/animate_do.dart';
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/jumuiya/jumuiya_home.dart';

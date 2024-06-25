@@ -3,6 +3,7 @@
 import 'package:app/core/utils/size_utils.dart';
 import 'package:app/theme/theme_helper.dart';
 import 'package:app/usajiri/usajili_controler.dart';
+import 'package:app/usajiri/usajili_wageni_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,13 +15,16 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Usajiriwagani extends StatefulWidget {
   @override
   _Usajiriwagani createState() => _Usajiriwagani();
 }
 
 class _Usajiriwagani extends State<Usajiriwagani> {
-  UsajiriController usajiliController = Get.put(UsajiriController());
+  UsajiriWageniController usajiliController =
+      Get.put(UsajiriWageniController());
 
   bool obscurePassword = true;
 
@@ -29,11 +33,20 @@ class _Usajiriwagani extends State<Usajiriwagani> {
     super.initState();
 
     fetchdata();
+    _loadNumber();
   }
 
   void _handleRadioValueChange(String? value) {
     setState(() {
       usajiliController.selectedValue = value!;
+    });
+  }
+
+  // Load username from SharedPreferences
+  Future<void> _loadNumber() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      usajiliController.phone_num = prefs.getString('phone_number') ?? '';
     });
   }
 
@@ -330,7 +343,7 @@ class _Usajiriwagani extends State<Usajiriwagani> {
                       Row(
                         children: [
                           Text(
-                            "Taarifa za Jumuiya",
+                            "Mtaa unaotoka",
                             style: TextStyle(
                                 color: appTheme.defaultcolor,
                                 fontWeight: FontWeight.bold,
@@ -340,7 +353,7 @@ class _Usajiriwagani extends State<Usajiriwagani> {
                       ),
 
                       Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             // **************************************************************************************
 
@@ -371,67 +384,6 @@ class _Usajiriwagani extends State<Usajiriwagani> {
                             ),
 
                             // **************************************************************************************
-                            SizedBox(
-                              width: 10.h,
-                            ),
-                            Expanded(
-                                child: Obx(
-                              () => DropdownButton<String>(
-                                value: usajiliController.kanda_value.value,
-                                onChanged: (newValue) {
-                                  usajiliController.kanda_value.value =
-                                      newValue!;
-                                },
-                                items: usajiliController.kanda_options
-                                    .map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(
-                                      value,
-                                      style: TextStyle(
-                                          fontSize: 12.fSize,
-                                          fontWeight: FontWeight.bold,
-                                          color: appTheme.defaultcolor),
-                                    ),
-                                  );
-                                }).toList(),
-                              ),
-                            )),
-                            SizedBox(
-                              width: 10.h,
-                            ),
-
-                            Expanded(
-                              child: DropdownButton(
-                                hint: Text(
-                                  "Jumuiya",
-                                  style: TextStyle(
-                                      fontSize: 12.fSize,
-                                      fontWeight: FontWeight.bold,
-                                      color: appTheme.defaultcolor),
-                                ),
-                                items: usajiliController.data.map((e) {
-                                  return DropdownMenuItem(
-                                      child: Text(
-                                        e["jina"],
-                                        style: TextStyle(
-                                            fontSize: 12.fSize,
-                                            fontWeight: FontWeight.bold,
-                                            color: appTheme.defaultcolor),
-                                      ),
-                                      value: e["jina"]);
-                                }).toList(),
-                                value: usajiliController.value,
-                                onChanged: (v) {
-                                  usajiliController.value = v as String;
-                                  setState(() {
-                                    // print(usajiliController.value);
-                                    usajiliController.value = v;
-                                  });
-                                },
-                              ),
-                            ),
                           ]),
 
 // -----------------------------------------------------------------------------------------
@@ -449,86 +401,6 @@ class _Usajiriwagani extends State<Usajiriwagani> {
                                 fontSize: 14.fSize),
                           )
                         ],
-                      ),
-
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.05),
-                                    borderRadius: BorderRadius.circular(8)),
-                                child: FormBuilderTextField(
-                                  keyboardType: TextInputType.visiblePassword,
-                                  cursorColor: appTheme.defaultcolor,
-                                  readOnly: true,
-                                  controller: usajiliController.namba,
-                                  name: 'phone_number',
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.transparent),
-                                    ),
-                                    prefixIcon: Icon(
-                                      Icons.person_outline_sharp,
-                                      size: 23.fSize,
-                                      color: appTheme.defaultcolor,
-                                    ),
-                                    labelText: "Namba ya Simu",
-                                    labelStyle: TextStyle(
-                                        color: appTheme.defaultcolor,
-                                        fontSize: 12.fSize),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5.h,
-                            ),
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.05),
-                                    borderRadius: BorderRadius.circular(8)),
-                                child: FormBuilderTextField(
-                                  validator: FormBuilderValidators.compose([
-                                    FormBuilderValidators.required(),
-                                  ]),
-                                  obscureText: obscurePassword,
-                                  controller: usajiliController.password,
-                                  keyboardType: TextInputType.visiblePassword,
-                                  cursorColor: appTheme.defaultcolor,
-                                  name: 'password',
-                                  decoration: InputDecoration(
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.transparent),
-                                    ),
-                                    prefixIcon: InkWell(
-                                      onTap: () {
-                                        obscurePassword = !obscurePassword;
-                                        setState(() {});
-                                      },
-                                      child: Icon(
-                                        obscurePassword
-                                            ? Icons.lock
-                                            : Icons.lock_open,
-                                        size: 23.fSize,
-                                        color: appTheme.defaultcolor,
-                                      ),
-                                    ),
-                                    labelText: "Namba ya Siri (Password)",
-                                    labelStyle: TextStyle(
-                                        color: appTheme.defaultcolor,
-                                        fontSize: 12.fSize),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
 
                       SizedBox(height: 10.v),

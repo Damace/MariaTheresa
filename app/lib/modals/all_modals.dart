@@ -213,21 +213,23 @@ class ParokiaMatukio {
 //********************************************************************************************** */
 
 class Wanaparokia {
-  Wanaparokia({
-    required this.id,
-    required this.majinaKamili,
-    required this.jumuiya,
-  });
+  Wanaparokia(
+      {required this.id,
+      required this.majinaKamili,
+      required this.jumuiya,
+      required this.isChecked});
 
   final int? id;
   final String? majinaKamili;
   final String? jumuiya;
+  bool? isChecked;
 
   factory Wanaparokia.fromJson(Map<String, dynamic> json) {
     return Wanaparokia(
       id: json["id"],
       majinaKamili: json["majina_kamili"],
       jumuiya: json["jumuiya"],
+      isChecked: json["isChecked"],
     );
   }
 
@@ -235,5 +237,38 @@ class Wanaparokia {
         "id": id,
         "majina_kamili": majinaKamili,
         "jumuiya": jumuiya,
+        "isChecked": isChecked,
+      };
+}
+
+//******************************************************************************************************/
+
+class Mapadri {
+  Mapadri({
+    required this.id,
+    required this.majinaKamili,
+    required this.cheo,
+    required this.nambaYaSimu,
+  });
+
+  final int? id;
+  final String? majinaKamili;
+  final String? cheo;
+  final String? nambaYaSimu;
+
+  factory Mapadri.fromJson(Map<String, dynamic> json) {
+    return Mapadri(
+      id: json["id"],
+      majinaKamili: json["majina_kamili"],
+      cheo: json["cheo"],
+      nambaYaSimu: json["namba_ya_simu"],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "majina_kamili": majinaKamili,
+        "cheo": cheo,
+        "namba_ya_simu": nambaYaSimu,
       };
 }

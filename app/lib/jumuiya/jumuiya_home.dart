@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, duplicate_import
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_import, duplicate_import, unused_local_variable
 import 'dart:convert';
 import 'dart:ffi';
 
@@ -20,6 +20,7 @@ import 'package:app/theme/theme_helper.dart';
 import 'package:app/usajiri/mwanajumuiya.dart';
 import 'package:app/usajiri/usajiri.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -45,6 +46,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
   final formkey = GlobalKey<FormState>();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   JumuiyaController mahudhurioController = Get.put(JumuiyaController());
+  JumuiyaController wanajumuiyaController = Get.put(JumuiyaController());
 
   TextEditingController jumuiya = TextEditingController();
 
@@ -55,7 +57,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
     super.initState();
 
     _loadJumuiya();
-    mahudhurioController.fetchMatango();
+    wanajumuiyaController.fetchWanaparokia();
   }
 
   // Load username from SharedPreferences
@@ -68,125 +70,133 @@ class _Jumuiya_home extends State<Jumuiya_home> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: appTheme.defaultcolor,
-          foregroundColor: Colors.white,
-          automaticallyImplyLeading: false,
-          title: Text(
-            "Jumuiya ya ${mahudhurioController.shared_jumuiya}",
-            style: TextStyle(
-              fontSize: 16.fSize,
-            ),
-          ),
-          centerTitle: true,
-        ),
-        body: Container(
-            child: DefaultTabController(
-          length: 2,
-          child: Column(
-            children: [
-              Container(
-                child: TabBar(
-                  padding: EdgeInsets.all(2),
-                  indicatorColor: appTheme.defaultcolor,
-                  tabAlignment: TabAlignment.center,
-                  isScrollable: true,
-                  labelColor: appTheme.defaultcolor,
-                  labelStyle: TextStyle(
-                      fontWeight: FontWeight.normal, fontSize: 12.fSize),
-                  unselectedLabelColor: Colors.black,
-                  tabs: [
-                    Tab(
-                      icon: Icon(Icons.church,
-                          size: 16.fSize, color: appTheme.defaultcolor),
-                      text: "Mt.Albeto Hutado",
-                    ),
-                    Tab(
-                      icon: Icon(Icons.people,
-                          size: 16.fSize, color: appTheme.defaultcolor),
-                      text: "Mahudhulio Jumiyani",
-                    ),
-                  ],
-                ),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) {
+        if (kDebugMode) {
+          // print("$didPop");
+        }
+      },
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: appTheme.defaultcolor,
+            foregroundColor: Colors.white,
+            automaticallyImplyLeading: false,
+            title: Text(
+              "Jumuiya ya ${mahudhurioController.shared_jumuiya}",
+              style: TextStyle(
+                fontSize: 16.fSize,
               ),
-              Container(
-                height: 650.v,
-                child: TabBarView(
-                  children: [menuOne(context), mahudhulio(context)],
+            ),
+            centerTitle: true,
+          ),
+          body: Container(
+              child: DefaultTabController(
+            length: 2,
+            child: Column(
+              children: [
+                Container(
+                  child: TabBar(
+                    padding: EdgeInsets.all(2),
+                    indicatorColor: appTheme.defaultcolor,
+                    tabAlignment: TabAlignment.center,
+                    isScrollable: true,
+                    labelColor: appTheme.defaultcolor,
+                    labelStyle: TextStyle(
+                        fontWeight: FontWeight.normal, fontSize: 12.fSize),
+                    unselectedLabelColor: Colors.black,
+                    tabs: [
+                      Tab(
+                        icon: Icon(Icons.church,
+                            size: 16.fSize, color: appTheme.defaultcolor),
+                        text: "${mahudhurioController.shared_jumuiya}",
+                      ),
+                      Tab(
+                        icon: Icon(Icons.people,
+                            size: 16.fSize, color: appTheme.defaultcolor),
+                        text: "Mahudhulio Jumiyani",
+                      ),
+                    ],
+                  ),
                 ),
-              )
+                Container(
+                  height: 650.v,
+                  child: TabBarView(
+                    children: [menuOne(context), mahudhulio(context)],
+                  ),
+                )
+              ],
+            ),
+          )),
+          bottomNavigationBar: BottomNavigationBar(
+            showUnselectedLabels: true,
+            showSelectedLabels: true,
+            backgroundColor: Colors.white,
+            unselectedItemColor: appTheme.defaultcolor,
+            selectedItemColor: appTheme.defaultcolor,
+            selectedFontSize: 12.fSize,
+            unselectedFontSize: 12.fSize,
+            items: [
+              BottomNavigationBarItem(
+                icon: InkWell(
+                  onTap: () {
+                    Get.to(HomeScreen(),
+                        duration: Duration(milliseconds: 500),
+                        transition: Transition.fadeIn //transition effect
+                        );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 2.v),
+                    child: Icon(
+                      FontAwesomeIcons.church,
+                      size: 23.fSize,
+                    ),
+                  ),
+                ),
+                label: 'K/ndege',
+                backgroundColor: Colors.white,
+              ),
+              BottomNavigationBarItem(
+                icon: InkWell(
+                  onTap: () {
+                    Get.to(Taarifa_za_Michango(),
+                        duration: Duration(milliseconds: 500),
+                        transition: Transition.fadeIn //transition effect
+                        );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 2.v),
+                    child: Icon(
+                      FontAwesomeIcons.list,
+                      size: 23.fSize,
+                    ),
+                  ),
+                ),
+                label: 'Taarifa za Michango',
+                backgroundColor: Colors.white,
+              ),
+              BottomNavigationBarItem(
+                icon: InkWell(
+                  onTap: () {
+                    Get.to(Jumuiya_sensa(),
+                        duration: Duration(milliseconds: 500),
+                        transition: Transition.fadeIn //transition effect
+                        );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 2.v),
+                    child: Icon(
+                      FontAwesomeIcons.peopleGroup,
+                      size: 23.fSize,
+                    ),
+                  ),
+                ),
+                label: 'Sensa',
+                backgroundColor: Colors.white,
+              ),
             ],
-          ),
-        )),
-        bottomNavigationBar: BottomNavigationBar(
-          showUnselectedLabels: true,
-          showSelectedLabels: true,
-          backgroundColor: Colors.white,
-          unselectedItemColor: appTheme.defaultcolor,
-          selectedItemColor: appTheme.defaultcolor,
-          selectedFontSize: 12.fSize,
-          unselectedFontSize: 12.fSize,
-          items: [
-            BottomNavigationBarItem(
-              icon: InkWell(
-                onTap: () {
-                  Get.to(HomeScreen(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 2.v),
-                  child: Icon(
-                    FontAwesomeIcons.church,
-                    size: 23.fSize,
-                  ),
-                ),
-              ),
-              label: 'K/ndege',
-              backgroundColor: Colors.white,
-            ),
-            BottomNavigationBarItem(
-              icon: InkWell(
-                onTap: () {
-                  Get.to(Taarifa_za_Michango(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 2.v),
-                  child: Icon(
-                    FontAwesomeIcons.list,
-                    size: 23.fSize,
-                  ),
-                ),
-              ),
-              label: 'Taarifa za Michango',
-              backgroundColor: Colors.white,
-            ),
-            BottomNavigationBarItem(
-              icon: InkWell(
-                onTap: () {
-                  Get.to(Jumuiya_sensa(),
-                      duration: Duration(milliseconds: 500),
-                      transition: Transition.fadeIn //transition effect
-                      );
-                },
-                child: Container(
-                  margin: EdgeInsets.only(bottom: 2.v),
-                  child: Icon(
-                    FontAwesomeIcons.peopleGroup,
-                    size: 23.fSize,
-                  ),
-                ),
-              ),
-              label: 'Sensa',
-              backgroundColor: Colors.white,
-            ),
-          ],
-        ));
+          )),
+    );
   }
 
   menuOne(BuildContext context) {
@@ -343,7 +353,15 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                             child: Column(
                               children: [
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Fluttertoast.showToast(
+                                        msg: "Comming Sooon",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.SNACKBAR,
+                                        timeInSecForIosWeb: 1,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  },
                                   child: Card(
                                       // color: appTheme.defaultcolor,
                                       shadowColor: Colors.grey,
@@ -610,7 +628,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                       child: Padding(
                         padding: EdgeInsets.all(14.0),
                         child: Text(
-                          'Submit',
+                          'Wasilisha',
                           style: TextStyle(fontSize: 16.fSize),
                         ),
                       ),
@@ -816,7 +834,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                       child: Padding(
                         padding: EdgeInsets.all(14.0),
                         child: Text(
-                          'Submit',
+                          'Wasilisha',
                           style: TextStyle(fontSize: 16.fSize),
                         ),
                       ),
@@ -1277,7 +1295,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                           width: 5.h,
                         ),
                         Text(
-                          "Mahudhulio ya Jumamosi",
+                          "Mahudhulio jumuiyani",
                           style: TextStyle(
                               fontSize: 13.fSize, fontWeight: FontWeight.bold),
                         ),
@@ -1294,38 +1312,48 @@ class _Jumuiya_home extends State<Jumuiya_home> {
               padding: EdgeInsets.only(top: 8.0),
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.2),
+                    color: Colors.black.withOpacity(0.1),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(8),
                         topRight: Radius.circular(8))),
-                height: 460.v,
+                height: 330.v,
                 child: Obx(
-                  () => mahudhurioController.mahudhurioList.isNotEmpty
+                  () => mahudhurioController.wanaparokiaList.isNotEmpty
                       ? ListView.builder(
-                          itemCount: mahudhurioController.mahudhurioList.length,
+                          itemCount:
+                              mahudhurioController.wanaparokiaList.length,
                           itemBuilder: (context, int index) {
                             return CheckboxListTile(
                               shape: CircleBorder(),
-                              title: Text(mahudhurioController
-                                  .mahudhurioList[index].mwanajumuiya),
+                              title: Text(
+                                mahudhurioController
+                                    .wanaparokiaList[index].majinaKamili
+                                    .toString(),
+                                style: TextStyle(
+                                    fontSize: 14.fSize,
+                                    color: appTheme.defaultcolor),
+                              ),
                               value: mahudhurioController
-                                  .mahudhurioList[index].isChecked,
+                                  .wanaparokiaList[index].isChecked,
                               onChanged: (bool? value) {
                                 if (mahudhurioController.items.contains(
                                     mahudhurioController
-                                        .mahudhurioList[index].mwanajumuiya)) {
+                                        .wanaparokiaList[index].majinaKamili
+                                        .toString())) {
                                   mahudhurioController.items.remove(
                                       mahudhurioController
-                                          .mahudhurioList[index].mwanajumuiya);
+                                          .wanaparokiaList[index].majinaKamili
+                                          .toString());
                                 } else {
                                   mahudhurioController.items.add(
                                       mahudhurioController
-                                          .mahudhurioList[index].mwanajumuiya);
+                                          .wanaparokiaList[index].majinaKamili
+                                          .toString());
                                 }
 
                                 setState(() {
-                                  mahudhurioController
-                                      .mahudhurioList[index].isChecked = value!;
+                                  mahudhurioController.wanaparokiaList[index]
+                                      .isChecked = value!;
                                 });
                               },
                             );
@@ -1339,9 +1367,8 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                 ),
               ),
             ),
-            Spacer(flex: 3),
             Padding(
-              padding: EdgeInsets.only(bottom: 10.v),
+              padding: EdgeInsets.only(top: 20.v),
               child: SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -1362,7 +1389,7 @@ class _Jumuiya_home extends State<Jumuiya_home> {
                   child: Padding(
                     padding: EdgeInsets.all(14.0),
                     child: Text(
-                      'Submit',
+                      'Wasilisha',
                       style: TextStyle(fontSize: 14),
                     ),
                   ),

@@ -35,12 +35,12 @@ class Jumuiya_login_Controller extends GetxController {
   submit() async {
     if (jumuiya_password.text.isEmpty) {
       Fluttertoast.showToast(
-          msg: "Password is required",
+          msg: "Password inahitajika",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           textColor: Colors.white,
-          fontSize: 16.0);
+          fontSize: 12.0);
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('jumuiya_', "${value}");
@@ -55,23 +55,13 @@ class Jumuiya_login_Controller extends GetxController {
       var rensponse = jsonDecode(response.body);
 
       if (rensponse["status"] == true) {
-        Get.snackbar(
-          "",
-          "",
-          titleText: Text(
-            "Submitted Successfully",
-            style: TextStyle(
-              fontSize: 14.fSize,
-              color: Colors.white,
-            ),
-          ),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.green[800],
-          colorText: Colors.white,
-          icon: const Icon(Icons.church, color: Colors.white),
-          shouldIconPulse: true,
-          barBlur: 20,
-        );
+        Fluttertoast.showToast(
+            msg: "Karibu",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            textColor: Colors.white,
+            fontSize: 12.0);
 
         jumuiya_password.clear();
 
@@ -82,12 +72,12 @@ class Jumuiya_login_Controller extends GetxController {
       } else {
         jumuiya_password.clear();
         Fluttertoast.showToast(
-            msg: "Wrong Password",
+            msg: "Password Siyo Sahihi",
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             textColor: Colors.white,
-            fontSize: 16.0);
+            fontSize: 12.0);
       }
     }
   }

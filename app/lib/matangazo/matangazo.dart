@@ -59,6 +59,13 @@ class _Matanga_zo extends State<Matanga_zo> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                matangazo_mengine(context);
+              },
+              icon: const Icon(Icons.list))
+        ],
       ),
       body: Container(
         child: Column(
@@ -79,36 +86,47 @@ class _Matanga_zo extends State<Matanga_zo> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  height: 250.v,
-                                  decoration: BoxDecoration(
-                                    color:
-                                        appTheme.defaultcolor.withOpacity(0.1),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
-                                  ),
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 2.h, right: 2.h),
-                                    child: SizedBox(
-                                      height: 2 * 50.0,
-                                      child: FormBuilderTextField(
-                                        style: TextStyle(
-                                            fontSize: 14.fSize,
-                                            color: appTheme.defaultcolor),
-                                        textAlign: TextAlign.start,
-                                        readOnly: true,
-                                        maxLines: 1000,
-                                        controller: tangazoTextfield,
-                                        cursorColor: appTheme.defaultcolor,
-                                        name: '',
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          enabledBorder: UnderlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.black
-                                                    .withOpacity(0.15)),
-                                          ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${dataController.matangazoList[index].dominika}.",
+                                      style: TextStyle(
+                                          fontSize: 12.fSize,
+                                          fontWeight: FontWeight.bold,
+                                          color: appTheme.defaultcolor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 250.v,
+                                decoration: BoxDecoration(
+                                  color: appTheme.defaultcolor.withOpacity(0.1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                ),
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 2.h, right: 2.h),
+                                  child: SizedBox(
+                                    height: 2 * 50.0,
+                                    child: FormBuilderTextField(
+                                      style: TextStyle(
+                                          fontSize: 14.fSize,
+                                          color: appTheme.defaultcolor),
+                                      textAlign: TextAlign.start,
+                                      readOnly: true,
+                                      maxLines: 1000,
+                                      controller: tangazoTextfield,
+                                      cursorColor: appTheme.defaultcolor,
+                                      name: '',
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        enabledBorder: UnderlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.black
+                                                  .withOpacity(0.15)),
                                         ),
                                       ),
                                     ),
@@ -127,16 +145,6 @@ class _Matanga_zo extends State<Matanga_zo> {
                                     SizedBox(
                                       width: 12,
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        matangazo_mengine(context);
-                                      },
-                                      child: Icon(
-                                        FontAwesomeIcons.list,
-                                        color: appTheme.defaultcolor,
-                                        size: 32.fSize,
-                                      ),
-                                    )
                                   ],
                                 ),
                               )
@@ -148,11 +156,23 @@ class _Matanga_zo extends State<Matanga_zo> {
                   : Center(
                       child: Padding(
                         padding: EdgeInsets.only(top: 100.v),
-                        child: BounceInUp(
-                          child: GFLoader(
-                              size: GFSize.SMALL,
-                              loaderstrokeWidth: 2,
-                              type: GFLoaderType.ios),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            BounceInUp(
+                              child: GFLoader(
+                                  size: GFSize.SMALL,
+                                  loaderstrokeWidth: 2,
+                                  type: GFLoaderType.ios),
+                            ),
+                            Text(
+                              "Subiri kidogo ...",
+                              style: TextStyle(
+                                  fontSize: 11.5.fSize,
+                                  color: appTheme.defaultcolor,
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
                         ),
                       ),
                     ),
@@ -164,7 +184,7 @@ class _Matanga_zo extends State<Matanga_zo> {
   }
 
   matangazo_mengine(BuildContext context) {
-    // HomeController formController = Get.put(HomeController());
+    HomeController dataController = Get.put(HomeController());
     showModalBottomSheet(
       isDismissible: true,
       enableDrag: false,
@@ -245,11 +265,11 @@ class _Matanga_zo extends State<Matanga_zo> {
                 height: 10,
               ),
               Obx(
-                () => dataController.matangazoList_file.isNotEmpty
+                () => dataController.matangazofile.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
                           //shrinkWrap: true,
-                          itemCount: dataController.matangazoList_file.length,
+                          itemCount: dataController.matangazofile.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                                 leading: const Icon(
@@ -264,12 +284,10 @@ class _Matanga_zo extends State<Matanga_zo> {
                                           Get.back();
                                           downloadfile(
                                               dataController
-                                                  .matangazoList_file[index]
-                                                  .file
+                                                  .matangazofile[index].file
                                                   .toString(),
                                               dataController
-                                                  .matangazoList_file[index]
-                                                  .dominika
+                                                  .matangazofile[index].dominika
                                                   .toString());
                                         },
                                         child: Icon(
@@ -279,7 +297,7 @@ class _Matanga_zo extends State<Matanga_zo> {
                                         ),
                                       ),
                                 title: Text(
-                                  "${dataController.matangazoList_file[index].dominika}",
+                                  "${dataController.matangazofile[index].dominika}",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontSize: 14.fSize,

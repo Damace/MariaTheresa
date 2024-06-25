@@ -8,6 +8,7 @@ import 'package:app/wageni/wageni_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
@@ -98,6 +99,13 @@ class _Maoni extends State<Maoni> {
                       // jumuiya_login.register();
                       if (_fbKey.currentState!.validate()) {
                         maoni_Controller.submit();
+                        Fluttertoast.showToast(
+                            msg: "Sending ...",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
                       }
                     },
                     style: ButtonStyle(
@@ -114,7 +122,7 @@ class _Maoni extends State<Maoni> {
                     child: Padding(
                       padding: EdgeInsets.all(14.0),
                       child: Text(
-                        'Submit',
+                        'Wasilisha',
                         style: TextStyle(fontSize: 16.fSize),
                       ),
                     ),

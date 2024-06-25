@@ -24,16 +24,14 @@ class AppRoutes {
   static const String notification = '/notification';
   static const String phonenumber = '/phonenumber';
   static const String jumuiya_home = '/jumuiya_home';
-  static const String otp_screen = '/jumuiya_home';
+  static const String otp_screen = '/otp_screen';
   static const String form_otp_screen = '/form_otp_screen';
 
   static List<GetPage> pages = [
-
-   GetPage(
+    GetPage(
       name: profile,
-      page: () =>  Profile(),
+      page: () => Profile(),
     ),
-
     GetPage(
       name: form_otp_screen,
       page: () => FormOtpScreen(),

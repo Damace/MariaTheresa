@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 
 class GetRatiba {
   static var client = http.Client();
+  // ignore: body_might_complete_normally_nullable
   static Future<List<Ratiba>?> fetchRatiba() async {
     try {
       var response =

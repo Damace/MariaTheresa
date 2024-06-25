@@ -13,6 +13,7 @@ import 'package:app/modals/all_modals.dart';
 import 'package:app/notification/notification.dart';
 import 'package:app/profile_screen/profile.dart';
 import 'package:app/theme/theme_helper.dart';
+import 'package:app/vyama_vya_kitume/kitume.dart';
 import 'package:app/wageni/wageni_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -45,16 +46,26 @@ class _HomeScreen extends State<HomeScreen> {
   HomeController connections = Get.put(HomeController());
   MatangazoController dataController = Get.put(MatangazoController());
 
+  String title = '';
+  String jina = '';
+  String namba = '';
+  String jumuiya_a = '';
+
   @override
   void initState() {
     super.initState();
     connections.fetchFoms();
     connections.fetchMatango();
+    connections.fetchMatangazo();
     connections.fetchMatukio();
     dataController.fetchMatangazo_file();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+
+    //title = tangazoMain();
+
+    //print(title);
   }
 
   @override
@@ -63,7 +74,26 @@ class _HomeScreen extends State<HomeScreen> {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
+    // _loadJina();
+    pref_get();
   }
+
+  Future<void> pref_get() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      jina = prefs.getString('jina') ?? '';
+      namba = prefs.getString("phone_number") ?? '';
+      jumuiya_a = prefs.getString("jumuiya") ?? '';
+    });
+  }
+
+  // // Load username from SharedPreferences
+  // Future<void> _loadJina() async {
+  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   setState(() {
+  //     jina = prefs.getString('jina') ?? 'me';
+  //   });
+  // }
 
   final formkey = GlobalKey<FormState>();
 
@@ -260,28 +290,28 @@ class _HomeScreen extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 35.h,
-                    left: null,
-                    right: 7.h,
-                    bottom: null,
-                    child: InkWell(
-                      onTap: () {
-                        Get.to(Notification_screen(),
-                            duration: Duration(milliseconds: 500),
-                            transition: Transition.fadeIn //transition effect
-                            );
-                      },
-                      child: Badge(
-                        label: Text("0"),
-                        child: Icon(
-                          Icons.notifications_on_outlined,
-                          color: Colors.white,
-                          size: 25,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: 35.h,
+                  //   left: null,
+                  //   right: 7.h,
+                  //   bottom: null,
+                  //   child: InkWell(
+                  //     onTap: () {
+                  //       Get.to(Notification_screen(),
+                  //           duration: Duration(milliseconds: 500),
+                  //           transition: Transition.fadeIn //transition effect
+                  //           );
+                  //     },
+                  //     child: Badge(
+                  //       label: Text("0"),
+                  //       child: Icon(
+                  //         Icons.notifications_on_outlined,
+                  //         color: Colors.white,
+                  //         size: 25,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   Positioned(
                       top: 35.h,
                       left: 7.0,
@@ -309,37 +339,11 @@ class _HomeScreen extends State<HomeScreen> {
                                   )
                                 ],
                               )),
-                              PopupMenuItem(
-                                  child: Row(
-                                children: [
-                                  Icon(Icons.tv, size: 23.fSize),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(Tv(),
-                                          duration: Duration(milliseconds: 500),
-                                          transition: Transition
-                                              .fadeIn //transition effect
-                                          );
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text("Kndege TV"),
-                                    ),
-                                  )
-                                ],
-                              )),
-                              PopupMenuItem(
-                                  child: Row(
-                                children: [
-                                  Icon(Icons.call, size: 23.fSize),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10),
-                                    child: Text("Mawasiliano"),
-                                  )
-                                ],
-                              )),
                             ],
                           ))),
+
+                  //dwambura@gmail.com
+
                   Positioned(
                     top: 98.h,
                     left: 7.0,
@@ -450,7 +454,7 @@ class _HomeScreen extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                label: 'Me',
+                label: 'Profile',
                 backgroundColor: Colors.white,
               ),
             ],
@@ -762,19 +766,32 @@ class _HomeScreen extends State<HomeScreen> {
                             child: Container(
                               child: Column(
                                 children: [
-                                  Container(
-                                    width: 50.h,
-                                    height: 50.v,
-                                    child: Center(
-                                        child: Icon(
-                                      Icons.people_alt_outlined,
-                                      color: appTheme.defaultcolor,
-                                    )),
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.black)),
+                                  InkWell(
+                                    onTap: () {
+                                      setCategory("kwaya");
+                                      Get.to(Matanga_zo(),
+                                          arguments: {
+                                            "category": "Kwaya",
+                                          },
+                                          duration: Duration(milliseconds: 500),
+                                          transition: Transition
+                                              .fadeIn //transition effect
+                                          );
+                                    },
+                                    child: Container(
+                                      width: 50.h,
+                                      height: 50.v,
+                                      child: Center(
+                                          child: Icon(
+                                        Icons.people_alt_outlined,
+                                        color: appTheme.defaultcolor,
+                                      )),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white,
+                                          border:
+                                              Border.all(color: Colors.black)),
+                                    ),
                                   ),
                                   Text(
                                     "Kwaya",
@@ -815,8 +832,7 @@ class _HomeScreen extends State<HomeScreen> {
                                       width: 200.h,
                                       height: 20.v,
                                       child: Marquee(
-                                        text:
-                                            'Viongozi wa jumuiya Zote Mnatakiwa kuchukua Bahasha za Mavumo!',
+                                        text: 'Matangazo yote yanapatikana  >>',
                                         style: TextStyle(
                                             fontSize: 13.fSize,
                                             fontWeight: FontWeight.bold),
@@ -853,7 +869,7 @@ class _HomeScreen extends State<HomeScreen> {
                                         matangazo_mengine(context);
                                       },
                                       child: Text(
-                                        "Zaidi",
+                                        "Hapa",
                                         style: TextStyle(fontSize: 12.fSize),
                                       ),
                                     ),
@@ -910,191 +926,240 @@ class _HomeScreen extends State<HomeScreen> {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          Container(
-                              height: 190.v,
-                              width: 150.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.10),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              child: Stack(
-                                children: [
-                                  Image(
-                                      image: AssetImage(
-                                          "assets/images/utoto.jpeg"),
-                                      fit: BoxFit.cover),
-                                  Positioned(
-                                    top: null,
-                                    left: null,
-                                    right: 0.0.h,
-                                    bottom: 00.0.v,
-                                    child: Container(
-                                      height: 50.v,
-                                      width: 150.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.7),
-                                        border: Border.all(
-                                          width: 1.0,
-                                          color: Colors.black.withOpacity(0.10),
+                          InkWell(
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                  msg: "Tuna andaa taarifa za Utoto mtakatifu.",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0.fSize);
+                            },
+                            child: Container(
+                                height: 190.v,
+                                width: 150.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.10),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                child: Stack(
+                                  children: [
+                                    Image(
+                                        image: AssetImage(
+                                            "assets/images/utoto.jpeg"),
+                                        fit: BoxFit.cover),
+                                    Positioned(
+                                      top: null,
+                                      left: null,
+                                      right: 0.0.h,
+                                      bottom: 00.0.v,
+                                      child: Container(
+                                        height: 50.v,
+                                        width: 150.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.7),
+                                          border: Border.all(
+                                            width: 1.0,
+                                            color:
+                                                Colors.black.withOpacity(0.10),
+                                          ),
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(8),
+                                              bottomRight: Radius.circular(8)),
                                         ),
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8),
-                                            bottomRight: Radius.circular(8)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Utoto Mtakatifu",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12.fSize,
-                                              fontWeight: FontWeight.w500),
+                                        child: Center(
+                                          child: Text(
+                                            "UTOTO MTAKATIFU",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12.fSize,
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
+                                  ],
+                                )),
+                          ),
                           SizedBox(
                             width: 10.h,
                           ),
-                          Container(
-                              height: 190.v,
-                              width: 150.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.10),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              child: Stack(
-                                children: [
-                                  Image(
-                                      image: AssetImage(
-                                          "assets/images/vijana.jpg"),
-                                      fit: BoxFit.cover),
-                                  Positioned(
-                                    top: null,
-                                    left: null,
-                                    right: 0.0.h,
-                                    bottom: 00.0.v,
-                                    child: Container(
-                                      height: 50.v,
-                                      width: 150.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.3),
-                                        border: Border.all(
-                                          width: 1.0,
-                                          color: Colors.black.withOpacity(0.10),
+                          InkWell(
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                  msg: "Tuna andaa taarifa za VIWAWA.",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0.fSize);
+                              ;
+                            },
+                            child: Container(
+                                height: 190.v,
+                                width: 150.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.10),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                child: Stack(
+                                  children: [
+                                    Image(
+                                        image: AssetImage(
+                                            "assets/images/vijana.jpg"),
+                                        fit: BoxFit.cover),
+                                    Positioned(
+                                      top: null,
+                                      left: null,
+                                      right: 0.0.h,
+                                      bottom: 00.0.v,
+                                      child: Container(
+                                        height: 50.v,
+                                        width: 150.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.3),
+                                          border: Border.all(
+                                            width: 1.0,
+                                            color:
+                                                Colors.black.withOpacity(0.10),
+                                          ),
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(8),
+                                              bottomRight: Radius.circular(8)),
                                         ),
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8),
-                                            bottomRight: Radius.circular(8)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "VIWAWA",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12.fSize,
-                                              fontWeight: FontWeight.w500),
+                                        child: Center(
+                                          child: Text(
+                                            "VIWAWA",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12.fSize,
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
+                                  ],
+                                )),
+                          ),
                           SizedBox(
                             width: 10.h,
                           ),
-                          Container(
-                              height: 190.v,
-                              width: 150.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.10),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              child: Stack(
-                                children: [
-                                  Image(
-                                      image: AssetImage(
-                                          "assets/images/wawata.JPG"),
-                                      fit: BoxFit.cover),
-                                  Positioned(
-                                    top: null,
-                                    left: null,
-                                    right: 0.0.h,
-                                    bottom: 00.0.v,
-                                    child: Container(
-                                      height: 50.v,
-                                      width: 150.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.3),
-                                        border: Border.all(
-                                          width: 1.0,
-                                          color: Colors.black.withOpacity(0.10),
+                          InkWell(
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                  msg: "Tuna andaa taarifa za WAWATA.",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0.fSize);
+                            },
+                            child: Container(
+                                height: 190.v,
+                                width: 150.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.10),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                child: Stack(
+                                  children: [
+                                    Image(
+                                        image: AssetImage(
+                                            "assets/images/wawata.JPG"),
+                                        fit: BoxFit.cover),
+                                    Positioned(
+                                      top: null,
+                                      left: null,
+                                      right: 0.0.h,
+                                      bottom: 00.0.v,
+                                      child: Container(
+                                        height: 50.v,
+                                        width: 150.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.3),
+                                          border: Border.all(
+                                            width: 1.0,
+                                            color:
+                                                Colors.black.withOpacity(0.10),
+                                          ),
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(8),
+                                              bottomRight: Radius.circular(8)),
                                         ),
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8),
-                                            bottomRight: Radius.circular(8)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "WAWATA",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12.fSize,
-                                              fontWeight: FontWeight.w500),
+                                        child: Center(
+                                          child: Text(
+                                            "WAWATA",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12.fSize,
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
+                                  ],
+                                )),
+                          ),
                           SizedBox(
                             width: 10.h,
                           ),
-                          Container(
-                              height: 190.v,
-                              width: 150.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.10),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8))),
-                              child: Stack(
-                                children: [
-                                  Image(
-                                      image:
-                                          AssetImage("assets/images/uwaka.jpg"),
-                                      fit: BoxFit.fitWidth),
-                                  Positioned(
-                                    top: null,
-                                    left: null,
-                                    right: 0.0.h,
-                                    bottom: 00.0.v,
-                                    child: Container(
-                                      height: 50.v,
-                                      width: 150.h,
-                                      decoration: BoxDecoration(
-                                        color: Colors.black.withOpacity(0.3),
-                                        border: Border.all(
-                                          width: 1.0,
-                                          color: Colors.black.withOpacity(0.10),
+                          InkWell(
+                            onTap: () {
+                              Fluttertoast.showToast(
+                                  msg: "Tuna andaa taarifa za UWAKA",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0.fSize);
+                            },
+                            child: Container(
+                                height: 190.v,
+                                width: 150.h,
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.10),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                child: Stack(
+                                  children: [
+                                    Image(
+                                        image: AssetImage(
+                                            "assets/images/uwaka.jpg"),
+                                        fit: BoxFit.fitWidth),
+                                    Positioned(
+                                      top: null,
+                                      left: null,
+                                      right: 0.0.h,
+                                      bottom: 00.0.v,
+                                      child: Container(
+                                        height: 50.v,
+                                        width: 150.h,
+                                        decoration: BoxDecoration(
+                                          color: Colors.black.withOpacity(0.3),
+                                          border: Border.all(
+                                            width: 1.0,
+                                            color:
+                                                Colors.black.withOpacity(0.10),
+                                          ),
+                                          borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(8),
+                                              bottomRight: Radius.circular(8)),
                                         ),
-                                        borderRadius: BorderRadius.only(
-                                            bottomLeft: Radius.circular(8),
-                                            bottomRight: Radius.circular(8)),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "UWAKA",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12.fSize,
-                                              fontWeight: FontWeight.w500),
+                                        child: Center(
+                                          child: Text(
+                                            "UWAKA",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12.fSize,
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              )),
+                                  ],
+                                )),
+                          ),
                           SizedBox(
                             width: 10.h,
                           ),
@@ -1144,37 +1209,68 @@ class _HomeScreen extends State<HomeScreen> {
                           ],
                         )),
 
-                    //----------------------------------------------------
+                    //-------------------------------------------------********************************************************************************************************************************---
 
-                    Container(
-                      child: CarouselSlider(
-                        items: <Widget>[
-                          for (var i = 0;
-                              i < connections.parokiaMatukioList.length;
-                              i++)
-                            buildImage(
-                                '${connections.parokiaMatukioList[i].tarehe}',
-                                '${connections.parokiaMatukioList[i].title}',
-                                '${connections.parokiaMatukioList[i].maelezo}',
-                                context),
-                        ],
-                        options: CarouselOptions(
-                          aspectRatio: 16 / 8,
-                          viewportFraction: 1.0,
-                          autoPlay:
-                              true, // Set to true for auto-playing the carousel
-                          autoPlayInterval: Duration(seconds: 30),
-                          autoPlayAnimationDuration: Duration(milliseconds: 50),
-                          autoPlayCurve: Curves.easeIn,
-                          enableInfiniteScroll: true,
-                          onPageChanged: (index, reason) {
-                            // Callback when the page changes
-                          },
-                          scrollDirection: Axis
-                              .horizontal, // Set to Axis.vertical for vertical carousel
-                        ),
-                      ),
-                    ),
+                    Obx(
+                      () => connections.parokiaMatukioList.isNotEmpty
+                          ? Container(
+                              child: CarouselSlider(
+                                items: <Widget>[
+                                  for (var i = 0;
+                                      i < connections.parokiaMatukioList.length;
+                                      i++)
+                                    buildImage(
+                                        '${connections.parokiaMatukioList[i].tarehe}',
+                                        '${connections.parokiaMatukioList[i].title}',
+                                        '${connections.parokiaMatukioList[i].maelezo}',
+                                        context),
+                                ],
+                                options: CarouselOptions(
+                                  aspectRatio: 16 / 8,
+                                  viewportFraction: 1.0,
+                                  autoPlay:
+                                      true, // Set to true for auto-playing the carousel
+                                  autoPlayInterval: Duration(seconds: 30),
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 500),
+                                  autoPlayCurve: Curves.easeIn,
+                                  enableInfiniteScroll: true,
+                                  onPageChanged: (index, reason) {
+                                    // Callback when the page changes
+                                  },
+                                  scrollDirection: Axis
+                                      .horizontal, // Set to Axis.vertical for vertical carousel
+                                ),
+                              ),
+                            )
+                          : Container(
+                              child: CarouselSlider(
+                                items: [
+                                  buildImage(
+                                      '07 - 07 - 2024',
+                                      'Sherehe ya Somo wa Parokia',
+                                      'Wanaparokia wa K/ndege mnakumbushwa kushiriki kwa Wingi',
+                                      context)
+                                ],
+                                options: CarouselOptions(
+                                  aspectRatio: 16 / 8,
+                                  viewportFraction: 1.0,
+                                  autoPlay:
+                                      true, // Set to true for auto-playing the carousel
+                                  autoPlayInterval: Duration(seconds: 30),
+                                  autoPlayAnimationDuration:
+                                      Duration(milliseconds: 500),
+                                  autoPlayCurve: Curves.easeIn,
+                                  enableInfiniteScroll: true,
+                                  onPageChanged: (index, reason) {
+                                    // Callback when the page changes
+                                  },
+                                  scrollDirection: Axis
+                                      .horizontal, // Set to Axis.vertical for vertical carousel
+                                ),
+                              ),
+                            ),
+                    )
 
                     // ---------------------------------------------------
                   ],
@@ -1825,7 +1921,7 @@ class _HomeScreen extends State<HomeScreen> {
   }
 
   matangazo_mengine(BuildContext context) {
-    // HomeController formController = Get.put(HomeController());
+    HomeController dataController = Get.put(HomeController());
     showModalBottomSheet(
       isDismissible: true,
       enableDrag: false,
@@ -1906,11 +2002,11 @@ class _HomeScreen extends State<HomeScreen> {
                 height: 10,
               ),
               Obx(
-                () => dataController.matangazoList_file.isNotEmpty
+                () => dataController.matangazofile.isNotEmpty
                     ? Expanded(
                         child: ListView.builder(
                           //shrinkWrap: true,
-                          itemCount: dataController.matangazoList_file.length,
+                          itemCount: dataController.matangazofile.length,
                           itemBuilder: (context, index) {
                             return ListTile(
                                 leading: const Icon(
@@ -1925,12 +2021,10 @@ class _HomeScreen extends State<HomeScreen> {
                                           Get.back();
                                           downloadfile(
                                               dataController
-                                                  .matangazoList_file[index]
-                                                  .file
+                                                  .matangazofile[index].file
                                                   .toString(),
                                               dataController
-                                                  .matangazoList_file[index]
-                                                  .dominika
+                                                  .matangazofile[index].dominika
                                                   .toString());
                                         },
                                         child: Icon(
@@ -1940,7 +2034,7 @@ class _HomeScreen extends State<HomeScreen> {
                                         ),
                                       ),
                                 title: Text(
-                                  "${dataController.matangazoList_file[index].dominika}",
+                                  "${dataController.matangazofile[index].dominika}",
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
                                       fontSize: 14.fSize,
@@ -1966,5 +2060,3 @@ class _HomeScreen extends State<HomeScreen> {
 }
 
 // jumuiya(BuildContext context) {}
-
-

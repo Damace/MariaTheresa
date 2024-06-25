@@ -26,10 +26,19 @@ class _Jumuiya_sensa extends State<Jumuiya_sensa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: appTheme.defaultcolor,
+          foregroundColor: Colors.white,
+          title: Text("Sensa", style: TextStyle(fontSize: 18.fSize)),
+          centerTitle: true,
+        ),
         body: Container(
           child: Center(
-            child: Text("Hakuna Sensa kwa Sasa"),
+            child: Text(
+              "Hakuna Sensa kwa Sasa",
+              style:
+                  TextStyle(fontSize: 14.fSize, color: appTheme.defaultcolor),
+            ),
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(

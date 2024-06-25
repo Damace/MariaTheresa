@@ -26,10 +26,17 @@ class _Taarifa_za_Michango extends State<Taarifa_za_Michango> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: appTheme.defaultcolor,
+          foregroundColor: Colors.white,
+          title: Text("Michango", style: TextStyle(fontSize: 18.fSize)),
+          centerTitle: true,
+        ),
         body: Container(
           child: Center(
-            child: Text("Hakuna"),
+            child: Text("Hakuna",
+                style: TextStyle(
+                    fontSize: 14.fSize, color: appTheme.defaultcolor)),
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(

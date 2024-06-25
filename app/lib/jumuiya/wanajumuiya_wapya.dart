@@ -443,7 +443,7 @@ class _Wanajumuiya_wapya extends State<Wanajumuiya_wapya> {
                     child: Padding(
                       padding: EdgeInsets.all(14.0),
                       child: Text(
-                        'Submit',
+                        'Wasilisha',
                         style: TextStyle(fontSize: 16.fSize),
                       ),
                     ),

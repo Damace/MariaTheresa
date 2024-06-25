@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Otp_screen extends StatefulWidget {
@@ -178,6 +179,14 @@ class _Otp_screen extends State<Otp_screen> {
                                             AppRoutes.form_otp_screen,
                                           );
                                         });
+
+                                    Fluttertoast.showToast(
+                                        msg: " Requesting OTP .....",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.SNACKBAR,
+                                        timeInSecForIosWeb: 1,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
                                   }
                                 },
                                 style: ButtonStyle(
